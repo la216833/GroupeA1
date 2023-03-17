@@ -1,0 +1,31 @@
+{
+    "name": "cash-register/cash-register",
+    "type": "project",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "CashRegister\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "la215871",
+            "email": "la215871@student.helha.be"
+        },
+        {
+            "name": "la216646",
+            "email": "la216646@student.helha.be"
+        },
+        {
+            "name": "la216833",
+            "email": "la216833@student.helha.be"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "altorouter/altorouter": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    }
+}
