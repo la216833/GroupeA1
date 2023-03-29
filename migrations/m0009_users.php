@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0009_users {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO users (usersName, usersFirstname, usersAccessCode, usersImagePath, rolesID) VALUES 
             ('Jodlkowski', 'Denver', '39e0274dd5962cf0586fdde1b1108de1c3b3f19c', 'default-user-icon.png', 3),
             ('Yankov', 'Lana', '28fb1e741c3a51f3ade6aa2ef44020987dff0438', 'default-user-icon.png', 1),
@@ -29,6 +29,6 @@ class m0009_users {
             ('Gosby', 'Anissa', '28fb1e741c3a51f3ade6aa2ef44020987dff0438', 'default-user-icon.png', 2);
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

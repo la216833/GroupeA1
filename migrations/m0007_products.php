@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0007_products {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO products (productsName, productsDescription, productsPrice, productsAvailable, productsImagePath, tvaID, stockID) VALUES 
             ('GTT Communications, Inc.', 'aliquam convallis', 1.97, false, 'Luctus.xls', 2, 6),
             ('Akamai Technologies, Inc.', 'nulla ultrices aliquet maecenas leo', 3.64, false, 'Nunc.mp3', 3, 94),
@@ -109,6 +109,6 @@ class m0007_products {
             ('Whirlpool Corporation', 'neque vestibulum', 5.28, false, 'Faucibus.mp3', 1, 84);
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

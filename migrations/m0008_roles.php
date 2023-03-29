@@ -5,13 +5,13 @@ use CashRegister\core\database\DBConnection;
 class m0008_roles {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO roles (rolesName) VALUES 
-            ('administartor'),
+            ('administrator'),
             ('seller'),
             ('manager');
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

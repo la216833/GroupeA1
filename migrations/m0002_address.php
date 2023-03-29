@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0002_address {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "
         INSERT INTO address (addressStreet, addressNumber, addressCity, addressCountry) VALUES 
             ('Rockefeller', 90, 7536, 'Belgium'),
@@ -110,6 +110,6 @@ class m0002_address {
             ('Hauk', 47, 6594, 'Belgium');
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

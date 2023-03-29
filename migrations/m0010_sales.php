@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0010_sales {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO sales (salesDate, salesAmount, salesDescription, usersID, clientsID) VALUES 
             ('2022-05-23 21:32:14', 35.3, null, 7, null),
             ('2022-06-24 04:48:49', 125.79, null, 5, 7),
@@ -1009,6 +1009,6 @@ class m0010_sales {
             ('2022-05-03 02:07:45', 272.21, 'enim sit amet nunc viverra dapibus nulla suscipit ligula in', 20, null);
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

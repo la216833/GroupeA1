@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0006_stock {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO stock (stockQuantity, stockDate, stockBuyPrice) VALUES 
             (55, '2022/10/24 00:00:00', 9.07),
             (73, '2021/07/31 00:00:00', 4.76),
@@ -109,6 +109,6 @@ class m0006_stock {
             (29, '2021/02/05 00:00:00', 5.4);
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

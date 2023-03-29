@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0005_categories {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO categories (categoriesName, categoriesDescription) VALUES 
             ('Real Estate Investment Trusts', 'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.'),
             ('Real Estate Investment Trusts', 'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.'),
@@ -59,6 +59,6 @@ class m0005_categories {
             ('Computer Software: Prepackaged Software', 'Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero.');
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

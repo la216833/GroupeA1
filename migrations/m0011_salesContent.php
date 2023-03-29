@@ -1,11 +1,10 @@
 <?php
-
 use CashRegister\core\database\DBConnection;
 
 class m0011_salesContent {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "INSERT INTO salesContent (salesID, productsID) VALUES 
             (432, 97),
             (758, 22),
@@ -1009,6 +1008,6 @@ class m0011_salesContent {
             (529, 19);
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }

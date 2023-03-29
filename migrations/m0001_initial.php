@@ -5,7 +5,7 @@ use CashRegister\core\database\DBConnection;
 class m0001_initial {
 
     public function up(): void {
-        $db = new DBConnection($_ENV, dirname('../'));
+        $db = DBConnection::getInstance();
         $query = "
         CREATE TABLE IF NOT EXISTS address (
             addressID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -90,6 +90,6 @@ class m0001_initial {
             FOREIGN KEY (productsID) REFERENCES products(productsID));
         ";
 
-        $db->getPDO()->exec($query);
+        $db->exec($query);
     }
 }
