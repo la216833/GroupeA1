@@ -12,7 +12,7 @@ class DBModelTest extends TestCase {
     private DBModel $DBModel;
 
     public static function setUpBeforeClass(): void {
-        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
         $dotenv->load();
     }
 
@@ -62,7 +62,7 @@ class DBModelTest extends TestCase {
      * @throws DBException
      */
     public function testSelectAllSuccess(): void {
-        $result = $this->DBModel->selectAll('roles', 1);
+        $result = $this->DBModel->selectAll('roles');
         $this->assertCount(3, $result);
     }
 
@@ -96,7 +96,8 @@ class DBModelTest extends TestCase {
      * @throws DBException
      */
     public function testUpdateSuccess(): void {
-        $result = $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batsheva"]);
+        $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batsheva"]);
+        $result = $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batshevaa"]);
         $this->assertTrue($result);
     }
 
