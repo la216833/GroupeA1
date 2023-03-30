@@ -151,7 +151,7 @@ class DBModel {
      * @return bool true if the update was success else error
      * @throws DBException
      */
-    function update(string $table, array $params): bool {
+    public function update(string $table, array $params): bool {
         $column = array_keys($params);
         $idName = array_shift($column);
         $idValue = array_shift($params);
