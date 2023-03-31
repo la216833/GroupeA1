@@ -96,8 +96,8 @@ class DBModelTest extends TestCase {
      * @throws DBException
      */
     public function testUpdateSuccess(): void {
-        $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batsheva"]);
         $result = $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batshevaa"]);
+        $this->DBModel->update('clients', ["clientsID" => 2, "clientsName" => "Batsheva"]);
         $this->assertTrue($result);
     }
 

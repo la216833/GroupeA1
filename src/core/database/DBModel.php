@@ -158,7 +158,7 @@ class DBModel {
         try {
             $this->pdo = DBConnection::getInstance();
             $this->query = "UPDATE $table SET ".
-                implode(' AND ', array_map(fn($attr) => "$attr=:$attr", $column)).
+                implode(', ', array_map(fn($attr) => "$attr=:$attr", $column)).
                 " WHERE ". $idName . "=:". $idName;
             $statement = $this->pdo->prepare($this->query);
             foreach ($params as $column => $value) {
