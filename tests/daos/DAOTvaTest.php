@@ -10,7 +10,7 @@ use Dotenv\Dotenv;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class DAOTestTva extends TestCase
+class DAOTvaTest extends TestCase
 {
     private DAOTva $DAOTva;
 
@@ -44,7 +44,6 @@ class DAOTestTva extends TestCase
         }
 
         $this->assertTrue($return);
-        $this->tearDown();
     }
 
     public function testInsertFail():void{
@@ -55,7 +54,6 @@ class DAOTestTva extends TestCase
             $return = $this->DAOTva->insert($tva);
             $return = $this->DAOTva->insert($tva);
         }catch (DBException $e){
-            $this->tearDown();
             throw new DBException($e);
         }
     }
@@ -73,7 +71,6 @@ class DAOTestTva extends TestCase
         }catch(DBException $e){
             throw new DBException($e);
         }
-        $this->tearDown();
     }
 
     public function  testSelectOneFail(): void{
@@ -97,7 +94,6 @@ class DAOTestTva extends TestCase
 
 
             $tab = $this->DAOTva->selectWhere(["tvaName"=>"Taxe 22"]);
-            $this->tearDown();
             if (!empty($tab)){
                 $this->assertIsArray($tab);
             }else{
@@ -123,7 +119,6 @@ class DAOTestTva extends TestCase
 
             $tva->setName("Taxe speciale 22");
             $return = $this->DAOTva->update($tva);
-            $this->tearDown();
             $this->assertTrue($return);
         }catch (DBException $e){
             throw new DBException($e);

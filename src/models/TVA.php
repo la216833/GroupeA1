@@ -39,7 +39,7 @@ class TVA
      */
     public function getPercent(): float
     {
-        return $this->percent;
+         return $this->percent;
     }
 
     /**
