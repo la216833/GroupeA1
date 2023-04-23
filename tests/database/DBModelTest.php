@@ -48,7 +48,7 @@ class DBModelTest extends TestCase {
      * @throws DBException
      */
     public function testSelectOneSuccess(): void {
-        $expected = ["rolesID" => 1, "rolesName" => "administrator", "rolesActive" => 1];
+        $expected = ["rolesID" => 1, "rolesName" => "seller", "rolesActive" => 1];
         $result = $this->DBModel->selectOne('roles', 1);
         $this->assertEqualsCanonicalizing($expected, $result);
     }
