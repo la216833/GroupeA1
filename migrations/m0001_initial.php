@@ -86,6 +86,7 @@ class m0001_initial {
         CREATE TABLE IF NOT EXISTS salesContent (
             salesID INT UNSIGNED NOT NULL AUTO_INCREMENT,
             productsID INT UNSIGNED NOT NULL,
+            quantity SMALLINT UNSIGNED NOT NULL DEFAULT 1,
             FOREIGN KEY (salesID) REFERENCES sales(salesID),
             FOREIGN KEY (productsID) REFERENCES products(productsID));
         ";
