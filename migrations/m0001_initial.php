@@ -35,16 +35,7 @@ class m0001_initial {
             categoriesName VARCHAR(100) NOT NULL,
             categoriesDescription TEXT NOT NULL,
             categoriesActive BOOLEAN DEFAULT TRUE);
-        
-        CREATE TABLE IF NOT EXISTS stock (
-            stockID MEDIUMINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            stockQuantity SMALLINT UNSIGNED NOT NULL,
-            stockDate DATETIME NOT NULL,
-            stockBuyPrice DECIMAL(8,3) UNSIGNED NOT NULL,
-            stockActive BOOLEAN DEFAULT TRUE,
-            productsID INT UNSIGNED NOT NULL,
-            FOREIGN KEY (productsID) REFERENCES products(productsID));
-        
+                
         CREATE TABLE IF NOT EXISTS products (
             productsID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
             productsName VARCHAR(50) NOT NULL,
@@ -57,6 +48,14 @@ class m0001_initial {
             FOREIGN KEY (tvaID) REFERENCES tva(tvaID),
             FOREIGN KEY (categoriesID) REFERENCES categories(categoriesID));
             
+        CREATE TABLE IF NOT EXISTS stock (
+            stockID MEDIUMINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            stockQuantity SMALLINT UNSIGNED NOT NULL,
+            stockDate DATETIME NOT NULL,
+            stockBuyPrice DECIMAL(8,3) UNSIGNED NOT NULL,
+            stockActive BOOLEAN DEFAULT TRUE,
+            productsID INT UNSIGNED NOT NULL,
+            FOREIGN KEY (productsID) REFERENCES products(productsID));
         
         CREATE TABLE IF NOT EXISTS roles (
             rolesID TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

@@ -23,7 +23,7 @@ final class DAORoleTest extends TestCase {
      */
     public static function tearDownAfterClass(): void {
         $DAORole = new DAORole();
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $DAORole->update($role);
     }
 
@@ -43,7 +43,7 @@ final class DAORoleTest extends TestCase {
 
     public function testInsertError(): void {
         $this->expectException(DBException::class);
-        $role = new Role(0, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $this->DAORole->insert($role);
     }
 
@@ -52,11 +52,11 @@ final class DAORoleTest extends TestCase {
      */
     public function testSelectOneSuccess(): void {
         $expected = [
-            1,
+            3,
             "administrator",
             true
         ];
-        $result = $this->DAORole->selectOne(1);
+        $result = $this->DAORole->selectOne(3);
         $result = [
             $result->getID(),
             $result->getName(),
@@ -75,7 +75,7 @@ final class DAORoleTest extends TestCase {
      */
     public function testSelectWhereSuccess(): void {
         $expected = [
-            1,
+            3,
             "administrator",
             true
         ];
@@ -92,7 +92,7 @@ final class DAORoleTest extends TestCase {
      * @throws DBException
      */
     public function testSelectWhereEmpty(): void {
-        $result = $this->DAORole->selectWhere(["rolesName" => "admin"]);
+        $result = $this->DAORole->selectWhere(["rolesName" => "sellers"]);
         $this->assertEqualsCanonicalizing([], $result);
     }
 
@@ -105,16 +105,16 @@ final class DAORoleTest extends TestCase {
      * @throws DBException
      */
     public function testUpdateSuccess(): void {
-        $role = new Role(1, "admin", true);
+        $role = new Role(3, "admin", true);
         $result = $this->DAORole->update($role);
         $this->assertTrue($result);
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $this->DAORole->update($role);
     }
 
     public function testUpdateError(): void {
         $this->expectException(DBException::class);
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $this->DAORole->update($role);
     }
 
@@ -122,16 +122,16 @@ final class DAORoleTest extends TestCase {
      * @throws DBException
      */
     public function testDeleteSuccess(): void {
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $result = $this->DAORole->delete($role);
         $this->assertTrue($result);
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $this->DAORole->update($role);
     }
 
     public function testDeleteError(): void {
         $this->expectException(DBException::class);
-        $role = new Role(1, "administrator", true);
+        $role = new Role(3, "administrator", true);
         $this->DAORole->delete($role);
         $this->DAORole->delete($role);
     }

@@ -7,9 +7,9 @@ class m0008_roles {
     public function up(): void {
         $db = DBConnection::getInstance();
         $query = "INSERT INTO roles (rolesName) VALUES 
-            ('administrator'),
             ('seller'),
-            ('manager');
+            ('manager'),
+            ('administrator');
         ";
 
         $db->exec($query);

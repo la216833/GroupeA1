@@ -34,7 +34,7 @@ CashRegister
 Change connection token in .env file
 Rename .env.example to .env and apply personal configuration
 ```
-DB_DSN="mysql:host=hostname;port3306;dbname=db"
+DB_DSN="mysql:host=hostname;dbname=db"
 DB_USER="root"
 DB_PASSWORD="toor"
 ```
