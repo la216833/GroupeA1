@@ -1,0 +1,135 @@
+/*
+Refer to sample.html in views/layouts/sample.html to have an idea of use
+    !!!Don't forget to change img snippets sources!!!
+*/
+
+
+
+body{
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.page-section{
+    display: block;
+    padding: 2px 0;
+    text-align: center;
+    background-color: rgb(1, 1, 52);
+    color: white;
+    margin-bottom: 5px;/*X*/
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 5px;/*X*/
+}
+
+.button{
+    width: 180px;
+    height: 50px;
+    text-decoration: none;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    background-color: #9e9e9e;
+    border-radius: 15px;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.selected{
+    background: #333333;
+}
+
+.menu{
+    width: 200px;
+    height: 50px;
+}
+
+.red-button{
+    background-color: #D86661;
+}
+
+.profil-pic{
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    margin: 5px;
+}
+
+.profil-container{
+    margin-top: 5px;/*X*/
+    display: flex;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    align-items: center;
+}
+
+.card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f7f7f8;
+    border-radius: 20px;
+    height: 200px;
+    width: 150px;
+}
+.card-img{
+    height: 90px;
+    width: 80px;
+    margin-top: 20px;/*X*/
+    margin-bottom: 5px;/*X*/
+
+}
+
+.card-container p{
+    margin: 0;
+}
+
+.card-container h3{
+    margin: 0;
+}
+
+.ticket-button{
+    height: 40px;
+    width: 200px;
+}
+
+.little-button{
+    height: 50px;
+    width: 50px;
+    text-align: center;
+}
+
+.little-logo{
+    height: 30px;
+    width: 85px;
+}
+.big-logo{
+    height: 65px;
+    width: 180px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
