@@ -4,9 +4,9 @@ namespace CashRegister\daos;
 
 use CashRegister\core\database\DBModel;
 use CashRegister\core\exception\DBException;
-use CashRegister\models\Categories;
+use CashRegister\models\Category;
 
-class DAOCategories implements DAO
+class DAOCategory implements DAO
 {
 
     private DBModel $DBModel;
@@ -29,10 +29,10 @@ class DAOCategories implements DAO
     {
 
         $this->params = [
-            'categoriesID' => $object->getCategoriesId(),
-            'categoriesName' => $object->getCategoriesName(),
-            'categoriesDescription' => $object->getCategoriesDescription(),
-            'categoriesActive' => $object->isCategoriesActive()
+            'categoriesID' => $object->getCategoryId(),
+            'categoriesName' => $object->getCategoryName(),
+            'categoriesDescription' => $object->getCategoryDescription(),
+            'categoriesActive' => $object->isCategoryActive()
         ];
 
         try {
@@ -57,8 +57,8 @@ class DAOCategories implements DAO
         try {
 
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedCategories = new Categories($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"]);
-            return $returnedCategories;
+            $returnedCategory = new Category($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"]);
+            return $returnedCategory;
 
         }catch (DBException $e){
 
@@ -98,7 +98,7 @@ class DAOCategories implements DAO
             $categories = $this->DBModel->selectWhere(self::TABLE, $params);
             foreach ($categories as $key => $category) {
 
-                $result[] = new Categories(
+                $result[] = new Category(
                     $category["categoriesID"],
                     $category["categoriesName"],
                     $category["categoriesDescription"],
@@ -121,10 +121,10 @@ class DAOCategories implements DAO
     {
 
         $this->params = [
-            'categoriesID' => $object->getCategoriesID(),
-            'categoriesName' => $object->getCategoriesName(),
-            'categoriesDescription' => $object->getCategoriesDescription(),
-            'categoriesActive' => $object->isCategoriesActive()
+            'categoriesID' => $object->getCategoryID(),
+            'categoriesName' => $object->getCategoryName(),
+            'categoriesDescription' => $object->getCategoryDescription(),
+            'categoriesActive' => $object->isCategoryActive()
         ];
 
         try {
@@ -145,7 +145,7 @@ class DAOCategories implements DAO
     {
         try {
             $params =[
-                'categoriesID'=>$object->getCategoriesID(),
+                'categoriesID'=>$object->getCategoryID(),
                 'categoriesActive' => false
             ];
             $this->DBModel->update(self::TABLE, $params);
