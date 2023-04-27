@@ -52,8 +52,8 @@ class DAOCategoriesTest extends TestCase
      */
     public function testInsertFailure():void{
         $this->expectException(DBException::class);
-        $category = new Categories(1,"Boisson","Boisson bien fraiche");
-        $this->DAOUser->insert($category);
+        $category = new Categories(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
+        $this->DAOCategories->insert($category);
     }
 
     /**
@@ -64,8 +64,8 @@ class DAOCategoriesTest extends TestCase
 
         $expected = [
             1,
-            "Boisson",
-            "Boisson bien fraiche"
+            "Real Estate Investment Trusts",
+            "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque."
         ];
         $result = $this->DAOCategories->selectOne(1);
         $result = [
@@ -92,14 +92,16 @@ class DAOCategoriesTest extends TestCase
     public function testSelectWhereSuccess():void{
         $expected = [
             1,
-            "Boisson",
-            "Boisson bien fraiche"
+            "Real Estate Investment Trusts",
+            "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",
+            true
         ];
-        $result = $this->DAOCategories->selectWhere(["categoriesName" => "Boisson"]);
+        $result = $this->DAOCategories->selectWhere(["categoriesName" => "Real Estate Investment Trusts"]);
         $result = [
             $result[0]->getCategoriesID(),
             $result[0]->getCategoriesName(),
-            $result[0]->getCategoriesDescription()
+            $result[0]->getCategoriesDescription(),
+            $result[0]->isCategoriesActive()
         ];
         $this->assertEqualsCanonicalizing($expected,$result);
     }
@@ -119,7 +121,7 @@ class DAOCategoriesTest extends TestCase
      */
     public function testSelectWhereFailure():void{
         $this->expectException(DBException::class);
-        $this->DAOCategories->selectWhere(["categoriesName" => "Weapon"]);
+        $this->DAOCategories->selectWhere(["categoriesNames" => "Weapon"]);
     }
 
     /**
@@ -127,10 +129,10 @@ class DAOCategoriesTest extends TestCase
      * @throws DBException
      */
     public function testUpdateSuccess():void{
-        $category = new Categories(1,"Boisson","Boisson bien fraiche");
+        $category = new Categories(1,"Real Estate","");
         $result = $this->DAOCategories->update($category);
         $this->assertTrue($result);
-        $category = new Categories(1,"Boisson bien fraiche","Boisson");
+        $category = new Categories(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
         $this->DAOCategories->update($category);
     }
 
@@ -140,7 +142,7 @@ class DAOCategoriesTest extends TestCase
      */
     public function testUpdateError():void{
         $this->expectException(DBException::class);
-        $category = new Categories(1,"Boisson bien fraiche","Boisson");
+        $category = new Categories(1,"Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.","Real Estate Investment Trusts");
         $this->DAOCategories->update($category);
     }
 
@@ -149,11 +151,9 @@ class DAOCategoriesTest extends TestCase
      * @throws DBException
      */
     public function testDeleteSuccess():void{
-        $category = new Categories(1,"Boisson bien fraiche","Boisson");
+        $category = new Categories(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
         $result = $this->DAOCategories->delete($category);
         $this->assertTrue($result);
-        $user = new Categories(1,"Boisson bien fraiche","Boisson");
-        $this->DAOCategories->update($category);
     }
 
     /**
@@ -161,8 +161,8 @@ class DAOCategoriesTest extends TestCase
      * @throws DBException
      */
     public function testDeleteError():void{
-        $this->expectedException(Exception::class);
-        $category = new Categories(1,"Boisson","Boisson bien fraiche");
+        $this->expectException(DBException::class);
+        $category = new Categories(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
         $this->DAOCategories->delete($category);
         $this->DAOCategories->delete($category);
     }

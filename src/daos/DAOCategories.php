@@ -27,15 +27,17 @@ class DAOCategories implements DAO
      */
     public function insert(object $object): bool
     {
+
+        $this->params = [
+            'categoriesID' => $object->getCategoriesId(),
+            'categoriesName' => $object->getCategoriesName(),
+            'categoriesDescription' => $object->getCategoriesDescription(),
+            'categoriesActive' => $object->isCategoriesActive()
+        ];
+
         try {
 
-            $params = [
-                'categoriesName' => $object->getCategoriesName(),
-                'categoriesDescription' => $object->getCategoriesDescription(),
-                'categoriesActive' => $object->isCategoriesActive()
-            ];
-
-            $this->DBModel->insert(self::TABLE, $params);
+            $this->DBModel->insert(self::TABLE, $this->params);
             return true;
 
         }catch (DBException $e) {
@@ -55,8 +57,7 @@ class DAOCategories implements DAO
         try {
 
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedCategories = new Categories($tab["categoriesName"],$tab["categoriesDescription"]);
-            $returnedCategories->setCategoriesID($tab["categoriesID"]);
+            $returnedCategories = new Categories($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"]);
             return $returnedCategories;
 
         }catch (DBException $e){
@@ -90,14 +91,24 @@ class DAOCategories implements DAO
      */
     public function selectWhere(array $params): array
     {
+
+        $result = [];
         try {
 
-            return $this->DBModel->selectWhere(self::TABLE, $params);
+            $categories = $this->DBModel->selectWhere(self::TABLE, $params);
+            foreach ($categories as $key => $category) {
+
+                $result[] = new Categories(
+                    $category["categoriesID"],
+                    $category["categoriesName"],
+                    $category["categoriesDescription"],
+                );
+            }
+
+            return $result;
 
         }catch (DBException $e) {
-
             throw new DBException($e);
-
         }
     }
 
@@ -108,21 +119,20 @@ class DAOCategories implements DAO
      */
     public function update(object $object): bool
     {
+
+        $this->params = [
+            'categoriesID' => $object->getCategoriesID(),
+            'categoriesName' => $object->getCategoriesName(),
+            'categoriesDescription' => $object->getCategoriesDescription(),
+            'categoriesActive' => $object->isCategoriesActive()
+        ];
+
         try {
 
-            $params = [
-                'categoriesName' => $object->getCategoriesName(),
-                'categoriesDescription' => $object->getCategoriesDescription(),
-                'categoriesActive' => $object->isCategoriesActive()
-            ];
-
-            $this->DBModel->update(self::TABLE, $params);
-            return true;
+            return $this->DBModel->update(self::TABLE, $this->params);
 
         }catch (DBException $e){
-
             throw new DBException($e);
-
         }
     }
 
