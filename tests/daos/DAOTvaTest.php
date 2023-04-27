@@ -35,7 +35,7 @@ class DAOTvaTest extends TestCase
      * @throws DBException
      */
     public function testInsertSuccess():void{
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
 
         try {
             $return = $this->DAOTva->insert($tva);
@@ -48,7 +48,7 @@ class DAOTvaTest extends TestCase
 
     public function testInsertFail():void{
         $this->expectException(DBException::class);
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
 
         try {
             $return = $this->DAOTva->insert($tva);
@@ -62,7 +62,7 @@ class DAOTvaTest extends TestCase
      * @throws DBException
      */
     public function testSelectOneSuccess(): void{
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
         try {
             $this->DAOTva->insert($tva);
             $id = $this->conn->lastInsertId();
@@ -87,7 +87,7 @@ class DAOTvaTest extends TestCase
      * @throws DBException
      */
     public function testSelectWhereSuccess(): void{
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
 
         try {
             $this->DAOTva->insert($tva);
@@ -110,7 +110,7 @@ class DAOTvaTest extends TestCase
      * @throws DBException
      */
     public function testUpdateSuccess():void{
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
 
         try {
             $this->DAOTva->insert($tva);
@@ -129,7 +129,7 @@ class DAOTvaTest extends TestCase
      * @throws DBException
      */
     public function testDeleteSuccess(){
-        $tva = new TVA(22, "Taxe 22");
+        $tva = new TVA(0,22, "Taxe 22");
         try {
             $this->DAOTva->insert($tva);
             $tva->setId($this->conn->lastInsertId());

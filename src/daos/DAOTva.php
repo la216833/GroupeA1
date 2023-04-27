@@ -28,6 +28,7 @@ class DAOTva implements DAO
     {
         try {
             $params =[
+                'tvaID' => $object->getID(),
                 'tvaName' => $object->getName(),
                 'tvaPercent' => $object->getPercent(),
             ];
@@ -47,9 +48,7 @@ class DAOTva implements DAO
     {
         try {
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedTva = new TVA($tab["tvaPercent"], $tab["tvaName"]);
-            $returnedTva->setId($id);
-            return $returnedTva;
+            return new TVA($id, $tab["tvaPercent"], $tab["tvaName"]);
         }catch (DBException $e){
             throw new DBException($e);
         }
@@ -109,7 +108,6 @@ class DAOTva implements DAO
             $stmt = $this->conn->prepare($query);
             $stmt->execute(['tva'=>$object->getId()]);
             return true;
-
         }catch (DBException $e){
             throw new DBException($e);
         }
