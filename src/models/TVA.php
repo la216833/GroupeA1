@@ -9,11 +9,13 @@ class TVA
     private string $name;
 
     /**
+     * @param int $id
      * @param float $percent
      * @param string $name
      */
-    public function __construct(float $percent, string $name)
+    public function __construct(int $id, float $percent, string $name)
     {
+        $this->id = $id;
         $this->percent = $percent;
         $this->name = $name;
     }
@@ -39,7 +41,7 @@ class TVA
      */
     public function getPercent(): float
     {
-         return $this->percent;
+        return $this->percent;
     }
 
     /**
@@ -65,8 +67,6 @@ class TVA
     {
         $this->name = $name;
     }
-
-
 
 
 
