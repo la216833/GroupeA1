@@ -4,35 +4,52 @@ namespace CashRegister\models;
 
 class Product
 {
-    private int $id;
+    private int $ID;
     private string $name;
     private string $description;
     private float $price;
-    private bool $isAvailable;
+    private bool $active;
     private string $imagePath;
-    private int $tvaID;
-    private array $stockIDs;
+    private TVA $tva;
+    private Category $category;
 
     /**
+     * @param int $ID
      * @param string $name
      * @param string $description
      * @param float $price
-     * @param bool $isAvailable
+     * @param bool $active
      * @param string $imagePath
-     * @param array $stockIDs
-     * @param int $tvaID
+     * @param TVA $tva
+     * @param Category $category
      */
-    public function __construct(string $name, string $description, float $price, bool $isAvailable, string $imagePath, array $stockIDs, int $tvaID)
+    public function __construct(int $ID, string $name, string $description, float $price, bool $active, string $imagePath, TVA $tva, Category $category)
     {
+        $this->ID = $ID;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
-        $this->isAvailable = $isAvailable;
+        $this->active = $active;
         $this->imagePath = $imagePath;
-        $this->stockIDs = $stockIDs;
-        $this->tvaID = $tvaID;
+        $this->tva = $tva;
+        $this->category = $category;
     }
 
+    /**
+     * @return int
+     */
+    public function getID(): int
+    {
+        return $this->ID;
+    }
+
+    /**
+     * @param int $ID
+     */
+    public function setID(int $ID): void
+    {
+        $this->ID = $ID;
+    }
 
     /**
      * @return string
@@ -85,17 +102,17 @@ class Product
     /**
      * @return bool
      */
-    public function isAvailable(): bool
+    public function getActive(): bool
     {
-        return $this->isAvailable;
+        return $this->active;
     }
 
     /**
-     * @param bool $isAvailable
+     * @param bool $active
      */
-    public function setIsAvailable(bool $isAvailable): void
+    public function setActive(bool $active): void
     {
-        $this->isAvailable = $isAvailable;
+        $this->active = $active;
     }
 
     /**
@@ -115,51 +132,38 @@ class Product
     }
 
     /**
-     * @return int
+     * @return TVA
      */
-    public function getId(): int
+    public function getTva(): TVA
     {
-        return $this->id;
+        return $this->tva;
     }
 
     /**
-     * @param int $id
+     * @param TVA $tva
      */
-    public function setId(int $id): void
+    public function setTva(TVA $tva): void
     {
-        $this->id = $id;
+        $this->tva = $tva;
     }
 
     /**
-     * @return int
+     * @return Category
      */
-    public function getTvaID(): int
+    public function getCategory(): Category
     {
-        return $this->tvaID;
+        return $this->category;
     }
 
     /**
-     * @param int $tvaID
+     * @param Category $category
      */
-    public function setTvaID(int $tvaID): void
+    public function setCategory(Category $category): void
     {
-        $this->tvaID = $tvaID;
+        $this->category = $category;
     }
 
-    /**
-     * @return array
-     */
-    public function getStockIDs(): array
-    {
-        return $this->stockIDs;
-    }
 
-    /**
-     * @param array $stockIDs
-     */
-    public function setStockIDs(array $stockIDs): void
-    {
-        $this->stockIDs = $stockIDs;
-    }
+
 
 }

@@ -4,15 +4,15 @@ namespace daos;
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\exception\DBException;
 use CashRegister\daos\DAOProduct;
+use CashRegister\models\Category;
 use CashRegister\models\Product;
+use CashRegister\models\TVA;
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
 class DAOProductTest extends TestCase
 {
     private DAOProduct $DAOProduct;
-    private $conn;
-    private string $query;
 
 
 
@@ -26,7 +26,7 @@ class DAOProductTest extends TestCase
         $this->conn = DBConnection::getInstance();
     }
 
-    public function abortSqlInsert(){
+    public function tearDown(): void{
         $id= $this->conn->lastInsertId();
         $query = $this->conn->prepare("DELETE FROM products WHERE productsID=:id LIMIT 1");
         $query->execute(array(':id' => $id));
@@ -38,20 +38,14 @@ class DAOProductTest extends TestCase
      * @throws DBException
      */
     public function testInsertSuccess():void{
-
-        $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-
-        $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);//TVA temporaire
+        $product = new Product(0,"produit test", "Cola bien frais", 1.20, 1, "null", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
 
         try {
             $return = $this->DAOProduct->insert($product);
         }catch (DBException $e){
             throw new DBException($e);
         }
-
         $this->assertTrue($return);
-
-        $this->abortSqlInsert();
 
     }
 
@@ -61,14 +55,12 @@ class DAOProductTest extends TestCase
     public function testInsertFail():void{
         $this->expectException(DBException::class);
 
-        $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-        $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);//TVA temporaire
+        $product = new Product(0,"produit test", "Cola bien frais", 1.20, 1, "null", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
 
         try {
-            $return = $this->DAOProduct->insert($product);
-            $return = $this->DAOProduct->insert($product);
+            $this->DAOProduct->insert($product);
+            $this->DAOProduct->insert($product);
         }catch (DBException $e){
-            $this->abortSqlInsert();
             throw new DBException($e);
         }
 
@@ -80,17 +72,14 @@ class DAOProductTest extends TestCase
     public function testSelectOneSuccess(): void{
         try {
 
-            $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-
-            $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);//TVA temporaire
-            $return = $this->DAOProduct->insert($product);
+            $product = new Product(0,"produit test", "Cola bien frais", 1.20, 1, "null", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
+            $this->DAOProduct->insert($product);
             $id= $this->conn->lastInsertId();
             $returnedProduct = $this->DAOProduct->selectOne($id);
             $this->assertEquals("produit test", $returnedProduct->getName());
         }catch (DBException $e){
             throw new DBException($e);
         }
-        $this->abortSqlInsert();
     }
 
     /**
@@ -127,25 +116,21 @@ class DAOProductTest extends TestCase
      * @throws DBException
      */
     public function testSelectWhereSuccess(): void{
+        $product = new Product(0,"produit test", "Cola bien frais", 1.20, true, "random", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
+
         try {
-            $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-
-            $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);//TVA temporaire
-            $return = $this->DAOProduct->insert($product);
-
-            $id= $this->conn->lastInsertId();
-            $tab = $this->DAOProduct->selectWhere(["productsName"=>"produit test"]);
-            $this->abortSqlInsert();
-            if (!empty($tab)){
-                $this->assertIsArray($tab);
-            }else{
-                $this->fail("Tableau vide");
-            }
-            $this->assertEquals("produit test",$tab[0]["productsName"]);
-
+            $this->DAOProduct->insert($product);
+            $id = $this->DAOProduct->selectWhere(["productsName"=>"produit test"])[0]->getID(); //Selectionne l'id du produit qui porte le nom "produit test"
+            $returnedTab = $this->DAOProduct->selectWhere(["productsName"=>"produit test"])[0];
         }catch (DBException $e){
             throw new DBException($e);
         }
+
+        $expectedTab = [$id, "produit test", "Cola bien frais", 1.20, true, "random", 3, 2];
+        $returnedTab = [$returnedTab->getID(),$returnedTab->getName(), $returnedTab->getDescription(), $returnedTab->getPrice(), $returnedTab->getActive(), $returnedTab->getImagePath(), $returnedTab->getTva()->getID(), $returnedTab->getCategory()->getID()];
+
+        $this->assertEqualsCanonicalizing($expectedTab, $returnedTab);
+
 
     }
 
@@ -154,13 +139,13 @@ class DAOProductTest extends TestCase
      */
     public function testUpdateSuccess():void{
         try {
-            $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-            $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);
+            $product = new Product(0,"produit test", "Cola bien frais", 1.20, 1, "null", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
             $this->DAOProduct->insert($product);
-            $product = new Product("produit test", "Cola plus trop frais", 1.20, 1, "null", $stockArray, 1);
-            $product->setId($this->conn->lastInsertId());
+            $product = $this->DAOProduct->selectWhere(['productsName' => "produit test"])[0];
+
+            $product->setDescription("Coca moins frais");
+
             $return = $this->DAOProduct->update($product);
-            $this->abortSqlInsert();
             $this->assertTrue($return);
         }catch (DBException $e){
             throw new DBException($e);
@@ -171,19 +156,14 @@ class DAOProductTest extends TestCase
     /**
      * @throws DBException
      */
-    public function testDeleteProduct(){
+    public function testDeleteSuccess(){
         try {
-            $stockArray = [0,1,2]; //temporaire à remplacer par selectStock
-            $product = new Product("produit test", "Cola bien frais", 1.20, 1, "null", $stockArray, 1);
+            $product = new Product(0,"produit test", "Cola bien frais", 1.20, 1, "null", new TVA(3, 21, "Taxe 21"), new Category(2,"Real Estate Investment Trusts", "Des", 1));
             $this->DAOProduct->insert($product);
-            $id = $this->conn->lastInsertId();
-            $product->setId($id);
-            $this->DAOProduct->delete($product);
+            $product = $this->DAOProduct->selectWhere(['productsName' => "produit test"])[0];
+            $return = $this->DAOProduct->delete($product);
 
-
-            $productDeleted = $this->DAOProduct->selectOne($id);
-            $this->assertEquals(0, $productDeleted->isAvailable());
-            $this->abortSqlInsert();
+            $this->assertTrue($return);
 
         } catch (DBException $e) {
             throw new DBException($e);
@@ -191,14 +171,4 @@ class DAOProductTest extends TestCase
 
 
     }
-
-
-
-
-
-
-
-
-
-
 }

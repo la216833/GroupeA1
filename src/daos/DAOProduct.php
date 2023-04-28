@@ -4,17 +4,27 @@ namespace CashRegister\daos;
 
 use CashRegister\core\database\DBModel;
 use CashRegister\core\exception\DBException;
+use CashRegister\models\Category;
 use CashRegister\models\Product;
+use CashRegister\models\Role;
+use CashRegister\models\TVA;
+use CashRegister\models\User;
 
 class DAOProduct implements DAO
 {
     private DBModel $DBModel ;
     const TABLE = "products";
 
+    private DAOCategory $DAOCategory;
+
+    private DAOTva $DAOTva;
+
 
     public function __construct()
     {
         $this->DBModel = new DBModel();
+        $this->DAOTva = new DAOTva();
+        $this->DAOCategory = new DAOCategory();
     }
 
     /**
@@ -23,15 +33,15 @@ class DAOProduct implements DAO
     public function insert(object $object): bool
     {
         try {
-            $val = $object->getStockIDs();//temp
             $params =[
+                'productsID' => $object->getID(),
                 'productsName' => $object->getName(),
                 'productsDescription' => $object->getDescription(),
                 'productsPrice' => $object->getPrice(),
-                'productsAvailable' => $object->isAvailable(),
                 'productsImagePath' => $object->getImagePath(),
-                'stockID' => $val[1],
-                'tvaID' => $object->getTvaID()
+                'productsActive' => $object->getActive(),
+                'tvaID' => $object->getTva()->getID(),
+                'categoriesID' => $object->getCategory()->getID()
             ];
 
             $this->DBModel->insert(self::TABLE, $params);
@@ -49,10 +59,11 @@ class DAOProduct implements DAO
     {
         try {
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $stockArrays = [$tab["stockID"]];
-            $returnedProduct = new Product($tab["productsName"], $tab["productsDescription"], $tab["productsPrice"], $tab["productsAvailable"], $tab["productsImagePath"], $stockArrays, $tab["tvaID"]);
-            $returnedProduct->setId($tab["productsID"]);
-            return $returnedProduct;
+
+            $category = $this->DAOCategory->selectOne($tab["categoriesID"]);
+            $tva = $this->DAOTva->selectOne($tab["tvaID"]);
+
+            return new Product($id, $tab["productsName"], $tab["productsDescription"], $tab["productsPrice"], $tab["productsImagePath"], $tab["productsActive"], $tva, $category);
         }catch (DBException $e){
             throw new DBException($e);
         }
@@ -63,21 +74,26 @@ class DAOProduct implements DAO
      */
     public function selectAll(): array
     {
+        $result = [];
         try {
-            return $this->DBModel->selectAll(self::TABLE);
-        }catch (DBException $e){
-            throw new DBException($e);
-        }
+            $products = $this->DBModel->selectAll(self::TABLE);
+            foreach ($products as $key => $product) {
+                $tva = $this->DAOTva->selectOne($product["tvaID"]);
+                $category = $this->DAOCategory->selectOne($product["categoriesID"]);
+                $result[] =new Product(
+                    $product["productsID"],
+                    $product["productsName"],
+                    $product["productsDescription"],
+                    $product["productsPrice"],
+                    $product["productsActive"],
+                    $product["productsImagePath"],
+                    $tva,
+                    $category
+                );
+            }
 
-    }
+            return $result;
 
-    /**
-     * @throws DBException
-     */
-    public function selectWhere($params): array
-    {
-        try {
-            return $this->DBModel->selectWhere(self::TABLE,$params);
         } catch (DBException $e) {
             throw new DBException($e);
         }
@@ -88,19 +104,46 @@ class DAOProduct implements DAO
     /**
      * @throws DBException
      */
+    public function selectWhere($params): array
+    {
+        $result = [];
+        try {
+            $products = $this->DBModel->selectWhere(self::TABLE, $params);
+            foreach ($products as $key => $product) {
+                $tva = $this->DAOTva->selectOne($product["tvaID"]);
+                $category = $this->DAOCategory->selectOne($product["categoriesID"]);
+                $result[] =new Product(
+                    $product["productsID"],
+                    $product["productsName"],
+                    $product["productsDescription"],
+                    $product["productsPrice"],
+                    $product["productsActive"],
+                    $product["productsImagePath"],
+                    $tva,
+                    $category
+                );
+            }
+            return $result;
+        } catch (DBException $e) {
+            throw new DBException($e);
+        }
+    }
+
+    /**
+     * @throws DBException
+     */
     public function update(object $object): bool
     {
         try {
-            $val = $object->getStockIDs();
             $params =[
-                'productsID'=> $object->getId(),
+                'productsID' => $object->getID(),
                 'productsName' => $object->getName(),
                 'productsDescription' => $object->getDescription(),
                 'productsPrice' => $object->getPrice(),
-                'productsAvailable' => $object->isAvailable(),
                 'productsImagePath' => $object->getImagePath(),
-                'stockID' => $val[1],
-                'tvaID' => $object->getTvaID()
+                'productsActive' => $object->getActive(),
+                'tvaID' => $object->getTva()->getID(),
+                'categoriesID' => $object->getCategory()->getID()
             ];
             $this->DBModel->update(self::TABLE, $params);
             return true;
@@ -118,8 +161,8 @@ class DAOProduct implements DAO
     {
         try {
             $params =[
-                'productsID'=>$object->getId(),
-                'productsAvailable' => 0
+                'productsID'=> $object->getId(),
+                'productsActive' => 0
             ];
             $this->DBModel->update(self::TABLE, $params);
             return true;
