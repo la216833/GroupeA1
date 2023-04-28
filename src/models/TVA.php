@@ -4,18 +4,18 @@ namespace CashRegister\models;
 
 class TVA
 {
-    private int $id;
+    private int $ID;
     private float $percent;
     private string $name;
 
     /**
-     * @param int $id
+     * @param int $ID
      * @param float $percent
      * @param string $name
      */
-    public function __construct(int $id, float $percent, string $name)
+    public function __construct(int $ID, float $percent, string $name)
     {
-        $this->id = $id;
+        $this->ID = $ID;
         $this->percent = $percent;
         $this->name = $name;
     }
@@ -23,17 +23,17 @@ class TVA
     /**
      * @return int
      */
-    public function getId(): int
+    public function getID(): int
     {
-        return $this->id;
+        return $this->ID;
     }
 
     /**
-     * @param int $id
+     * @param int $ID
      */
-    public function setId(int $id): void
+    public function setID(int $ID): void
     {
-        $this->id = $id;
+        $this->ID = $ID;
     }
 
     /**
@@ -67,8 +67,4 @@ class TVA
     {
         $this->name = $name;
     }
-
-
-
-
 }

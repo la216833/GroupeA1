@@ -44,7 +44,7 @@ class DAOTva implements DAO
     /**
      * @throws DBException
      */
-    public function selectOne(int $id): object
+    public function selectOne(int $id): TVA
     {
         try {
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
