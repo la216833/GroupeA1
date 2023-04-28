@@ -29,10 +29,10 @@ class DAOCategory implements DAO
     {
 
         $this->params = [
-            'categoriesID' => $object->getCategoryId(),
-            'categoriesName' => $object->getCategoryName(),
-            'categoriesDescription' => $object->getCategoryDescription(),
-            'categoriesActive' => $object->isCategoryActive()
+            'categoriesID' => $object->getId(),
+            'categoriesName' => $object->getName(),
+            'categoriesDescription' => $object->getDescription(),
+            'categoriesActive' => $object->getActive()
         ];
 
         try {
@@ -57,7 +57,7 @@ class DAOCategory implements DAO
         try {
 
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedCategory = new Category($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"]);
+            $returnedCategory = new Category($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"],$tab["categoriesActive"]);
             return $returnedCategory;
 
         }catch (DBException $e){
@@ -73,14 +73,24 @@ class DAOCategory implements DAO
      */
     public function selectAll(): array
     {
+        $result = [];
         try {
 
-            return $this->DBModel->selectAll(self::TABLE);
+            $categories = $this->DBModel->selectAll(self::TABLE);
+            foreach ($categories as $key => $category) {
 
-        }catch (DBException $e){
+                $result[] = new Category(
+                    $category["categoriesID"],
+                    $category["categoriesName"],
+                    $category["categoriesDescription"],
+                    $category["categoriesActive"]
+                );
+            }
 
+            return $result;
+
+        }catch (DBException $e) {
             throw new DBException($e);
-
         }
     }
 
@@ -102,6 +112,7 @@ class DAOCategory implements DAO
                     $category["categoriesID"],
                     $category["categoriesName"],
                     $category["categoriesDescription"],
+                    $category["categoriesActive"]
                 );
             }
 
@@ -121,10 +132,10 @@ class DAOCategory implements DAO
     {
 
         $this->params = [
-            'categoriesID' => $object->getCategoryID(),
-            'categoriesName' => $object->getCategoryName(),
-            'categoriesDescription' => $object->getCategoryDescription(),
-            'categoriesActive' => $object->isCategoryActive()
+            'categoriesID' => $object->getID(),
+            'categoriesName' => $object->getName(),
+            'categoriesDescription' => $object->getDescription(),
+            'categoriesActive' => $object->getActive()
         ];
 
         try {
@@ -145,7 +156,7 @@ class DAOCategory implements DAO
     {
         try {
             $params =[
-                'categoriesID'=>$object->getCategoryID(),
+                'categoriesID'=>$object->getID(),
                 'categoriesActive' => false
             ];
             $this->DBModel->update(self::TABLE, $params);

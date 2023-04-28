@@ -10,92 +10,90 @@ class Category {
 
     /*-------------------------------CLASS ATTRIBUTES-------------------------------*/
 
-    private int $CategoryID;
-    private String $CategoryName;
-    private String $CategoryDescription;
-    private bool $CategoryActive;
+    private int $ID;
+    private String $Name;
+    private String $Description;
+    private bool $Active;
 
     /*-------------------------------CLASS CONSTRUCTOR-------------------------------*/
 
     /**
-     * @param int $CategoryID
-     * @param String $CategoryName
-     * @param String $CategoryDescription
+     * @param int $ID
+     * @param String $Name
+     * @param String $Description
+     * @param bool $Active
      */
-    public function __construct(int $CategoryID, String $CategoryName,
-                                String $CategoryDescription) {
-
-        $this->CategoryID = $CategoryID;
-        $this->CategoryName = $CategoryName;
-        $this->CategoryDescription = $CategoryDescription;
-        $this->CategoryActive = true;
-
+    public function __construct(int $ID, string $Name, string $Description, bool $Active)
+    {
+        $this->ID = $ID;
+        $this->Name = $Name;
+        $this->Description = $Description;
+        $this->Active = $Active;
     }
 
     /*-------------------------------CLASS GETTERS AND SETTERS-------------------------------*/
-
     /**
      * @return int
      */
-    public function getCategoryID(): int
+    public function getID(): int
     {
-        return $this->CategoryID;
+        return $this->ID;
     }
 
     /**
-     * @param int $CategoryID
+     * @param int $ID
      */
-    public function setCategoryID(int $CategoryID): void
+    public function setID(int $ID): void
     {
-        $this->CategoryID = $CategoryID;
-    }
-
-    /**
-     * @return String
-     */
-    public function getCategoryName(): string
-    {
-        return $this->CategoryName;
-    }
-
-    /**
-     * @param String $CategoryName
-     */
-    public function setCategoryName(string $CategoryName): void
-    {
-        $this->CategoryName = $CategoryName;
+        $this->ID = $ID;
     }
 
     /**
      * @return String
      */
-    public function getCategoryDescription(): string
+    public function getName(): string
     {
-        return $this->CategoryDescription;
+        return $this->Name;
     }
 
     /**
-     * @param String $CategoryDescription
+     * @param String $Name
      */
-    public function setCategoryDescription(string $CategoryDescription): void
+    public function setName(string $Name): void
     {
-        $this->CategoryDescription = $CategoryDescription;
+        $this->Name = $Name;
+    }
+
+    /**
+     * @return String
+     */
+    public function getDescription(): string
+    {
+        return $this->Description;
+    }
+
+    /**
+     * @param String $Description
+     */
+    public function setDescription(string $Description): void
+    {
+        $this->Description = $Description;
     }
 
     /**
      * @return bool
      */
-    public function isCategoryActive(): bool
+    public function getActive(): bool
     {
-        return $this->CategoryActive;
+        return $this->Active;
     }
 
     /**
-     * @param bool $CategoryActive
+     * @param bool $Active
      */
-    public function setCategoryActive(bool $CategoryActive): void
+    public function setActive(bool $Active): void
     {
-        $this->CategoryActive = $CategoryActive;
+        $this->Active = $Active;
     }
 
 

@@ -41,7 +41,7 @@ class DAOCategoryTest extends TestCase
      * @throws DBException
      */
     public function testInsertSuccess():void{
-        $category = new Category(0,"random","random");
+        $category = new Category(0,"random","random",true);
         $result = $this->DAOCategory->insert($category);
         $this->assertTrue($result);
         DBConnection::getInstance()->exec("DELETE FROM categories WHERE categoriesName = 'random' ");
@@ -52,7 +52,7 @@ class DAOCategoryTest extends TestCase
      */
     public function testInsertFailure():void{
         $this->expectException(DBException::class);
-        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
+        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",true);
         $this->DAOCategory->insert($category);
     }
 
@@ -65,13 +65,15 @@ class DAOCategoryTest extends TestCase
         $expected = [
             1,
             "Real Estate Investment Trusts",
-            "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque."
+            "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",
+            false
         ];
         $result = $this->DAOCategory->selectOne(1);
         $result = [
-            $result->getCategoryID(),
-            $result->getCategoryName(),
-            $result->getCategoryDescription()
+            $result->getID(),
+            $result->getName(),
+            $result->getDescription(),
+            $result->getActive()
         ];
         $this->assertEqualsCanonicalizing($expected,$result);
     }
@@ -94,14 +96,14 @@ class DAOCategoryTest extends TestCase
             1,
             "Real Estate Investment Trusts",
             "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",
-            true
+            false
         ];
         $result = $this->DAOCategory->selectWhere(["categoriesName" => "Real Estate Investment Trusts"]);
         $result = [
-            $result[0]->getCategoryID(),
-            $result[0]->getCategoryName(),
-            $result[0]->getCategoryDescription(),
-            $result[0]->isCategoryActive()
+            $result[0]->getID(),
+            $result[0]->getName(),
+            $result[0]->getDescription(),
+            $result[0]->getActive()
         ];
         $this->assertEqualsCanonicalizing($expected,$result);
     }
@@ -129,10 +131,10 @@ class DAOCategoryTest extends TestCase
      * @throws DBException
      */
     public function testUpdateSuccess():void{
-        $category = new Category(1,"Real Estate","");
+        $category = new Category(1,"Real Estate","",true);
         $result = $this->DAOCategory->update($category);
         $this->assertTrue($result);
-        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
+        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",true);
         $this->DAOCategory->update($category);
     }
 
@@ -142,7 +144,7 @@ class DAOCategoryTest extends TestCase
      */
     public function testUpdateError():void{
         $this->expectException(DBException::class);
-        $category = new Category(1,"Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.","Real Estate Investment Trusts");
+        $category = new Category(1,"Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.","Real Estate Investment Trusts",true);
         $this->DAOCategory->update($category);
     }
 
@@ -151,7 +153,7 @@ class DAOCategoryTest extends TestCase
      * @throws DBException
      */
     public function testDeleteSuccess():void{
-        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
+        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",true);
         $result = $this->DAOCategory->delete($category);
         $this->assertTrue($result);
     }
@@ -162,7 +164,7 @@ class DAOCategoryTest extends TestCase
      */
     public function testDeleteError():void{
         $this->expectException(DBException::class);
-        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.");
+        $category = new Category(1,"Real Estate Investment Trusts","Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae, Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",true);
         $this->DAOCategory->delete($category);
         $this->DAOCategory->delete($category);
     }
