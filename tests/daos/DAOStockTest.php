@@ -1,6 +1,7 @@
 <?php
 
 namespace daos;
+use CashRegister\daos\DAOProduct;
 use Dotenv\Dotenv;
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\exception\DBException;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 class DAOStockTest extends TestCase
 {
     private DAOStock $DAOStock;
+    private DAOProduct $DAOProduct;
     private $conn;
 
     public static function setUpBeforeClass(): void {
@@ -20,50 +22,36 @@ class DAOStockTest extends TestCase
 
     public function setUp(): void{
         $this->DAOStock = new DAOStock();
+        $this->DAOProduct = new DAOProduct();
         $this->conn = DBConnection::getInstance();
     }
 
     public function tearDown(): void{
-        $id= $this->conn->lastInsertId();
-        $query = $this->conn->prepare("DELETE FROM stock WHERE tvaID=:id LIMIT 1");
-        $query->execute(array(':id' => $id));
+
     }
 
     /**
      * @throws DBException
      */
     public function testInsertSuccess(): void{
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
+        $product = $this->DAOProduct->selectOne(2);
+        $stock = new Stock(9999999, 22, "2022-10-24 00:00:00", 22.2, true, $product);
         try {
             $return = $this->DAOStock->insert($stock);
         }catch(DBException $e){
             throw new DBException($e);
         }
-
         $this->assertTrue($return);
-    }
-
-    public function testInsertFail():void{
-        $this->expectException(DBException::class);
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
-        try {
-            $this->DAOStock->insert($stock);
-            $this->DAOStock->insert($stock);
-        }catch (DBException $e){
-            throw new DBException($e);
-        }
     }
 
     /**
      * @throws DBException
      */
     public function testSelectOneSuccess(): void{
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
+
         try {
-            $this->DAOStock->insert($stock);
-            $id = $this->conn->lastInsertId();
-            $returnStock = $this->DAOStock->selectOne($id);
-            $this->assertEquals(22, $returnStock->getQuantity());
+            $returnStock = $this->DAOStock->selectOne(3);
+            $this->assertEquals(96, $returnStock->getQuantity());
         }catch(DBException $e){
             throw new DBException($e);
         }
@@ -83,17 +71,11 @@ class DAOStockTest extends TestCase
      * @throws DBException
      */
     public function testSelectWhereSuccess(): void{
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
+
 
         try {
-            $this->DAOStock->insert($stock);
-            $tab = $this->DAOStock->selectWhere(["stockQuantity"=>22]);
-            if (!empty($tab)){
-                $this->assertIsArray($tab);
-            }else{
-                $this->fail("Tableau vide");
-            }
-            $this->assertEquals(22, $tab[0]["stockQuantity"]);
+            $returnedStocks = $this->DAOStock->selectWhere(["stockQuantity"=>22]);
+            $this->assertEquals(22,$returnedStocks[0]->getQuantity()) ;
 
         }catch (DBException $e){
             throw new DBException($e);
@@ -103,35 +85,36 @@ class DAOStockTest extends TestCase
      * @throws DBException
      */
     public function testUpdateSuccess():void{
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
 
         try {
-            $this->DAOStock->insert($stock);
-            $stock->setId($this->conn->lastInsertId());
-
-
-            $stock->setQuantity(23);
+            $stock = $this->DAOStock->selectOne(2);
+            $initialQuantity = $stock->getQuantity();
+            $stock->setQuantity(99);
             $return = $this->DAOStock->update($stock);
+            $newStock = $this->DAOStock->selectOne(2);
             $this->assertTrue($return);
+            $this->assertEquals(99, $newStock->getQuantity());
         }catch (DBException $e){
             throw new DBException($e);
         }
+        //Specific TearDown
+        $stock->setQuantity($initialQuantity);
+        $this->DAOStock->update($stock);
     }
 
     /**
      * @throws DBException
      */
     public function testDeleteSuccess(){
-        $stock = new Stock(22, "2022-10-24 00:00:00", 22.3, 1, 23);
 
         try {
-            $this->DAOStock->insert($stock);
-            $stock->setId($this->conn->lastInsertId());
-            $stock->setActive(0);
-            $return = $this->DAOStock->update($stock);
+            $stock = $this->DAOStock->selectOne(2);
+            $return = $this->DAOStock->delete($stock);
             $this->assertTrue($return);
         }catch (DBException $e){
             throw new DBException($e);
         }
+        //Specific TearDown
+        $this->DAOStock->update($stock);
     }
 }

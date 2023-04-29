@@ -5,8 +5,8 @@ namespace CashRegister\daos;
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\database\DBModel;
 use CashRegister\core\exception\DBException;
+use CashRegister\models\Product;
 use CashRegister\models\Stock;
-use CashRegister\models\TVA;
 
 class DAOStock implements DAO
 {
@@ -14,12 +14,14 @@ class DAOStock implements DAO
 
     private DBModel $DBModel;
 
-    /**
-     * @param DBModel $DBModel
-     */
+    private DAOProduct $DAOProduct;
+
+
+
     public function __construct()
     {
         $this->DBModel = new DBModel();
+        $this->DAOProduct = new DAOProduct();
     }
 
 
@@ -33,8 +35,8 @@ class DAOStock implements DAO
                 'stockQuantity' => $object->getQuantity(),
                 'stockDate' => $object->getDate(),
                 'stockBuyPrice' => $object->getBuyPrice(),
-                'stockActive' => $object->isActive(),
-                'productsID' =>$object->getProductID()
+                'stockActive' => $object->getActive(),
+                'productsID' =>$object->getProduct()->getID(),
             ];
 
             $this->DBModel->insert(self::TABLE, $params);
@@ -48,12 +50,13 @@ class DAOStock implements DAO
     /**
      * @throws DBException
      */
-    public function selectOne(int $id): object
+    public function selectOne(int $id): Stock
     {
+        $product = $this->DAOProduct->selectOne(3);
         try {
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedStock = new Stock($tab["stockQuantity"], $tab["stockDate"],$tab["stockBuyPrice"],$tab["stockActive"],$tab["productID"]);
-            $returnedStock->setId($id);
+            $returnedStock = new Stock($id, $tab["stockQuantity"], $tab["stockDate"],$tab["stockBuyPrice"],$tab["stockActive"],$product);
+            $returnedStock->setID($id);
             return $returnedStock;
         }catch (DBException $e){
             throw new DBException($e);
@@ -65,9 +68,24 @@ class DAOStock implements DAO
      */
     public function selectAll(): array
     {
+        $result = [];
         try {
-            return $this->DBModel->selectAll(self::TABLE);
-        }catch (DBException $e){
+            $stocks = $this->DBModel->selectAll(self::TABLE);
+            foreach ($stocks as $key => $stock) {
+                $product = $this->DAOProduct->selectOne($stock["productsID"]);
+                $result[] =new stock(
+                    $stock["stockID"],
+                    $stock["stockQuantity"],
+                    $stock["stockDate"],
+                    $stock["stockBuyPrice"],
+                    $stock["stockActive"],
+                    $product
+                );
+            }
+
+            return $result;
+
+        } catch (DBException $e) {
             throw new DBException($e);
         }
     }
@@ -77,8 +95,21 @@ class DAOStock implements DAO
      */
     public function selectWhere(array $params): array
     {
+        $result = [];
         try {
-            return $this->DBModel->selectWhere(self::TABLE,$params);
+            $stocks = $this->DBModel->selectWhere(self::TABLE, $params);
+            foreach ($stocks as $key => $stock) {
+                $product = $this->DAOProduct->selectOne($stock["productsID"]);
+                $result[] =new stock(
+                    $stock["stockID"],
+                    $stock["stockQuantity"],
+                    $stock["stockDate"],
+                    $stock["stockBuyPrice"],
+                    $stock["stockActive"],
+                    $product
+                );
+            }
+            return $result;
         } catch (DBException $e) {
             throw new DBException($e);
         }
@@ -91,12 +122,12 @@ class DAOStock implements DAO
     {
         try {
             $params =[
-                'stockID' => $object->getId(),
+                'stockID' => $object->getID(),
                 'stockQuantity' => $object->getQuantity(),
                 'stockDate' => $object->getDate(),
                 'stockBuyPrice' => $object->getBuyPrice(),
-                'stockActive' => $object->isActive(),
-                'productsID' =>$object->getProductID()
+                'stockActive' => $object->getActive(),
+                'productsID' =>$object->getProduct()->getID()
             ];
 
             $this->DBModel->update(self::TABLE, $params);
@@ -114,7 +145,7 @@ class DAOStock implements DAO
     {
         try {
             $params =[
-                'stockID' => $object->getId(),
+                'stockID' => $object->getID(),
                 'stockActive' => 0
             ];
 

@@ -4,43 +4,45 @@ namespace CashRegister\models;
 
 class Stock
 {
-    private int $id;
+    private int $ID;
     private int $quantity;
     private string $date;
     private float $buyPrice;
     private bool $active;
-    private int $productID;
+    private Product $product;
 
     /**
+     * @param int $ID
      * @param int $quantity
      * @param string $date
      * @param float $buyPrice
      * @param bool $active
-     * @param int $productID
+     * @param Product $product
      */
-    public function __construct(int $quantity, string $date, float $buyPrice, bool $active, int $productID)
+    public function __construct(int $ID, int $quantity, string $date, float $buyPrice, bool $active, Product $product)
     {
+        $this->ID = $ID;
         $this->quantity = $quantity;
         $this->date = $date;
         $this->buyPrice = $buyPrice;
         $this->active = $active;
-        $this->productID = $productID;
+        $this->product = $product;
     }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getID(): int
     {
-        return $this->id;
+        return $this->ID;
     }
 
     /**
-     * @param int $id
+     * @param int $ID
      */
-    public function setId(int $id): void
+    public function setID(int $ID): void
     {
-        $this->id = $id;
+        $this->ID = $ID;
     }
 
     /**
@@ -94,7 +96,7 @@ class Stock
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function getActive(): bool
     {
         return $this->active;
     }
@@ -108,19 +110,18 @@ class Stock
     }
 
     /**
-     * @return int
+     * @return Product
      */
-    public function getProductID(): int
+    public function getProduct(): Product
     {
-        return $this->productID;
+        return $this->product;
     }
 
     /**
-     * @param int $productID
+     * @param Product $product
      */
-    public function setProductID(int $productID): void
+    public function setProduct(Product $product): void
     {
-        $this->productID = $productID;
+        $this->product = $product;
     }
-
 }
