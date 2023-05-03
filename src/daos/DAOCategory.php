@@ -29,7 +29,7 @@ class DAOCategory implements DAO
     {
 
         $this->params = [
-            'categoriesID' => $object->getId(),
+            'categoriesID' => $object->getID(),
             'categoriesName' => $object->getName(),
             'categoriesDescription' => $object->getDescription(),
             'categoriesActive' => $object->getActive()
