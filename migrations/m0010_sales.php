@@ -7,10 +7,10 @@ class m0010_sales {
     public function up(): void {
         $db = DBConnection::getInstance();
         $query = "INSERT INTO sales (salesDate, salesAmount, salesDescription, usersID, clientsID) VALUES 
-            ('2022-05-23 21:32:14', 35.3, null, 7, null),
+            ('2022-05-23 21:32:14', 35.3, '', 7, 1),
             ('2022-06-24 04:48:49', 125.79, null, 5, 7),
-            ('2022-11-28 10:47:11', 229.71, null, 4, null),
-            ('2022-09-19 00:53:42', 129.91, null, 9, null),
+            ('2022-11-28 10:47:11', 229.71, null, 4, 1),
+            ('2022-09-19 00:53:42', 129.91, null, 9, 1),
             ('2022-07-30 16:04:34', 260.24, null, 12, null),
             ('2022-05-30 15:18:51', 270.91, null, 5, null),
             ('2022-10-08 08:55:04', 29.18, null, 5, null),

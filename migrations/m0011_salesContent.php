@@ -6,7 +6,7 @@ class m0011_salesContent {
     public function up(): void {
         $db = DBConnection::getInstance();
         $query = "INSERT INTO salesContent (salesID, productsID) VALUES 
-            (432, 97),
+            (1, 1),
             (758, 22),
             (845, 45),
             (674, 79),
@@ -18,7 +18,7 @@ class m0011_salesContent {
             (205, 61),
             (827, 82),
             (274, 18),
-            (957, 43),
+            (1, 2),
             (232, 64),
             (251, 92),
             (684, 82),
@@ -111,7 +111,7 @@ class m0011_salesContent {
             (446, 24),
             (968, 100),
             (202, 52),
-            (3, 49),
+            (3, 9),
             (511, 87),
             (81, 36),
             (411, 99),
@@ -409,7 +409,7 @@ class m0011_salesContent {
             (153, 8),
             (673, 1),
             (620, 57),
-            (3, 84),
+            (3, 4),
             (176, 77),
             (860, 96),
             (870, 48),
