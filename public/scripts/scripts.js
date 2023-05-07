@@ -4,6 +4,17 @@ const products = document.getElementById('products');
 const table = document.getElementById('table');
 const totalText = document.getElementById('total');
 
+const sidebar = document.getElementById('sidebar');
+const sidebarBtn = document.getElementById('sidebarBtn');
+
+sidebarBtn.addEventListener('click', () => {
+    sidebarBtn.classList.toggle('enable');
+    sidebar.classList.toggle('show');
+    sidebarBtn.innerHTML = sidebarBtn.classList.contains('enable') ? "<": ">";
+
+})
+
+
 btn.addEventListener('click', () => {
     plusContent.classList.toggle('show');
     btn.innerHTML = btn.innerHTML == "+" ? "-": "+";
