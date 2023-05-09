@@ -1,26 +1,14 @@
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../public/styles/styles.css">
-    <title>Login - getEntityName</title>
-</head>
-
-<body class="login-body">
-<div>
-    <img src="https://logowiki.net/wp-content/uploads/imgp/Test-Logo-1-2569.png" alt="" >
+<div class="container center">
+    <div class="table-img">
+        <img src="https://armetiss.be/img/logo-active.png" alt="" width="500px">
+    </div>
+    <div>
+        <form class="login-form-container" method="post">
+            <input class="login-input" type="password" minlength="6" maxlength="6" autocomplete="off" required inputmode="numeric" pattern="^[0-9]{1,6}$" autofocus>
+            <button class="btn btn-lg btn-red login-btn" type="submit" style="margin-top: 20px;">Se connecter</button>
+        </form>
+    </div>
 </div>
-<div>
-    <form class="login-form-container" action="">
-        <input class="login-input" type="password" minlength="6" maxlength="6" autocomplete="off" required inputmode="numeric" pattern="^[0-9]{1,6}$" autofocus>
-        <button class="btn login-btn" type="submit">Se connecter</button>
-    </form>
-</div>
-</body>
-</html>
 
 
 
