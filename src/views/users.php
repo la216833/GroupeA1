@@ -42,8 +42,8 @@
                 <td class="table-right status status-success">Actif</td>
                 <td class="table-right">Administrateur</td>
                 <td class="table-right">
-                    <a class="btn btn-action btn-info" href="/product/:id">Modifier</a>
-                    <a class="btn btn-action btn-red" href="/product-del/:id">Supprimer</a>
+                    <a class="btn btn-action btn-info" href="/user/:id">Modifier</a>
+                    <a class="btn btn-action btn-red" href="/user-del/:id">Supprimer</a>
                 </td>
             </tr>
             </tbody>
