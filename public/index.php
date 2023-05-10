@@ -1,6 +1,7 @@
 <?php
 
-use CashRegister\core\View;
+use CashRegister\controllers\ProductController;
+use CashRegister\controllers\SaleController;
 
 require_once '../vendor/autoload.php';
 
@@ -10,15 +11,34 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
 $router = new AltoRouter();
-$view = new View();
 
-$router->map('GET', '/', function() {global $view; echo $view->render('main.php');} );
-$router->map('GET', '/categories', function() {global $view; echo $view->render('categories.php');});
-$router->map('GET', '/products', function() {global $view; echo $view->render('products.php');});
-$router->map('GET', '/users', function() {global $view; echo $view->render('users.php');});
-$router->map('GET', '/history', function() {global $view; echo $view->render('history.php');});
-$router->map('GET', '/login', function() {global $view; echo $view->render('login.php');});
-$router->map('GET', '/logout', function() {global $view; echo $view->render('logout.php');});
+$router->map('GET', '/', 'sale#get');
+$router->map('POST', '/', 'sale#post');
+
+$router->map('GET', '/products', 'product#get');
+
+$router->map('GET', '/product', 'product#add');
+$router->map('GET', '/product/[i:id]', 'product#get_one');
+$router->map('POST', '/product', 'product#post_one');
 
 $match = $router->match();
-$match['target']();
+
+if ($match !== null) {
+    list($controller, $action) = explode('#', $match['target']);
+    $obj = null;
+    if (is_callable($controller, $action)) {
+        switch ($controller) {
+            case 'product': $obj = new ProductController(); break;
+            case 'sale': $obj = new SaleController(); break;
+            default:
+                break;
+        }
+        call_user_func_array(array($obj, $action), $match['params']);
+    } else {
+        // TODO
+        echo '404';
+    }
+} else {
+    // TODO
+    echo '404';
+}
