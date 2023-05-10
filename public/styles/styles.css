@@ -670,3 +670,10 @@ a {
     height: 25px;
     margin-left: 5px;
 }
+
+.category-container{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}

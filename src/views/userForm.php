@@ -33,6 +33,7 @@
             </select>
         </div>
         <input type="submit" value="Valider" class="btn btn-dark btn-md">
+        <button class="btn btn-md btn-dark">Annuler</button>
     </form>
-    <button class="btn btn-md btn-dark">Annuler</input>
+
 </div>
