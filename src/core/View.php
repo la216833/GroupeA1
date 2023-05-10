@@ -15,15 +15,16 @@ class View {
         include_once  $this->VIEW_PATH . 'layouts/default.php';
         return ob_get_clean();
     }
-    private function renderView(string $view): false|string {
+    private function renderView(string $view, $params): false|string {
         ob_start();
+        $params = $params;
         include_once $this->VIEW_PATH . $view;
         return ob_get_clean();
     }
 
-    public function render($view): array|false|string {
+    public function render($view, $params): array|false|string {
         $layout = $this->renderLayout();
-        $content = $this->renderView($view);
+        $content = $this->renderView($view, $params);
         return str_replace('{{content}}', $content, $layout);
     }
 
