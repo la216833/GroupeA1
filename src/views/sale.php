@@ -1,14 +1,18 @@
 <div class="container">
     <nav class="nav">
-        <button class="btn btn-lg btn-light">category name</button>
+        <?php foreach ($params['categories'] as $category): ?>
+        <button class="btn btn-lg btn-light"><?= $category->getName(); ?></button>
+        <?php endforeach; ?>
     </nav>
     <div class="grid" id="products">
-        <div class="card" id="1">
-            <img class="card-img" src="">
-            <h2 class="card-title">Coca Cola 50Cl</h2>
-            <h3 class="card-price">1.80€</h3>
-            <p class="card-desc">Boisson sucrée pétillante</p>
-        </div>
+        <?php foreach ($params['products'] as $product): ?>
+            <div class="card" id="<?= $product->getID(); ?>">
+                <img class="card-img" src="<?= $product->getImagePath(); ?>" alt="<?= $product->getName(); ?>">
+                <h2 class="card-title"><?= $product->getName(); ?></h2>
+                <h3 class="card-price"><?= $product->getPrice(); ?>€</h3>
+                <p class="card-desc"><?= $product->getDescription(); ?></p>
+            </div>
+        <?php endforeach; ?>
     </div>
     <div class="table">
         <div class="table-container">
