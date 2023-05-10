@@ -39,6 +39,7 @@ a {
     display: grid;
     grid-auto-flow: column;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-inline: contain;
 }
 
