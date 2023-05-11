@@ -19,26 +19,26 @@ class m0001_initial {
             clientsID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
             clientsName VARCHAR(100) NOT NULL,
             clientsFirstname VARCHAR(100) NOT NULL,
-            clientsTvaNumber VARCHAR(13) NOT NULL,
-            clientsEmail VARCHAR(255) NOT NULL,
+            clientsTvaNumber VARCHAR(13) NOT NULL UNIQUE,
+            clientsEmail VARCHAR(255) NOT NULL UNIQUE,
             clientsActive BOOLEAN DEFAULT TRUE,
             addressID INT UNSIGNED NOT NULL,
             FOREIGN KEY (addressID) REFERENCES address(addressID));
         
         CREATE TABLE IF NOT EXISTS tva (
             tvaID TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            tvaPercent DECIMAL(4,2) UNSIGNED NOT NULL,
-            tvaName VARCHAR(50) NOT NULL);
+            tvaPercent DECIMAL(4,2) UNSIGNED NOT NULL UNIQUE,
+            tvaName VARCHAR(50) NOT NULL UNIQUE);
         
         CREATE TABLE IF NOT EXISTS categories (
             categoriesID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            categoriesName VARCHAR(100) NOT NULL,
+            categoriesName VARCHAR(100) NOT NULL UNIQUE,
             categoriesDescription TEXT NOT NULL,
             categoriesActive BOOLEAN DEFAULT TRUE);
                 
         CREATE TABLE IF NOT EXISTS products (
             productsID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            productsName VARCHAR(50) NOT NULL,
+            productsName VARCHAR(50) NOT NULL UNIQUE,
             productsDescription VARCHAR(100) NOT NULL,
             productsPrice DECIMAL(8,3) UNSIGNED NOT NULL,
             productsImagePath TEXT NOT NULL,
@@ -59,7 +59,7 @@ class m0001_initial {
         
         CREATE TABLE IF NOT EXISTS roles (
             rolesID TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            rolesName VARCHAR(50) NOT NULL,
+            rolesName VARCHAR(50) NOT NULL UNIQUE,
             rolesActive BOOLEAN DEFAULT TRUE);
         
         CREATE TABLE IF NOT EXISTS users (
