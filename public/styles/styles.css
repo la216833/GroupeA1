@@ -205,6 +205,17 @@ a {
     margin-bottom: 30px;
 }
 
+.table-wrapper {
+    display: block;
+    height: calc(100% - 245px);
+    overflow-y: scroll;
+    overscroll-behavior-inline: contain;
+}
+
+.table-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
 .table table {
     width: 90%;
     margin: 0 auto;
@@ -216,6 +227,13 @@ a {
     text-transform: uppercase;
     font-weight: 700;
     line-height: 1.5;
+}
+
+.table thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--white);
 }
 
 .table tbody tr {
@@ -254,7 +272,7 @@ a {
     cursor: pointer;
     padding-left: 10px;
 }
-
+/* align problem with minus sign
 .table-delete::after {
     position: absolute;
     display: block;
@@ -269,7 +287,7 @@ a {
     height: 2px;
     z-index: 0;
 }
-
+*/
 .table-footer {
     position: absolute;
     bottom: 0;

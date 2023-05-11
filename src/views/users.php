@@ -17,7 +17,7 @@
             <p class="stat-desc">Nombre d'administrateurs</p>
         </div>
     </div>
-    <a href="/product" class="btn btn-dark btn-page">+ Ajouter un nouvel utilisateur</a>
+    <a href="/user" class="btn btn-dark btn-page">+ Ajouter un nouvel utilisateur</a>
 
     <form method="post">
         <select class="form-select" name="role">
@@ -43,12 +43,12 @@
             <tr>
                 <td class="hide"><?= $user->getID()?></td>
                 <td class="list-large"><?= $user->getName()?></td>
-                <td class="table-right status <?= $user->getActive() ? 'status-success': 'status-danger'?>">
-                    <?= $user->getActive() ? 'actif': 'Inactif'?>
-                <td class="table-right"><?= $user->getRole()?></td>
+                <td class="table-right status <?= $user->getStatus() ? 'status-success': 'status-danger'?>">
+                    <?= $user->getStatus() ? 'ACTIF': 'INACTIF'?>
+                <td class="table-right"><?= $user->getRole()->getName()?></td>
                 <td class="table-right">
-                    <a class="btn btn-action btn-info" href="/product/<?= $user->getID()?>">Modifier</a>
-                    <a class="btn btn-action btn-red" href="/product/<?= $user->getID()?>">Supprimer</a>
+                    <a class="btn btn-action btn-info" href="/user/<?= $user->getID()?>">Modifier</a>
+                    <a class="btn btn-action btn-red" href="/user/<?= $user->getID()?>">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -16,20 +16,21 @@
     </div>
     <div class="table">
         <div class="table-container">
-
             <img class="table-img" src="https://armetiss.be/img/logo-active.png" alt="Nom de l'entreprise">
             <h2 class="table-title">Ticket n°27897</h2>
-            <table >
-                <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th class="table-right">Qnte</th>
-                    <th class="table-right">Total</th>
-                </tr>
-                </thead>
-                <tbody id="table">
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table >
+                    <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th class="table-right">Qnte</th>
+                        <th class="table-right">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    </tbody>
+                </table>
+            </div>
             <div class="table-footer">
                 <div class="table-total">
                     <p>Total <span id="total">0.00 €</span></p>
