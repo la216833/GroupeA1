@@ -51,7 +51,7 @@ a {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     width: 66%;
-    height: calc(100% - 70px - 50px);
+    height: calc(100% - 70px);
     margin-top: 20px;
     overflow-y: scroll;
 }
@@ -337,7 +337,7 @@ a {
 .sidebar-btn {
     top: 100px;
     position: absolute;
-    left: 0px;
+    left: 0;
     color: var(--white);
     background-color: var(--dark);
     outline: none;
@@ -501,8 +501,8 @@ a {
 }
 
 .list {
-    overflow-y: hidden;
     overflow: auto;
+    overflow-y: hidden;
     height: 50%;
     margin-top: 20px;
     border-radius: 15px;

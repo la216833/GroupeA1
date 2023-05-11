@@ -7,6 +7,39 @@ const totalText = document.getElementById('total');
 const sidebar = document.getElementById('sidebar');
 const sidebarBtn = document.getElementById('sidebarBtn');
 
+const navBtns = document.getElementById('nav');
+
+navBtns.addEventListener('click', event => {
+    if(event.target.classList.value.includes('btn')) {
+        const cat = event.target.innerHTML;
+        products.childNodes.forEach(p => {
+            if (p.nodeName === 'DIV') {
+                if (event.target.getAttribute('aria-details') === 'all') {
+                    p.style.display = 'block';
+                    return;
+                }
+                if (cat !== p.getAttribute('aria-details')) {
+                    p.style.display = 'none';
+                } else {
+                    p.style.display = 'block'
+                }
+            }
+        })
+        navBtns.childNodes.forEach(btn => {
+            if (btn.nodeName === 'BUTTON') {
+                if (cat === btn.innerHTML) {
+                    if (btn.classList.value.includes('btn-light')) btn.classList.remove('btn-light')
+                    if (!btn.classList.value.includes('btn-active')) btn.classList.add('btn-active')
+                } else {
+                    if (!btn.classList.value.includes('btn-light')) btn.classList.add('btn-light')
+                    if (btn.classList.value.includes('btn-active')) btn.classList.remove('btn-active')
+                }
+            }
+        })
+    }
+
+})
+
 sidebarBtn.addEventListener('click', () => {
     sidebarBtn.classList.toggle('enable');
     sidebar.classList.toggle('show');

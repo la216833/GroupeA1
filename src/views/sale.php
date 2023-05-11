@@ -1,13 +1,14 @@
 <div class="container">
-    <nav class="nav">
+    <nav class="nav" id="nav">
+        <button class="btn btn-lg btn-active" aria-details="all">Tous les produits</button>
         <?php foreach ($params['categories'] as $category): ?>
         <button class="btn btn-lg btn-light"><?= $category->getName(); ?></button>
         <?php endforeach; ?>
     </nav>
     <div class="grid" id="products">
         <?php foreach ($params['products'] as $product): ?>
-            <div class="card" id="<?= $product->getID(); ?>">
-                <img class="card-img" src="<?= $product->getImagePath(); ?>" alt="<?= $product->getName(); ?>">
+            <div class="card" id="<?= $product->getID(); ?>" aria-details="<?= $product->getCategory()->getName(); ?>"">
+                <img class="card-img" src="/images/<?= $product->getImagePath(); ?>" alt="<?= $product->getName(); ?>">
                 <h2 class="card-title"><?= $product->getName(); ?></h2>
                 <h3 class="card-price"><?= $product->getPrice(); ?>€</h3>
                 <p class="card-desc"><?= $product->getDescription(); ?></p>
