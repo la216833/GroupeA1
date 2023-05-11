@@ -1,7 +1,7 @@
 <div class="container">
     <div class="stats">
         <div class="stat stat-info">
-            <h2 class="stat-title"><?= count($params['categories'])?></h2>
+            <h2 class="stat-title"><?= count($params['users'])?></h2>
             <p class="stat-desc">Nombre d'utilisateurs</p>
         </div>
         <div class="stat stat-success">

@@ -4,11 +4,13 @@ namespace CashRegister\controllers;
 
 use CashRegister\daos\DAORole;
 use CashRegister\daos\DAOUser;
+use CashRegister\core\View;
 
 class UserController implements Controller
 {
 
     private View $view;
+
     public function __construct() {
         $this->view = new View();
     }
@@ -19,9 +21,9 @@ class UserController implements Controller
         $roleDao = new DAORole();
         $params['roles'] = $roleDao->selectAll();
         $params['users'] = $userDao->selectAll();
-        $params['users_seller'] = count($userDao->selectWhere(['rolesName' => 'seller']));
-        $params['users_manager'] = count($userDao->selectWhere(['rolesID' => 'manager']));
-        $params['users_admin'] = count($userDao->selectWhere(['rolesID' => 'administrator']));
+        $params['users_seller'] = count($roleDao->selectWhere(['rolesName' => 'seller']));
+        $params['users_manager'] = count($roleDao->selectWhere(['rolesName' => 'manager']));
+        $params['users_admin'] = count($roleDao->selectWhere(['rolesName' => 'administrator']));
         echo $this->view->render('users.php', $params);
     }
 

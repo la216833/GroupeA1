@@ -52,7 +52,7 @@ class DAORole implements DAO {
         try {
             $roles = $this->DBModel->selectAll(self::TABLE);
             foreach ($roles as $key => $role) {
-                $result[] = new Role($role["rolesID"], $role["rolesName"], $role["rolesIsActive"]);
+                $result[] = new Role($role["rolesID"], $role["rolesName"], $role["rolesActive"]);
             }
             return $result;
         } catch (DBException $e) {
