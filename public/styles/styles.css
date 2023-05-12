@@ -674,6 +674,9 @@ a {
 
 .chart-container{
     margin: 20px 0;
+    background-color: var(--white);
+    padding: 25px;
+    border-radius: 25px;
 }
 
 .history-form{
