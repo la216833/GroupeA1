@@ -38,6 +38,6 @@
     <div class="chart-container">
         <canvas id="barCanvas" role="img"></canvas>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-        <script src="script.js"></script>
+        <script src="/scripts/chartScript.js"></script>
     </div>
 </div>

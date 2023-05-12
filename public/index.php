@@ -1,5 +1,7 @@
 <?php
 
+use CashRegister\controllers\HistoryController;
+use CashRegister\controllers\LoginController;
 use CashRegister\controllers\ProductController;
 use CashRegister\controllers\SaleController;
 use CashRegister\controllers\UserController;
@@ -23,6 +25,11 @@ $router->map('GET', '/product/[i:id]', 'product#get_one');
 $router->map('POST', '/product', 'product#post_one');
 
 $router->map('GET', '/users', 'user#get');
+
+$router->map('GET', '/login', 'login#get');
+
+$router->map('GET', '/history', 'history#get');
+
 /*
 $router->map('GET', '/user', 'user#add');
 $router->map('GET', '/user/[i:id]', 'user#get_one');
@@ -38,6 +45,8 @@ if ($match !== null) {
             case 'product': $obj = new ProductController(); break;
             case 'sale': $obj = new SaleController(); break;
             case 'user' : $obj = new UserController(); break;
+            case 'login' : $obj = new LoginController(); break;
+            case 'history': $obj = new HistoryController(); break;
             default:
                 break;
         }
