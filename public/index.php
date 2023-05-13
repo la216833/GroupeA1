@@ -26,18 +26,19 @@ $router->map('GET', '/product/[i:id]', 'product#get_one');
 $router->map('POST', '/product', 'product#post_one');
 
 $router->map('GET', '/users', 'user#get');
+$router->map('GET', '/user', 'user#add');
+$router->map('GET', '/user/[i:id]', 'user#get_one');
+$router->map('POST', '/user', 'user#post_one');
 
 $router->map('GET', '/categories', 'category#get');
+$router->map('GET', '/category', 'category#add');
+$router->map('GET', '/category/[i:id]', 'category#get_one');
+$router->map('POST', '/category', 'category#post_one');
 
 $router->map('GET', '/login', 'login#get');
 
 $router->map('GET', '/history', 'history#get');
 
-/*
-$router->map('GET', '/user', 'user#add');
-$router->map('GET', '/user/[i:id]', 'user#get_one');
-$router->map('POST', '/user', 'user#post_one');
-*/
 $match = $router->match();
 
 if ($match !== null) {

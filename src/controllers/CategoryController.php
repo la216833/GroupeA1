@@ -26,12 +26,16 @@ class CategoryController implements Controller
 
     public function get_one(int $id): void
     {
-        // TODO: Implement get_one() method.
+        $params = [];
+        $categoryDao = new DAOCategory();
+        $params['category'] = $categoryDao->selectOne($id);
+        echo $this->view->render('categoryForm.php', $params);
     }
 
     public function add(): void
     {
-        // TODO: Implement add() method.
+        $params = [];
+        echo $this->view->render('categoryForm.php', $params);
     }
 
     public function post(array $params): void
