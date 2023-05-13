@@ -3,6 +3,7 @@
 namespace CashRegister\controllers;
 
 use CashRegister\core\View;
+use CashRegister\daos\DAOCategory;
 
 class CategoryController implements Controller
 {

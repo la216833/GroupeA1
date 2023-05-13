@@ -5,6 +5,7 @@ use CashRegister\controllers\LoginController;
 use CashRegister\controllers\ProductController;
 use CashRegister\controllers\SaleController;
 use CashRegister\controllers\UserController;
+use CashRegister\controllers\CategoryController;
 
 require_once '../vendor/autoload.php';
 
@@ -26,6 +27,8 @@ $router->map('POST', '/product', 'product#post_one');
 
 $router->map('GET', '/users', 'user#get');
 
+$router->map('GET', '/categories', 'category#get');
+
 $router->map('GET', '/login', 'login#get');
 
 $router->map('GET', '/history', 'history#get');
@@ -45,6 +48,7 @@ if ($match !== null) {
             case 'product': $obj = new ProductController(); break;
             case 'sale': $obj = new SaleController(); break;
             case 'user' : $obj = new UserController(); break;
+            case 'category' : $obj = new CategoryController(); break;
             case 'login' : $obj = new LoginController(); break;
             case 'history': $obj = new HistoryController(); break;
             default:

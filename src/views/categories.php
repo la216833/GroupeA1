@@ -5,15 +5,15 @@
             <p class="stat-desc">Nombre de catégories</p>
         </div>
         <div class="stat stat-success">
-            <h2 class="stat-title"><?= count($params['category_active'])?></h2>
+            <h2 class="stat-title"><?= $params['category_active']?></h2>
             <p class="stat-desc">Catégories actives</p>
         </div>
         <div class="stat stat-warning">
-            <h2 class="stat-title"><?= count($params['category_empty'])?></h2>
+            <h2 class="stat-title"><?= $params['category_empty']?></h2>
             <p class="stat-desc">Catégories vides</p>
         </div>
         <div class="stat stat-danger">
-            <h2 class="stat-title"><?= count($params['category_inactive'])?></h2>
+            <h2 class="stat-title"><?= $params['category_inactive']?></h2>
             <p class="stat-desc">Catégories inactives</p>
         </div>
     </div>
