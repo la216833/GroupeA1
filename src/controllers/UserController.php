@@ -21,20 +21,24 @@ class UserController implements Controller
         $roleDao = new DAORole();
         $params['roles'] = $roleDao->selectAll();
         $params['users'] = $userDao->selectAll();
-        $params['users_seller'] = count($roleDao->selectWhere(['rolesName' => 'seller']));
-        $params['users_manager'] = count($roleDao->selectWhere(['rolesName' => 'manager']));
-        $params['users_admin'] = count($roleDao->selectWhere(['rolesName' => 'administrator']));
+        $params['users_seller'] = count($userDao->selectWhere(['rolesID' => 1]));
+        $params['users_manager'] = count($userDao->selectWhere(['rolesID' => 2]));
+        $params['users_admin'] = count($userDao->selectWhere(['rolesID' => 3]));
         echo $this->view->render('users.php', $params);
     }
 
     public function get_one(int $id): void
     {
-        // TODO: Implement get_one() method.
+        $params = [];
+        $userDao = new DAOUser();
+        $params['user'] = $userDao->selectOne($id);
+        echo $this->view->render('userForm.php', $params);
     }
 
     public function add(): void
     {
-        // TODO: Implement add() method.
+        $params = [];
+        echo $this->view->render('userwForm.php', $params);
     }
 
     public function post(array $params): void
