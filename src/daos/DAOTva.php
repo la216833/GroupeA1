@@ -57,11 +57,15 @@ class DAOTva implements DAO
     /**
      * @throws DBException
      */
-    public function selectAll(): array
-    {
+    public function selectAll(): array {
+        $result = [];
         try {
-            return $this->DBModel->selectAll(self::TABLE);
-        }catch (DBException $e){
+            $tvas = $this->DBModel->selectAll(self::TABLE);
+            foreach ($tvas as $key => $tva) {
+                $result[] = new TVA($tva["tvaID"], $tva["tvaPercent"], $tva["tvaName"]);
+            }
+            return $result;
+        } catch (DBException $e){
             throw new DBException($e);
         }
     }
@@ -69,10 +73,14 @@ class DAOTva implements DAO
     /**
      * @throws DBException
      */
-    public function selectWhere(array $params): array
-    {
+    public function selectWhere(array $params): array {
+        $result = [];
         try {
-            return $this->DBModel->selectWhere(self::TABLE,$params);
+            $tvas = $this->DBModel->selectAll(self::TABLE, $params);
+            foreach ($tvas as $key => $tva) {
+                $result[] = new TVA($tva["tvaID"], $tva["tvaPercent"], $tva["tvaName"]);
+            }
+            return $result;
         } catch (DBException $e) {
             throw new DBException($e);
         }
