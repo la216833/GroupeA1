@@ -20,7 +20,7 @@
                 <a class="btn btn-md btn-light" href="/categories">Categories</a>
                 <a class="btn btn-md btn-light" href="/products">Articles</a>
                 <a class="btn btn-md btn-light" href="/users">Utilisateurs</a>
-                <a class="btn btn-md btn-light" href="/selles">Historique</a>
+                <a class="btn btn-md btn-light" href="/history">Historique</a>
                 <a class="btn btn-md btn-light" href="/">Retour a la vente</a>
             </div>
             <div class="sidebar-footer">
