@@ -17,7 +17,7 @@
             <p class="stat-desc">Catégories inactives</p>
         </div>
     </div>
-    <a href="/product" class="btn btn-dark btn-page">+ Ajouter une nouvelle catégorie</a>
+    <a href="/category" class="btn btn-dark btn-page">+ Ajouter une nouvelle catégorie</a>
 
     <div class="list">
         <table>
@@ -35,9 +35,9 @@
                 <td class="hide"><?= $category->getID()?></td>
                 <td class="list-large"><?= $category->getName()?></td>
                 <td class="table-right status status-success <?= $category->getActive() ? 'status-success': 'status-danger'?>">
-                    <?= $category->getActive() ? 'actif': 'Inactif'?>
+                    <?= $category->getActive() ? 'ACTIF': 'INACTIF'?>
                 </td>
-                <td class="table-right">36</td>
+                <td class="table-right"><?= $params['quantity'][$category->getName()]?></td>
                 <td class="table-right">
                     <a class="btn btn-action btn-info" href="/category/<?= $category->getID()?>">Modifier</a>
                     <a class="btn btn-action btn-red" href="/category-del/<?= $category->getID()?>">Supprimer</a>
