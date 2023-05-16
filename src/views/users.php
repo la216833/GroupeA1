@@ -19,13 +19,15 @@
     </div>
     <a href="/user" class="btn btn-dark btn-page">+ Ajouter un nouvel utilisateur</a>
 
-    <form method="post">
-        <select class="form-select" name="role">
-            <option value="all">Tous les roles</option>
-            <?php foreach ($params['roles'] as $role): ?>
-                <option value="<?= $role->getID()?>"><?= $role->getName(); ?></option>
-            <?php endforeach; ?>
-        </select>
+    <form>
+        <label>
+            <select class="form-select" name="role" id="userChoice">
+                <option value="0">Tous les roles</option>
+                <?php foreach ($params['roles'] as $role): ?>
+                    <option value="<?= $role->getID()?>"><?= $role->getName(); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
     </form>
 
     <div class="list">
@@ -42,10 +44,11 @@
             <?php foreach ($params['users'] as $user): ?>
             <tr>
                 <td class="hide"><?= $user->getID()?></td>
+                <td class="hide"><?= $user->getRole()->getID()?></td>
                 <td class="list-large"><?= $user->getName()?></td>
                 <td class="table-right status <?= $user->getStatus() ? 'status-success': 'status-danger'?>">
                     <?= $user->getStatus() ? 'ACTIF': 'INACTIF'?>
-                <td class="table-right"><?= $user->getRole()->getName()?></td>
+                <td class="table-right"><?= strtoupper($user->getRole()->getName()) ?></td>
                 <td class="table-right">
                     <a class="btn btn-action btn-info" href="/user/<?= $user->getID()?>">Modifier</a>
                     <a class="btn btn-action btn-red" href="/user/<?= $user->getID()?>">Supprimer</a>
