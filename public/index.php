@@ -20,10 +20,12 @@ $router->map('GET', '/', 'sale#get');
 $router->map('POST', '/', 'sale#post');
 
 $router->map('GET', '/products', 'product#get');
-
 $router->map('GET', '/product', 'product#add');
+$router->map('POST', '/product', 'product#post');
 $router->map('GET', '/product/[i:id]', 'product#get_one');
-$router->map('POST', '/product', 'product#post_one');
+$router->map('POST', '/product/[i:id]', 'product#post_one');
+$router->map('GET', '/product/[i:id]', 'product#update');
+$router->map('POST', '/product/delete/[i:id]', 'product#delete');
 
 $router->map('GET', '/users', 'user#get');
 $router->map('GET', '/user', 'user#add');
