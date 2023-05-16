@@ -34,6 +34,53 @@ a {
     text-align: center;
 }
 
+.alert-error,
+.alert-success{
+    position: absolute;
+    display: block;
+    top: 20px;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+    padding: 20px 10px;
+    text-align: center;
+    width: 350px;
+    height: 100px;
+    background: var(--danger);
+    color: var(--white);
+    z-index: 3;
+    border-radius: 8px;
+
+    animation-name: hide;
+    animation-duration: 5000ms;
+    animation-fill-mode: forwards;
+}
+
+
+@keyframes hide{
+    0%{
+        opacity: 1;
+    }
+    60%{
+        opacity: 0.5;
+    }
+    100%{
+        display: none;
+        opacity: 0;
+    }
+}
+
+.alert-success {
+    background: var(--light);
+}
+
+.input-error {
+    font-size: .75rem;
+    font-style: italic;
+    color: var(--danger);
+}
+
 .nav {
     width: 65.3%;
     display: grid;

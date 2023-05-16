@@ -49,8 +49,8 @@
                     <td class="table-right status <?= $product->getActive() ? 'status-success': 'status-danger'?>">
                         <?= $product->getActive() ? 'ACTIF': 'INACTIF'?>
                     </td>
-                    <td class="table-right"><?= $product->getPrice()?></td>
                     <td class="table-right"><?= $params['quantities'][$product->getName()]?></td>
+                    <td class="table-right"><?= $product->getPrice()?></td>
                     <td class="table-right">
                         <a class="btn btn-action btn-info" href="/product/<?= $product->getID()?>">Modifier</a>
                         <a class="btn btn-action btn-red" href="/product/<?= $product->getID()?>">Supprimer</a>
