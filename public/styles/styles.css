@@ -149,8 +149,8 @@ a {
 }
 
 .card-img {
-    height: 90px;
-    width: auto;
+    max-width: 140px;
+    max-height: 90px;
     margin-top: 20px;
     margin-bottom: 5px;
 }
@@ -501,12 +501,10 @@ a {
 }
 
 .list {
-    overflow: auto;
-    overflow-y: hidden;
+    overflow-x: scroll;
     height: 50%;
     margin-top: 20px;
     border-radius: 15px;
-
     background: var(--white);
 }
 
@@ -540,6 +538,7 @@ a {
 .list-large {
     width: 40%;
     cursor: pointer;
+    padding-left: 10px !important;
 }
 
 .status {
