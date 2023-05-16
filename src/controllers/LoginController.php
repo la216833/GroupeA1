@@ -31,7 +31,7 @@ class LoginController implements Controller
         // TODO: Implement add() method.
     }
 
-    public function post(array $params): void
+    public function post(): void
     {
         // TODO: Implement post() method.
     }
