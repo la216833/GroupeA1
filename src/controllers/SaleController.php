@@ -2,7 +2,7 @@
 
 namespace CashRegister\controllers;
 
-use CashRegister\core\exception\DBException;
+use CashRegister\core\database\DBConnection;
 use CashRegister\core\View;
 use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOProduct;
@@ -10,17 +10,22 @@ use CashRegister\daos\DAOProduct;
 class SaleController implements Controller {
 
     private View $view;
+    private DAOCategory $DAOCategory;
+    private DAOProduct $DAOProduct;
 
     public function __construct() {
         $this->view = new View();
+        $this->DAOCategory = new DAOCategory();
+        $this->DAOProduct = new DAOProduct();
     }
 
     public function get(): void {
         $params = [];
-        $categoryDao = new DAOCategory();
-        $productDao = new DAOProduct();
-        $params['categories'] = $categoryDao->selectAll();
-        $params['products'] = $productDao->selectAll();
+        $params['categories'] = $this->DAOCategory->selectAll();
+        $params['products'] = $this->DAOProduct->selectAll();
+        $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
+            ->fetchAll();
+        $params['number'] = $current[0][0] + 1;
         echo $this->view->render('sale.php', $params);
     }
 
@@ -32,12 +37,12 @@ class SaleController implements Controller {
         // TODO: Implement add() method.
     }
 
-    public function post(array $params): void {
-        // TODO: Implement post() method.
-    }
-
     public function post_one(int $id): void {
         // TODO: Implement post_one() method.
+    }
+
+    public function post(): void {
+        var_dump($_POST);
     }
 
     public function update(int $id): void {
@@ -47,5 +52,4 @@ class SaleController implements Controller {
     public function delete(int $id): void {
         // TODO: Implement delete() method.
     }
-
 }
