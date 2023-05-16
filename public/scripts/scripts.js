@@ -9,74 +9,124 @@ const sidebarBtn = document.getElementById('sidebarBtn');
 
 const navBtns = document.getElementById('nav');
 
-navBtns.addEventListener('click', event => {
-    if(event.target.classList.value.includes('btn')) {
-        const cat = event.target.innerHTML;
-        products.childNodes.forEach(p => {
-            if (p.nodeName === 'DIV') {
-                if (event.target.getAttribute('aria-details') === 'all') {
-                    p.style.display = 'block';
-                    return;
-                }
-                if (cat !== p.getAttribute('aria-details')) {
-                    p.style.display = 'none';
+const catChoice = document.getElementById('catChoice')
+const userChoice = document.getElementById('userChoice')
+
+if (catChoice != null) {
+    catChoice.addEventListener('change', () => {
+        const cat = catChoice.value
+        const table = document.getElementsByTagName('table')
+        const products = table[0].children[1].children;
+        for (let i = 0; i < products.length; i++) {
+            const productCat =  products[i].children[1].innerHTML;
+            if (cat !== '0') {
+                if (productCat !== cat) {
+                    products[i].style.display = 'none';
                 } else {
-                    p.style.display = 'block'
+                    products[i].style.display = 'table-row';
                 }
+            } else {
+                products[i].style.display = 'table-row';
             }
-        })
-        navBtns.childNodes.forEach(btn => {
-            if (btn.nodeName === 'BUTTON') {
-                if (cat === btn.innerHTML) {
-                    if (btn.classList.value.includes('btn-light')) btn.classList.remove('btn-light')
-                    if (!btn.classList.value.includes('btn-active')) btn.classList.add('btn-active')
+        }
+    })
+}
+
+if (userChoice != null) {
+    userChoice.addEventListener('change', () => {
+        const type = userChoice.value
+        const table = document.getElementsByTagName('table')
+        const users = table[0].children[1].children;
+        for (let i = 0; i < users.length; i++) {
+            const userType =  users[i].children[1].innerHTML;
+            if (type !== '0') {
+                if (userType !== type) {
+                    users[i].style.display = 'none';
                 } else {
-                    if (!btn.classList.value.includes('btn-light')) btn.classList.add('btn-light')
-                    if (btn.classList.value.includes('btn-active')) btn.classList.remove('btn-active')
+                    users[i].style.display = 'table-row';
                 }
+            } else {
+                users[i].style.display = 'table-row';
             }
-        })
-    }
+        }
+    })
+}
 
-})
-
-sidebarBtn.addEventListener('click', () => {
-    sidebarBtn.classList.toggle('enable');
-    sidebar.classList.toggle('show');
-    sidebarBtn.innerHTML = sidebarBtn.classList.contains('enable') ? "<": ">";
-
-})
-
-
-btn.addEventListener('click', () => {
-    plusContent.classList.toggle('show');
-    btn.innerHTML = btn.innerHTML == "+" ? "-": "+";
-})
-
-products.addEventListener('click', event => {
-
-    let card = event.target.closest('.card');
-
-    addToCart(card)
-    total();
-
-})
-
-table.addEventListener('click', event => {
-    if(event.target.classList.value == 'table-delete') {
-        const row = event.target.closest('tr')
-        let quantity = parseInt(row.childNodes[2].innerHTML)
-        let price = parseFloat(row.childNodes[3].innerHTML)
-        if (quantity === 1) {
-            table.removeChild(row)
+if (navBtns != null) {
+    navBtns.addEventListener('click', event => {
+        if(event.target.classList.value.includes('btn')) {
+            const cat = event.target.innerHTML;
+            products.childNodes.forEach(p => {
+                if (p.nodeName === 'DIV') {
+                    if (event.target.getAttribute('aria-details') === 'all') {
+                        p.style.display = 'block';
+                        return;
+                    }
+                    if (cat !== p.getAttribute('aria-details')) {
+                        p.style.display = 'none';
+                    } else {
+                        p.style.display = 'block'
+                    }
+                }
+            })
+            navBtns.childNodes.forEach(btn => {
+                if (btn.nodeName === 'BUTTON') {
+                    if (cat === btn.innerHTML) {
+                        if (btn.classList.value.includes('btn-light')) btn.classList.remove('btn-light')
+                        if (!btn.classList.value.includes('btn-active')) btn.classList.add('btn-active')
+                    } else {
+                        if (!btn.classList.value.includes('btn-light')) btn.classList.add('btn-light')
+                        if (btn.classList.value.includes('btn-active')) btn.classList.remove('btn-active')
+                    }
+                }
+            })
         }
 
-        row.childNodes[2].innerHTML = (quantity - 1)
-        row.childNodes[3].innerHTML = (price - price/quantity).toFixed(2)
-        total();
-    }
+    })
+}
 
-})
+if (sidebarBtn != null) {
+    sidebarBtn.addEventListener('click', () => {
+        sidebarBtn.classList.toggle('enable');
+        sidebar.classList.toggle('show');
+        sidebarBtn.innerHTML = sidebarBtn.classList.contains('enable') ? "<": ">";
+
+    })
+}
+
+if (btn != null) {
+    btn.addEventListener('click', () => {
+        plusContent.classList.toggle('show');
+        btn.innerHTML = btn.innerHTML === "+" ? "-": "+";
+    })
+}
+
+if (products != null) {
+    products.addEventListener('click', event => {
+        let card = event.target.closest('.card');
+        addToCart(card)
+        total();
+    })
+}
+
+
+if (table != null) {
+    table.addEventListener('click', event => {
+        if(event.target.classList.value === 'table-delete') {
+            const row = event.target.closest('tr')
+            let quantity = parseInt(row.childNodes[2].innerHTML)
+            let price = parseFloat(row.childNodes[3].innerHTML)
+            if (quantity === 1) {
+                table.removeChild(row)
+            }
+
+            row.childNodes[2].innerHTML = (quantity - 1)
+            row.childNodes[3].innerHTML = (price - price/quantity).toFixed(2)
+            total();
+        }
+
+    })
+}
 
 function addToCart(card) {
     let exist = false;
