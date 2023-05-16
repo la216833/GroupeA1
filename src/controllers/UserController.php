@@ -38,10 +38,10 @@ class UserController implements Controller
     public function add(): void
     {
         $params = [];
-        echo $this->view->render('userwForm.php', $params);
+        echo $this->view->render('userForm.php', $params);
     }
 
-    public function post(array $params): void
+    public function post(): void
     {
         // TODO: Implement post() method.
     }
