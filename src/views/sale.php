@@ -18,7 +18,7 @@
     <div class="table">
         <div class="table-container">
             <img class="table-img" src="https://armetiss.be/img/logo-active.png" alt="Nom de l'entreprise">
-            <h2 class="table-title">Ticket n°27897</h2>
+            <h2 class="table-title">Ticket n°<?= $params['number'] ?></h2>
             <div class="table-wrapper">
                 <table >
                     <thead>
@@ -36,14 +36,14 @@
                 <div class="table-total">
                     <p>Total <span id="total">0.00 €</span></p>
                     <div class="table-btn">
-                        <button class="btn btn-md btn-red">Total</button>
+                        <button class="btn btn-md btn-red" type="submit">Total</button>
                         <button class="btn btn-sm btn-red" id="showMore">+</button>
                     </div>
                 </div>
                 <div class="table-plus" id="plusContent">
                     <button class="btn btn-md btn-dark btn-space">Mettre en attente</button>
                     <button class="btn btn-md btn-dark btn-space">Retour article</button>
-                    <button class="btn btn-md btn-dark btn-space">Note de credit</button>
+                    <button class="btn btn-md btn-dark btn-space">Avancer les articles</button>
                     <button class="btn btn-md btn-dark btn-space">Annuler</button>
                 </div>
             </div>
