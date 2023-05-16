@@ -18,13 +18,15 @@
         </div>
     </div>
     <a href="/product" class="btn btn-dark btn-page">+ Ajouter un nouvel article</a>
-    <form method="post">
-        <select class="form-select" name="category">
-            <option value="all">Toute les categories</option>
-            <?php foreach ($params['categories'] as $category): ?>
-                <option value="<?= $category->getID()?>"><?= $category->getName(); ?></option>
-            <?php endforeach; ?>
-        </select>
+    <form>
+        <label>
+            <select class="form-select" name="category" id="catChoice">
+                <option value="0">Toute les categories</option>
+                <?php foreach ($params['categories'] as $category): ?>
+                    <option value="<?= $category->getID()?>"><?= $category->getName(); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
     </form>
 
     <div class="list">
@@ -42,12 +44,13 @@
                 <?php foreach ($params['products'] as $product): ?>
                 <tr>
                     <td class="hide"><?= $product->getID()?></td>
+                    <td class="hide"><?= $product->getCategory()->getID()?></td>
                     <td class="list-large"><?= $product->getName()?></td>
                     <td class="table-right status <?= $product->getActive() ? 'status-success': 'status-danger'?>">
-                        <?= $product->getActive() ? 'actif': 'Inactif'?>
+                        <?= $product->getActive() ? 'ACTIF': 'INACTIF'?>
                     </td>
-                    <td class="table-right"><?= $product->getDescription()?></td>
                     <td class="table-right"><?= $product->getPrice()?></td>
+                    <td class="table-right"><?= $params['quantities'][$product->getName()]?></td>
                     <td class="table-right">
                         <a class="btn btn-action btn-info" href="/product/<?= $product->getID()?>">Modifier</a>
                         <a class="btn btn-action btn-red" href="/product/<?= $product->getID()?>">Supprimer</a>
