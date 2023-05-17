@@ -53,7 +53,12 @@
                     <td class="table-right"><?= $product->getPrice()?></td>
                     <td class="table-right">
                         <a class="btn btn-action btn-info" href="/product/<?= $product->getID()?>">Modifier</a>
-                        <a class="btn btn-action btn-red" href="/product/<?= $product->getID()?>">Supprimer</a>
+                        <?php if($product->getActive()): ?>
+                        <a class="btn btn-action btn-red"
+                            href="/product/delete/<?= $product->getID()?>"
+                            onclick="return confirm('Êtes vous sure de supprimer <?= $product->getName() ?>')
+                            ">Supprimer</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

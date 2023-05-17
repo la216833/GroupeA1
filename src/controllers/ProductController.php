@@ -10,7 +10,6 @@ use CashRegister\daos\DAOStock;
 use CashRegister\daos\DAOTva;
 use CashRegister\models\Product;
 use CashRegister\models\Stock;
-use CashRegister\models\TVA;
 
 class ProductController implements Controller {
 
@@ -58,6 +57,15 @@ class ProductController implements Controller {
         $params = [];
         try {
             $params['product'] = $this->DAOProduct->selectOne($id);
+            $params['categories'] = $this->DAOCategory->selectAll();
+            $params['tva'] = $this->DAOTva->selectAll();
+            $stocks = $this->DAOStock->selectWhere(["productsID" => $params["product"]->getID()]);
+            $params["quantity"] = 0;
+            foreach ($stocks as $stock) {
+                $params["quantity"] += $stock->getQuantity();
+                $params["date"] = $stock->getDate();
+                $params["price"] = $stock->getBuyPrice();
+            }
         } catch (DBException) {
             $params['errors'] = "Une erreur est survenue";
         } finally {
@@ -97,7 +105,7 @@ class ProductController implements Controller {
                         if (strlen($name) < 3 || strlen($name) > 50)
                             $params['errors']['name'] = "Le nom doit contenir entre 3 et 50 caractères";
 
-                        if (isset($params['description']) && strlen($data['description'] >= 100))
+                        if (isset($params['description']) && strlen($data['description'] > 100))
                             $params['errors']['description'] = "La description doit contenir moins de 100 caractères";
 
                         $quantity = (int) $data['quantity'];
@@ -163,15 +171,65 @@ class ProductController implements Controller {
 
 
     public function post_one(int $id): void {
-
+        // TODO
     }
 
     public function update(int $id): void {
+        $data = $_POST;
+        try {
+            $product = $this->DAOProduct->selectOne($id);
+            if ($product && isset($data)) {
+                $name = htmlentities($data['name']);
+                $description = htmlentities($data['description']);
+                if (($name !== $product->getName()) && (strlen($name) > 3 && strlen($name) <= 50))
+                    $product->setName($name);
+                if ($description !== $product->getDescription() && strlen($description) <= 100)
+                    $product->setDescription($description);
+                $price = (float) $data['salePrice'];
+                if ($price !== $product->getPrice() && ($price > 0 && $price <= 100))
+                    $product->setPrice($price);
+                $categoryName = htmlentities($data['category']);
+                $category = $this->DAOCategory->selectWhere(["categoriesName" => $categoryName])[0];
+                if ($categoryName !== $product->getCategory()->getName() && isset($category))
+                    $product->setCategory($category);
+                $TVAName = htmlentities($data['tva']);
+                $tva = $this->DAOTva->selectWhere(["tvaName" => $TVAName])[0];
+                if ($TVAName !== $product->getTva()->getName() && isset($tva))
+                    $product->setTva($tva);
 
+                $stocks = $this->DAOStock->selectWhere(["productsID" => $product->getID()]);
+                $quantity = 0;
+                foreach ($stocks as $stock) $quantity += $stock->getQuantity();
+
+                if ($quantity === 0 )
+                    $product->setActive(false);
+
+                $this->DAOProduct->update($product);
+
+            }
+        } catch (DBException) {
+        } finally {
+            header('Location: /products');
+        }
     }
 
     public function delete(int $id): void {
+        $params = [];
+        try {
+            $product = $this->DAOProduct->selectOne($id);
+            if ($product) {
+                $stocks = $this->DAOStock->selectWhere(["productsID" => $product->getID()]);
+                $quantity = 0;
+                foreach ($stocks as $stock) $quantity += $stock->getQuantity();
 
+                if ($quantity === 0 ) {
+                    $product->setActive(false);
+                    $this->DAOProduct->update($product);
+                }
+            }
+        } catch (DBException) {
+        } finally {
+            header('Location: /products');
+        }
     }
-
 }

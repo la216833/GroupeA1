@@ -34,6 +34,9 @@
         <div class="form-group">
             <label for="date">Date d'achat
                 <input type="date" name="date" value="<?=
+                empty($params['date']) ?'':
+                    date("Y-m-d", strtotime($params['date']))
+                ?><?=
                 empty($params['data']) ?'':
                     $params['data']['date']?>">
             </label>
@@ -41,6 +44,9 @@
         <div class="form-group">
             <label for="quantity">Quantité
                 <input type="number" name="quantity" value="<?=
+                empty($params['quantity']) ?'':
+                    $params['quantity']
+                ?><?=
                 empty($params['data']) ?'':
                     $params['data']['quantity']?>" step="1">
                 <?php if (isset($params['errors']['quantity'])): ?>
@@ -51,6 +57,9 @@
         <div class="form-group">
             <label for="buyPrice">Prix de d'achat
                 <input type="number" name="buyPrice" value="<?=
+                empty($params['price']) ?'':
+                    $params['price']
+                ?><?=
                 empty($params['data']) ?'':
                     $params['data']['buyPrice']?>" step="0.01">
                 <?php if (isset($params['errors']['buyPrice'])): ?>
@@ -61,6 +70,9 @@
         <div class="form-group">
             <label for="salePrice">Prix de vente
                 <input type="number" name="salePrice" value="<?=
+                empty($params['product']) ?'':
+                    $params['product']->getPrice()
+                ?><?=
                 empty($params['data']) ?'':
                     $params['data']['salePrice']?>" step="0.01">
                 <?php if (isset($params['errors']['salePrice'])): ?>
@@ -72,7 +84,10 @@
             <label for="category">Catégorie
                 <select name="category">
                     <?php foreach ($params['categories'] as $cat): ?>
-                        <option value="<?= $cat->getName() ?>" ><?= $cat->getName() ?></option>
+                        <option value="<?= $cat->getName() ?>" <?= isset($params["product"]) && $cat->getID() ==
+                        $params["product"]->getCategory()
+                            ->getID()? 'selected="selected"' : ''
+                        ?>><?= $cat->getName() ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
@@ -81,7 +96,12 @@
             <label for="tva">TVA
                 <select name="tva">
                     <?php foreach ($params['tva'] as $tva): ?>
-                        <option value="<?= $tva->getName() ?>" ><?= $tva->getName() ?></option>
+                        <option value="<?= $tva->getName() ?>" <?= isset($params["product"]) && $tva->getID() ==
+                        $params["product"]->getTva()
+                            ->getID()? 'selected="selected"' : ''
+                        ?>><?=
+                            $tva->getName()
+                            ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
@@ -89,8 +109,10 @@
         <div class="form-group">
             <label for="status">Statut
                 <select name="status">
-                    <option value="1">ACTIF</option>
-                    <option value="0">NON ACTIF</option>
+                    <option value="0" <?= isset($params["product"]) && $params["product"]->getActive() == 0 ? 'selected="selected"' : ''
+                    ?>>NON ACTIF</option>
+                    <option value="1" <?= isset($params["product"]) && $params["product"]->getActive() == 1 ? 'selected="selected"' : ''
+                    ?>>ACTIF</option>
                 </select>
             </label>
         </div>
