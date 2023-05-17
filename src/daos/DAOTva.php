@@ -76,7 +76,7 @@ class DAOTva implements DAO
     public function selectWhere(array $params): array {
         $result = [];
         try {
-            $tvas = $this->DBModel->selectAll(self::TABLE, $params);
+            $tvas = $this->DBModel->selectWhere(self::TABLE, $params);
             foreach ($tvas as $key => $tva) {
                 $result[] = new TVA($tva["tvaID"], $tva["tvaPercent"], $tva["tvaName"]);
             }
