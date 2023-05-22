@@ -7,7 +7,7 @@
     </nav>
     <div class="grid" id="products">
         <?php foreach ($params['products'] as $product): ?>
-            <div class="card" id="<?= $product->getID(); ?>" aria-details="<?= $product->getCategory()->getName(); ?>"">
+            <div class="card" id="<?= $product->getID(); ?>" aria-details="<?= $product->getCategory()->getName(); ?>">
                 <img class="card-img" src="/images/<?= $product->getImagePath(); ?>" alt="<?= $product->getName(); ?>">
                 <h2 class="card-title"><?= $product->getName(); ?></h2>
                 <h3 class="card-price"><?= $product->getPrice(); ?>€</h3>
@@ -15,7 +15,7 @@
             </div>
         <?php endforeach; ?>
     </div>
-    <div class="table">
+    <form method="post" class="table">
         <div class="table-container">
             <img class="table-img" src="https://armetiss.be/img/logo-active.png" alt="Nom de l'entreprise">
             <h2 class="table-title">Ticket n°<?= $params['number'] ?></h2>
@@ -36,7 +36,7 @@
                 <div class="table-total">
                     <p>Total <span id="total">0.00 €</span></p>
                     <div class="table-btn">
-                        <button class="btn btn-md btn-red" type="submit">Total</button>
+                        <button id="" class="btn btn-md btn-red" type="submit" onclick="location.href='/products'">Total</button>
                         <button class="btn btn-sm btn-red" id="showMore">+</button>
                     </div>
                 </div>
@@ -48,5 +48,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>

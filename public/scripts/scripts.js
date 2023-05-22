@@ -121,6 +121,7 @@ if (table != null) {
             }
 
             row.childNodes[2].innerHTML = (quantity - 1)
+            row.childNodes[6].childNodes[0].value -= 1;
             row.childNodes[3].innerHTML = (price - price/quantity).toFixed(2)
             total();
         }
@@ -134,13 +135,14 @@ function addToCart(card) {
     let price = parseFloat(card.childNodes[5].innerHTML.slice(0, -1));
 
     for (let i = 0; i < table.childNodes.length; i++) {
-        if (table.childNodes[i].nodeName == 'TR') {
+        if (table.childNodes[i].nodeName === 'TR') {
             for (let j = 0; j < table.childNodes[i].childNodes.length; j++) {
-                if (table.childNodes[i].childNodes[j].nodeName == 'TD') {
-                    if (table.childNodes[i].childNodes[j].classList[0] == 'hide')
-                        if(table.childNodes[i].childNodes[j].innerHTML == card.id) {
+                if (table.childNodes[i].childNodes[j].nodeName === 'TD') {
+                    if (table.childNodes[i].childNodes[j].classList[0] === 'hide')
+                        if(table.childNodes[i].childNodes[j].innerHTML === card.id) {
                             quantity = parseInt(table.childNodes[i].childNodes[2].innerHTML) + 1;
                             table.childNodes[i].childNodes[2].innerHTML = quantity;
+                            table.childNodes[i].childNodes[6].childNodes[0].value = quantity;
                             table.childNodes[i].childNodes[3].innerHTML = (quantity * price).toFixed(2);
                             exist = true;
                             break;
@@ -152,11 +154,21 @@ function addToCart(card) {
 
     if (!exist) {
         let row = table.insertRow(-1);
+
         let id = row.insertCell(0)
         let name = row.insertCell(1);
         let quantityCell = row.insertCell(2);
         let priceCell = row.insertCell(3);
         let deleteBtn = row.insertCell(4);
+
+        let idHide = row.insertCell(5);
+        let qntHide = row.insertCell(6);
+
+        idHide.classList.add('hide');
+        qntHide.classList.add('hide');
+
+        idHide.innerHTML =`<input type="number" name="${card.children[1].innerHTML}" value="${card.id}">`
+        qntHide.innerHTML =`<input type="number" name="${card.children[1].innerHTML}_QNT" value="1">`
 
         id.classList.add('hide');
         quantityCell.classList.add('table-right');
@@ -164,6 +176,7 @@ function addToCart(card) {
         deleteBtn.classList.add('table-delete');
 
         id.innerHTML = card.id
+
         name.innerHTML = card.childNodes[3].innerHTML
         quantityCell.innerHTML = 1
         priceCell.innerHTML = (price * quantity).toFixed(2);
@@ -173,10 +186,10 @@ function addToCart(card) {
 function total() {
     let priceTot = 0;
     for (let i = 0; i < table.childNodes.length; i++) {
-        if (table.childNodes[i].nodeName == 'TR') {
+        if (table.childNodes[i].nodeName === 'TR') {
             for (let j = 0; j < table.childNodes[i].childNodes.length; j++) {
-                if (table.childNodes[i].childNodes[j].nodeName == 'TD') {
-                    if (table.childNodes[i].childNodes[j].classList[0] == 'hide')
+                if (table.childNodes[i].childNodes[j].nodeName === 'TD') {
+                    if (table.childNodes[i].childNodes[j].classList[0] === 'hide')
                         if (!isNaN(table.childNodes[i].childNodes[3].innerHTML))
                             priceTot += parseFloat(table.childNodes[i].childNodes[3].innerHTML);
                 }
