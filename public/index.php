@@ -6,10 +6,15 @@ use CashRegister\controllers\ProductController;
 use CashRegister\controllers\SaleController;
 use CashRegister\controllers\UserController;
 use CashRegister\controllers\CategoryController;
+use CashRegister\core\Configuration;
 
 require_once '../vendor/autoload.php';
 
-define('VIEW_PATH', dirname(__DIR__) . '/src/views/');
+$path = dirname(__DIR__, 1) . "/.env";
+if (!file_exists($path)) {
+    $config = new Configuration();
+    $config->install();
+}
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();

@@ -45,7 +45,7 @@ class SaleController implements Controller {
         $params['products'] = $this->DAOProduct->selectAll();
         $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
             ->fetchAll();
-        $params['number'] = $current[0][0] + 1;
+        $params['number'] = isset($current[0][0]) ? $current[0][0] + 1 : 1;
         echo $this->view->render('sale.php', $params);
     }
 
