@@ -142,8 +142,8 @@ class DAOCategory implements DAO
 
             return $this->DBModel->update(self::TABLE, $this->params);
 
-        }catch (DBException $e){
             throw new DBException($e);
+        }catch (DBException $e){
         }
     }
 
