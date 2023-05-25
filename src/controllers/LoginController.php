@@ -53,7 +53,7 @@ class LoginController implements Controller
                 if ($currentUser->getStatus() == 1){
                     $session->set('USER', $currentUser->getID());
                     $session->set('USERNAME', $currentUser->getName());
-                    $session->set('ROLE', $currentUser->getRole());
+                    $session->set('ROLE', $currentUser->getRole()->getName());
                     header("Location: /");
                 }
                 else{
