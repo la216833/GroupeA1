@@ -14,6 +14,7 @@ global$session;
     <script src="/scripts/scripts.js" defer></script>
 </head>
 <body>
+<?php if ($session->get('USER')): ?>
     <button class="sidebar-btn" id="sidebarBtn"> > </button>
 
     <div class="sidebar" id="sidebar">
@@ -35,12 +36,13 @@ global$session;
                 <div class="sidebar-name">
                     <h3><?= $session->get('USERNAME')?></h3>
                 </div>
-                <button class="btn btn-lg btn-red">Déconnexion</button>
+                <button class="btn btn-lg btn-red" onclick="location.href='logout/1'">Déconnexion</button>
             </div>
         </div>
     </div>
+<?php endif; ?>
 
-    {{content}}
+{{content}}
 
 </body>
 </html>

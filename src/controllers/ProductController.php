@@ -28,6 +28,11 @@ class ProductController implements Controller {
     }
 
     public function get(): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
             $params['categories'] = $this->DAOCategory->selectAll();
@@ -54,6 +59,11 @@ class ProductController implements Controller {
     }
 
     public function get_one(int $id): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
             $params['product'] = $this->DAOProduct->selectOne($id);
@@ -74,6 +84,11 @@ class ProductController implements Controller {
     }
 
     public function add(): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
             $params['categories'] = $this->DAOCategory->selectAll();
@@ -86,6 +101,11 @@ class ProductController implements Controller {
     }
 
     public function post(): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         $data = $_POST;
         if (isset($data)) {
@@ -175,6 +195,11 @@ class ProductController implements Controller {
     }
 
     public function update(int $id): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $data = $_POST;
         try {
             $product = $this->DAOProduct->selectOne($id);
@@ -214,6 +239,11 @@ class ProductController implements Controller {
     }
 
     public function delete(int $id): void {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
             $product = $this->DAOProduct->selectOne($id);

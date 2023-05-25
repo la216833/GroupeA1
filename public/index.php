@@ -49,6 +49,8 @@ $router->map('POST', '/category', 'category#post_one');
 $router->map('GET', '/login', 'login#get');
 $router->map('POST', '/login', 'login#post');
 
+$router->map('GET', '/logout/[i:id]', 'login#delete');
+
 $router->map('GET', '/history', 'history#get');
 
 $match = $router->match();

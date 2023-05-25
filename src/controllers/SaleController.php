@@ -40,6 +40,11 @@ class SaleController implements Controller {
     }
 
     public function get(): void {
+        global $session;
+        if (!$session->get('USER')) {
+            header('Location: /login');
+            exit();
+        }
         $params = [];
         $params['categories'] = $this->DAOCategory->selectAll();
         $params['products'] = $this->DAOProduct->selectAll();
@@ -62,6 +67,11 @@ class SaleController implements Controller {
     }
 
     public function post(): void {
+        global $session;
+        if (!$session->get('USER')) {
+            header('Location: /login');
+            exit();
+        }
         if (!empty($_POST)) {
             $products = $_POST;
             $available = true;
