@@ -44,6 +44,7 @@ $router->map('GET', '/category/delete/[i:id]', 'category#delete');
 $router->map('POST', '/category', 'category#post_one');
 
 $router->map('GET', '/login', 'login#get');
+$router->map('POST', '/login', 'login#post');
 
 $router->map('GET', '/history', 'history#get');
 

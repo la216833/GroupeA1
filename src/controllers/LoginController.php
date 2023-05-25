@@ -2,7 +2,9 @@
 
 namespace CashRegister\controllers;
 
+use CashRegister\core\exception\DBException;
 use CashRegister\core\View;
+use CashRegister\daos\DAOUser;
 
 class LoginController implements Controller
 {
@@ -33,8 +35,40 @@ class LoginController implements Controller
 
     public function post(): void
     {
-        // TODO: Implement post() method.
+        $daoUser = new DAOUser();
+        $param = array();
+        $currentUser = null;
+        try {
+            $password = htmlentities($_POST["password"]);
+
+            $users = $daoUser->selectAll();
+            foreach ($users as $user){
+                if (password_verify($password,$user->getAccessCode())){
+                    $currentUser = $user;
+                    break;
+                }
+            }
+            if ($currentUser){
+                if ($currentUser->getStatus() == 1){
+                    //TODO Use Session Varible to manage user
+                    header("Location: /");
+                }
+                else{
+                    $param["errors"] = "Vous n'avez pas acces à ces foncionnalités, veuillez vous referez à votre responsable";
+
+                    echo $this->view->render('login.php', $param);
+                }
+            }
+            else{
+                $param["errors"] = "Identifiant inconnu";
+                echo $this->view->render('login.php', $param);
+
+            }
+        }catch (DBException $exception){
+            echo $this->view->render('error.php', $exception);
+        }
     }
+
 
     public function post_one(int $id): void
     {
@@ -50,4 +84,5 @@ class LoginController implements Controller
     {
         // TODO: Implement delete() method.
     }
+
 }
