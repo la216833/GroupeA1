@@ -82,7 +82,11 @@ class LoginController implements Controller
 
     public function delete(int $id): void
     {
-        // TODO: Implement delete() method.
+        global $session;
+        $session->remove('USER');
+        $session->remove('USERNAME');
+        $session->remove('ROLE');
+        header('Location: /login');
     }
 
 }
