@@ -54,6 +54,7 @@ class LoginController implements Controller
                     $session->set('USER', $currentUser->getID());
                     $session->set('USERNAME', $currentUser->getName());
                     $session->set('ROLE', $currentUser->getRole()->getName());
+                    $session->set('IMG_PATH', $currentUser->getImagePath());
                     header("Location: /");
                 }
                 else{
@@ -90,6 +91,7 @@ class LoginController implements Controller
         $session->remove('USER');
         $session->remove('USERNAME');
         $session->remove('ROLE');
+        $session->remove('IMG_PATH');
         header('Location: /login');
     }
 

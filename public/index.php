@@ -8,6 +8,7 @@ use CashRegister\controllers\UserController;
 use CashRegister\controllers\CategoryController;
 use CashRegister\core\Configuration;
 use CashRegister\core\Session;
+use CashRegister\core\View;
 
 require_once '../vendor/autoload.php';
 
@@ -55,7 +56,7 @@ $router->map('GET', '/history', 'history#get');
 
 $match = $router->match();
 
-if ($match !== null) {
+if ($match) {
     list($controller, $action) = explode('#', $match['target']);
     $obj = null;
     if (is_callable($controller, $action)) {
@@ -71,10 +72,12 @@ if ($match !== null) {
         }
         call_user_func_array(array($obj, $action), $match['params']);
     } else {
-        // TODO
-        echo '404';
+        $view = new View();
+        http_response_code(501);
+        echo $view->render('error.php', ['title' => '501', 'desc' => "La fonction rechercher n'est pas implémentée"]);
     }
 } else {
-    // TODO
-    echo '404';
+    $view = new View();
+    http_response_code(404);
+    echo $view->render('error.php', ['title' => '404', 'desc' => "Cette page n'existe pas"]);
 }

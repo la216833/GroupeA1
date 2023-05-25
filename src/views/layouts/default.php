@@ -31,7 +31,7 @@ global$session;
             </div>
             <div class="sidebar-footer">
                 <div class="sidebar-profile-pic">
-                    <img src="https://armetiss.be/img/logo-active.png" alt="Photo de profile">
+                    <img src="images/<?= $session->get('IMG_PATH')?>" alt="Photo de profile">
                 </div>
                 <div class="sidebar-name">
                     <h3><?= $session->get('USERNAME')?></h3>
