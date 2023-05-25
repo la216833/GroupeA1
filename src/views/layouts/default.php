@@ -1,3 +1,6 @@
+<?php
+global$session;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,9 +20,11 @@
         <div class="sidebar-container">
             <img src="https://armetiss.be/img/logo-active.png" class="sidebar-img">
             <div class="sidebar-content">
+                <?php if ($session->get('ROLE') === 'administrator'): ?>
                 <a class="btn btn-md btn-light" href="/categories">Categories</a>
                 <a class="btn btn-md btn-light" href="/products">Articles</a>
                 <a class="btn btn-md btn-light" href="/users">Utilisateurs</a>
+                <?php endif; ?>
                 <a class="btn btn-md btn-light" href="/history">Historique</a>
                 <a class="btn btn-md btn-light" href="/">Retour a la vente</a>
             </div>
@@ -28,7 +33,7 @@
                     <img src="https://armetiss.be/img/logo-active.png" alt="Photo de profile">
                 </div>
                 <div class="sidebar-name">
-                    <h3>Username</h3>
+                    <h3><?= $session->get('USERNAME')?></h3>
                 </div>
                 <button class="btn btn-lg btn-red">Déconnexion</button>
             </div>

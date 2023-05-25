@@ -35,6 +35,7 @@ class LoginController implements Controller
 
     public function post(): void
     {
+        global $session;
         $daoUser = new DAOUser();
         $param = array();
         $currentUser = null;
@@ -50,7 +51,9 @@ class LoginController implements Controller
             }
             if ($currentUser){
                 if ($currentUser->getStatus() == 1){
-                    //TODO Use Session Varible to manage user
+                    $session->set('USER', $currentUser->getID());
+                    $session->set('USERNAME', $currentUser->getName());
+                    $session->set('ROLE', $currentUser->getRole()->getName());
                     header("Location: /");
                 }
                 else{

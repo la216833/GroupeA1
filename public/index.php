@@ -7,6 +7,7 @@ use CashRegister\controllers\SaleController;
 use CashRegister\controllers\UserController;
 use CashRegister\controllers\CategoryController;
 use CashRegister\core\Configuration;
+use CashRegister\core\Session;
 
 require_once '../vendor/autoload.php';
 
@@ -18,6 +19,8 @@ if (!file_exists($path)) {
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
+
+$session = new Session();
 
 $router = new AltoRouter();
 
