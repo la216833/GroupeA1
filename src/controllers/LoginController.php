@@ -85,6 +85,7 @@ class LoginController implements Controller
 
     public function delete(int $id): void
     {
+
         global $session;
         $session->remove('USER');
         $session->remove('USERNAME');
