@@ -4,6 +4,7 @@ use CashRegister\controllers\HistoryController;
 use CashRegister\controllers\LoginController;
 use CashRegister\controllers\ProductController;
 use CashRegister\controllers\SaleController;
+use CashRegister\controllers\StockController;
 use CashRegister\controllers\UserController;
 use CashRegister\controllers\CategoryController;
 use CashRegister\core\Configuration;
@@ -47,6 +48,10 @@ $router->map('POST', '/category/[i:id]', 'category#update');
 $router->map('GET', '/category/delete/[i:id]', 'category#delete');
 $router->map('POST', '/category', 'category#post_one');
 
+$router->map('GET', '/stocks', 'stock#get');
+$router->map('GET', '/stock', 'stock#add');
+$router->map('POST', '/stock', 'stock#post');
+
 $router->map('GET', '/login', 'login#get');
 $router->map('POST', '/login', 'login#post');
 
@@ -67,6 +72,7 @@ if ($match) {
             case 'category' : $obj = new CategoryController(); break;
             case 'login' : $obj = new LoginController(); break;
             case 'history': $obj = new HistoryController(); break;
+            case 'stock': $obj = new StockController(); break;
             default:
                 break;
         }

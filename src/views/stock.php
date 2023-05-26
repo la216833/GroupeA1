@@ -6,24 +6,25 @@
         </div>
         <div class="stat stat-success">
             <h2 class="stat-title"><?= $params['stock_available'] ?></h2>
-            <p class="stat-desc">Stocks en vente</p>
+            <p class="stat-desc">Stocks d'article actif</p>
         </div>
         <div class="stat stat-warning">
-            <h2 class="stat-title"><?= $params['selled_stock'] ?></h2>
-            <p class="stat-desc">Stocks vendus</p>
+            <h2 class="stat-title"><?= $params['stock_sold'] ?></h2>
+            <p class="stat-desc">Stocks ecoule</p>
         </div>
         <div class="stat stat-danger">
             <h2 class="stat-title"><?= $params['stock_unavailable'] ?></h2>
-            <p class="stat-desc">Stocks non mis en vente</p>
+            <p class="stat-desc">Stocks d'article inactif</p>
         </div>
     </div>
-    <a href="/stock" class="btn btn-dark btn-page">+ Ajouter un nouvel stock</a>
-    <form>
+    <a href="/stock" class="btn btn-dark btn-page">+ Ajouter un nouveau stock</a>
+    <form class="stock-form">
         <label>
             <select class="form-select" name="article" id="artChoice">
-                <option value="0">Toute les articles</option>
+                <option value="0">Tous les articles</option>
                 <?php foreach ($params['articles'] as $article): ?>
                     <option value="<?= $article->getID()?>"><?= $article->getName(); ?></option>
+
                 <?php endforeach; ?>
             </select>
         </label>
@@ -33,22 +34,24 @@
         <table>
             <thead>
             <tr>
-                <th class="table-right">Produit</th>
-                <th class="table-right">Statut</th>
-                <th class="table-right">Quantité</th>
-                <th class="table-right">Date d'achat</th>
-                <th class="table-right">Prix d'achat</th>
-                <th class="table-right">En activite</th>
-
+                <th class="table-center">Produit</th>
+                <th class="table-left">Quantité</th>
+                <th class="table-left">Date d'achat</th>
+                <th class="table-left">Prix d'achat</th>
+                <th class="table-left">En activite</th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params['stocks'] as $stock): ?>
-                <tr>
-                    <?php endif; ?>
-                    </td>
-                </tr>
+            <?php foreach ($params['stocks'] as $stock):?>
+            <tr>
+                <td class="table-center"><?= $stock->getProduct()->getName() ?></td>
+                <td class="table-center"><?= $stock->getQuantity() ?></td>
+                <td class="table-center"><?= $stock->getDate() ?></td>
+                <td class="table-center"><?= $stock->getBuyPrice() ?></td>
+                <td class="table-center"><?= $stock->getActive() ?></td>
+            </tr>
             <?php endforeach; ?>
+
             </tbody>
         </table>
     </div>

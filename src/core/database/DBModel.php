@@ -179,4 +179,32 @@ class DBModel {
         }
         return $result == 0 ? throw new DBException("IMPOSSIBLE D'EFFECTUER LA REQUÊTE") : true;
     }
+    public function columnSum(string $table, string $columnName){
+        try {
+            $this->pdo = DBConnection::getInstance();
+            $query = "SELECT SUM($columnName) from $table";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            return $statement->fetch()[0];
+        } catch (Exception) {
+            throw new DBException("IMPOSSIBLE D'EFFECTUER LA REQUÊTE");
+        } finally {
+            DBConnection::close();
+        }
+
+    }
+    public function columnAvg(string $table, string $columnName){
+        try {
+            $this->pdo = DBConnection::getInstance();
+            $query = "SELECT AVG($columnName) from $table";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            return $statement->fetch();
+        } catch (Exception) {
+            throw new DBException("IMPOSSIBLE D'EFFECTUER LA REQUÊTE");
+        } finally {
+            DBConnection::close();
+        }
+
+    }
 }

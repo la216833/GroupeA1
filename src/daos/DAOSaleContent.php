@@ -133,4 +133,8 @@ class DAOSaleContent implements DAO {
             throw new DBException($e);
         }
     }
+
+    public function sumQuantity(){
+
+    }
 }

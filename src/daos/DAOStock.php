@@ -10,7 +10,7 @@ use CashRegister\models\Stock;
 
 class DAOStock implements DAO
 {
-    const  TABLE = "stock";
+    const TABLE = "stock";
 
     private DBModel $DBModel;
 
@@ -155,5 +155,15 @@ class DAOStock implements DAO
         }catch (DBException $e){
             throw new DBException($e);
         }
+    }
+
+    public function getSumSelledStocks(): float
+    {
+        return $this->DBModel->columnSum("salesContent", "quantity");
+    }
+
+    public function getAvgSelledStocks(): float
+    {
+        return $this->DBModel->columnAvg("salesContent", "quantity");
     }
 }
