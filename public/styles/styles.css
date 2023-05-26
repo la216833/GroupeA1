@@ -795,3 +795,12 @@ a {
 .switch input:checked + span:before {
     left: 34px;
 }
+
+.stock-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.stock-form select{
+    margin-bottom: 5px;
+}
