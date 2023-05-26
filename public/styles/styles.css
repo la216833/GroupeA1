@@ -6,11 +6,12 @@
     --dark-red: #8f0700;
 }
 
+/* ------------------------------ GENERIC CSS ------------------------------ */
+
 body {
     position: relative;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(113.15deg, #FFFDFF 1.09%, #B8BAC2 100%);
-
 }
 
 * {
@@ -57,6 +58,9 @@ a {
     animation-fill-mode: forwards;
 }
 
+.alert-success {
+    background: var(--light);
+}
 
 @keyframes hide{
     0%{
@@ -71,15 +75,13 @@ a {
     }
 }
 
-.alert-success {
-    background: var(--light);
-}
-
 .input-error {
     font-size: .75rem;
     font-style: italic;
     color: var(--danger);
 }
+
+/* ------------------------------ SALE NAVIGATION ------------------------------ */
 
 .nav {
     width: 65.3%;
@@ -94,6 +96,8 @@ a {
     display: none;
 }
 
+/* ------------------------------ GRID ------------------------------ */
+
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -106,6 +110,8 @@ a {
 .grid::-webkit-scrollbar {
     display: none;
 }
+
+/* ------------------------------ BUTTONS CSS ------------------------------ */
 
 .btn {
     display: inline-block;
@@ -183,6 +189,8 @@ a {
     background-color: #07E1FF;
 }
 
+/* ------------------------------ CARDS CSS ------------------------------ */
+
 .card {
     display: block;
     text-align: center;
@@ -220,6 +228,8 @@ a {
     padding: 2px 0;
     width: 150px;
 }
+
+/* ------------------------------ TICKET ------------------------------ */
 
 .table {
     background-color: #fff;
@@ -319,30 +329,13 @@ a {
     cursor: pointer;
     padding-left: 10px;
 }
-/* align problem with minus sign
-.table-delete::after {
-    position: absolute;
-    display: block;
-    content: "";
-    left: 50%;
-    top: 50%;
-    right: 0;
-    bottom: 0;
-    transform: translate(-50%, -50%);
-    background-color: var(--white);
-    width: 8px;
-    height: 2px;
-    z-index: 0;
-}
-*/
+
 .table-footer {
     position: absolute;
     bottom: 0;
     left: 8px;
     width: 97%;
 }
-
-
 
 .table-total p {
     margin: 8px 10px 20px;
@@ -380,6 +373,8 @@ a {
     border-radius: 20px;
     width: 95%;
 }
+
+/* ------------------------------ SIDEBAR MENU ------------------------------ */
 
 .sidebar-btn {
     top: 100px;
@@ -460,6 +455,7 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
+    border-radius: 50%;
 }
 
 .sidebar-profile-pic::after {
@@ -491,6 +487,8 @@ a {
     margin: 10px auto 0;
     width: 80%;
 }
+
+/* ------------------------------ STATS PAGE ------------------------------ */
 
 .stats {
     display: flex;
@@ -547,6 +545,8 @@ a {
     color: var(--dark);
 }
 
+/* ------------------------------ LIST OF ITEMS ------------------------------ */
+
 .list {
     overflow-x: scroll;
     height: 50%;
@@ -587,6 +587,8 @@ a {
     cursor: pointer;
     padding-left: 10px !important;
 }
+
+/* ------------------------------ POST ITEM ------------------------------ */
 
 .status {
     position: relative;
@@ -676,9 +678,7 @@ a {
     display: none;
 }
 
-/*Specific login styles*/
-
-
+/* ------------------------------ LOGIN PAGE ------------------------------ */
 
 .login-form-container{
     display: flex;
@@ -708,7 +708,6 @@ a {
 .login-btn{
     margin: 30px 0;
     width: 300px;
-    /*background-color: var(--dark-red);*/
     height: 50px;
     color: var(--white);
     padding: 10px 20px;
@@ -716,7 +715,7 @@ a {
     letter-spacing: 0.05em;
 }
 
-/*ChartJs CSS*/
+/* ------------------------------ HISTORY ------------------------------ */
 
 .chart-container{
     margin: 20px 0;
@@ -745,6 +744,8 @@ a {
     align-items: center;
 }
 
+/* ------------------------------ CHECK INPUT ------------------------------ */
+
 .switch {
     display: inline-block;
     position: relative;
@@ -754,12 +755,14 @@ a {
     overflow: hidden;
     padding-top: 5px;
 }
+
 .switch input {
     position: absolute;
     left: -100px;
     width: 0;
     height: 0;
 }
+
 .switch input + span {
     position: absolute;
     top: 0;
@@ -770,6 +773,7 @@ a {
     background: var(--light);
     border-radius: 20px;
 }
+
 .switch input + span:before {
     content: "";
     display: inline-block;
@@ -783,9 +787,11 @@ a {
     transform: translateY(-50%);
     transition: all .5s;
 }
+
 .switch input:checked + span {
     background: var(--dark);
 }
+
 .switch input:checked + span:before {
     left: 34px;
 }
