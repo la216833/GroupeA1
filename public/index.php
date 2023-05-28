@@ -50,7 +50,7 @@ $router->map('GET', '/category', 'category#add');
 $router->map('GET', '/category/[i:id]', 'category#get_one');
 $router->map('POST', '/category/[i:id]', 'category#update');
 $router->map('GET', '/category/delete/[i:id]', 'category#delete');
-$router->map('POST', '/category', 'category#post_one');
+$router->map('POST', '/category', 'category#post');
 
 $router->map('GET', '/stocks', 'stock#get');
 $router->map('GET', '/stock', 'stock#add');

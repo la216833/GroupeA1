@@ -40,7 +40,7 @@
                 <td class="table-right"><?= $params['quantity'][$category->getName()]?></td>
                 <td class="table-right">
                     <a class="btn btn-action btn-info" href="/category/<?= $category->getID()?>">Modifier</a>
-                    <a class="btn btn-action btn-red" href="/category-del/<?= $category->getID()?>">Supprimer</a>
+                    <a class="btn btn-action btn-red" href="/category/delete/<?= $category->getID()?>">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -6,7 +6,9 @@ use CashRegister\core\exception\DBException;
 use CashRegister\core\View;
 use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOProduct;
+use CashRegister\daos\DAOStock;
 use CashRegister\models\Category;
+use CashRegister\models\Product;
 
 class CategoryController implements Controller
 {
@@ -22,11 +24,16 @@ class CategoryController implements Controller
 
     public function get(): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try{
             $params['categories'] = $this->DAOCategory->selectAll();
             $params['category_active'] = count($this->DAOCategory->selectWhere(['categoriesActive' => 1]));
-            $params['category_empty'] = 0; // TODO : check the real value
+            $params['category_empty'] = 0;
             $params['category_inactive'] = count($this->DAOCategory->selectWhere(['categoriesActive' => 0]));
             foreach ($params['categories'] as $cat) {
                 $params['quantity'][$cat->getName()] = count($this->DAOProduct->selectWhere(["categoriesID" => $cat->getID
@@ -41,10 +48,14 @@ class CategoryController implements Controller
 
     public function get_one(int $id): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
-            $categoryDao = new DAOCategory();
-            $params['category'] = $categoryDao->selectOne($id);
+            $params['category'] = $this->DAOCategory->selectOne($id);
         }catch (DBException){
             $params['errors'] = "Une erreur est survenue";
         } finally {
@@ -56,6 +67,11 @@ class CategoryController implements Controller
 
     public function add(): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         try {
             $params['categories'] = $this->DAOCategory->selectAll();
@@ -68,6 +84,11 @@ class CategoryController implements Controller
 
     public function post(): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $params = [];
         $data = $_POST;
         if (isset($data)){
@@ -87,7 +108,7 @@ class CategoryController implements Controller
 
                         $status = (bool) $data['status'] ?? true;
 
-                        if (!is_array($params['errors'])){
+                        if (!isset($params['errors'])){
                             $category = new Category(
                                 0,
                                 $name,
@@ -112,6 +133,8 @@ class CategoryController implements Controller
                 $params['errors'] = "Tous les champs doivent être complete";
             }
         }
+        $params['data'] = $data;
+        echo $this->view->render('categoryForm.php', $params);
     }
 
     public function post_one(int $id): void
@@ -121,18 +144,46 @@ class CategoryController implements Controller
 
     public function update(int $id): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         $data = $_POST;
         try {
             $category = $this->DAOCategory->selectOne($id);
             if ($category && isset($data)){
                 $name = htmlentities($data['name']);
                 $description = htmlentities($data['description']);
+                $status = htmlentities($data['status']);
                 if (($name !== $category->getName()) && (strlen($name) > 3 && strlen($name) <= 50))
                     $category->setName($name);
                 if ($description !== $category->getDescription() && strlen($description) <= 100)
                     $category->setDescription($description);
 
-                $this->DAOCategory->update($category);
+                if ($status == 0){
+                    $products = $this->DAOProduct->selectWhere(['categoryID' => $id]);
+                    $productEmpty = 0;
+                    foreach ($products as $product){
+                        $stocks = $this->DAOStock->selectWhere(['productsID' => $product->getID()]);
+                        $stockQuantity = 0;
+                        foreach ($stocks as $stock){
+                            $stockQuantity += $stock->getQuantity();
+                        }
+                        if ($stockQuantity){
+                            $productEmpty++;
+                        }
+                    }
+                    if (!$productEmpty){
+                        $category->setActive(false);
+                        $this->DAOCategory->update($category);
+                    }
+                } else{
+                    $category->setActive(true);
+                    $this->DAOCategory->update($category);
+                }
+
+
             }
         }catch (DBException){
 
@@ -143,6 +194,11 @@ class CategoryController implements Controller
 
     public function delete(int $id): void
     {
+        global $session;
+        if ($session->get('ROLE') !== 'administrator') {
+            header('Location: /');
+            exit();
+        }
         try {
             $category = $this->DAOCategory->selectOne($id);
             if ($category){

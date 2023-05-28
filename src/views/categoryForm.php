@@ -3,12 +3,12 @@
 <?php endif; ?>
 <div class=" container center">
     <img src="https://armetiss.be/img/logo-active.png" alt="" class="add-img">
-    <h2 class="title"><?= empty($params) ? 'Ajouter une catégorie' : 'Modifier la catégorie '?></h2>
+    <h2 class="title"><?= empty($params['category']) ? 'Ajouter une catégorie' : 'Modifier la catégorie '?></h2>
     <form method="post" class="form category-container">
         <div class="form-group">
             <label for="name">Nom
                 <input type="text" name="name" value="<?=
-                empty($params) ? '':
+                empty($params['category']) ? '':
                     $params['category']->getName()
                 ?><?=
                 empty($params['data']) ? '':
