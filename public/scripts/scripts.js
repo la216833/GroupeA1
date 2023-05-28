@@ -28,20 +28,22 @@ if (waitBtn !== null) {
         e.preventDefault();
 
         if (waitBtn.innerHTML === 'Reprendre un ticket') {
-            document.modalForm.action = '/sale/resume';
-            modal.children[0].children[0].innerHTML = 'Sélectionnez un ticket';
+            modal.children[0].children[0].innerHTML = 'Reprendre un ticket en attente';
             modal.children[0].children[1].children[0].style.display = 'inline-block'
-            modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
+            modal.children[0].children[1].children[0].style.display = 'none'
+            modal.children[0].children[1].children[1].children[0].innerHTML = 'Sélectionner un ticket';
             modal.style.display = 'block';
+            document.modalForm.action = '/sale/resume/1';
         } else {
             modal.children[0].children[0].innerHTML = 'Confirmez la mise en attente';
             modal.children[0].children[1].children[0].style.display = 'none'
             modal.children[0].children[1].children[2].style.marginTop = '50px';
             modal.style.display = 'block';
 
+            let id = new Date().getTime().toString()
 
             let json = {
-                id: 0,
+                id: id,
                 products: [],
                 total: 0,
             }
@@ -58,8 +60,6 @@ if (waitBtn !== null) {
             }
             modal.children[0].children[1].children[0].children[1].value = JSON.stringify(json);
 
-            let id = new Date().getTime().toString()
-            json.id = id;
             document.modalForm.action = '/sale/save/' + id;
         }
     })

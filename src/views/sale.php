@@ -1,11 +1,23 @@
+<?php global $session; ?>
+
 <div class="modal" id="modal">
     <div class="modal-content">
         <h1></h1>
         <form id="modalForm" name="modalForm" action="" method="post">
             <div class="form-group">
                 <label for="value"></label>
-                <input id="value" name="value" type="text"> <br>
+                <input id="value" name="value" type="text">
             </div>
+            <?php if (!empty($params['saved'])): ?>
+            <div class="form-group">
+                <label for="save"></label>
+                <select name="save" id="save">
+                    <?php foreach($params['saved'] as $name => $value): ?>
+                    <option value="<?= $name ?>"><?= explode("_", $name)[1] . ' : '. $value . '€'?> </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <?php endif; ?>
             <br>
             <input class="btn btn-large btn-dark btn-space" type="submit" value="Valider">
         </form>
@@ -44,12 +56,36 @@
                     </tr>
                     </thead>
                     <tbody id="table">
+                    <?php if ($session->get('save') !== null && $session->get('save') !== false): ?>
+                        <?php $total = 0.00; ?>
+                        <?php foreach ($session->get('save')->products as $product): ?>
+                        <?php $total += $product->quantity * $product->price; ?>
+                            <tr>
+                                <td class="hide"><?= $product->id ?></td>
+                                <td><?= $product->name ?></td>
+                                <td class="table-right"><?= $product->quantity ?></td>
+                                <td class="table-right"><?= $product->quantity * $product->price ?></td>
+                                <td class="table-delete"></td>
+                                <td class="hide">
+                                    <label>
+                                        <input type="number" name="<?= $product->name ?>" value="<?= $product->id ?>">
+                                    </label>
+                                </td>
+                                <td class="hide">
+                                    <label>
+                                        <input type="number" name="<?= $product->name ?>_QNT" value="<?= $product->quantity ?>">
+                                    </label>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php $session->remove('save'); ?>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             <div class="table-footer">
                 <div class="table-total">
-                    <p>Total <span id="total">0.00 €</span></p>
+                    <p>Total <span id="total"><?= $total ?? '0.00' ?> €</span></p>
                     <div class="table-btn">
                         <button id="" class="btn btn-md btn-red" type="submit">Total</button>
                         <button class="btn btn-sm btn-red" id="showMore">+</button>

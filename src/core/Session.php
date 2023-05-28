@@ -24,7 +24,7 @@ class Session {
         $_SESSION[self::FLASH_KEY] = $flashs;
     }
 
-    public function get(string $key): string | bool {
+    public function get(string $key) {
         return $_SESSION[$key] ?? false;
     }
 

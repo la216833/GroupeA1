@@ -4,7 +4,6 @@ namespace CashRegister\controllers;
 
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\exception\DBException;
-use CashRegister\core\Session;
 use CashRegister\core\View;
 use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOClient;
@@ -46,6 +45,7 @@ class SaleController implements Controller {
             header('Location: /login');
             exit();
         }
+
         $params = [];
         try {
             $params['categories'] = $this->DAOCategory->selectWhere(["categoriesActive" => true]);
@@ -57,8 +57,14 @@ class SaleController implements Controller {
             $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
             ->fetchAll();
             $params['number'] = isset($current[0][0]) ? $current[0][0] + 1 : 1;
+            $params['saved'] = [];
+            foreach ($_COOKIE as $name => $value) {
+                if (str_contains($name, 'SALE')) {
+                    $value = json_decode($value);
+                    $params['saved'] = array_merge($params['saved'], [$name => $value->total]);
+                }
+            }
         } catch (DBException) {
-
             $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
         }
         echo $this->view->render('sale.php', $params);
@@ -66,8 +72,7 @@ class SaleController implements Controller {
 
     public function get_one(int $id): void {
         $data = $_POST['value'];
-        var_dump($data);
-        setcookie('SALE_'.$id, $data, time() + (60 * 60 * 24));
+        setcookie('SALE_'.$id, $data, time() + (60 * 60 * 24), "/");
         header('Location: /');
     }
 
@@ -76,7 +81,12 @@ class SaleController implements Controller {
     }
 
     public function post_one(int $id): void {
-        // TODO: Implement post_one() method.
+        global $session;
+        $name = $_POST['save'];
+        $session->set('save', json_decode($_COOKIE[$name]));
+        unset($_COOKIE[$name]);
+        setcookie($name, null, -1, "/");
+        header('Location: /');
     }
 
     public function post(): void {
@@ -96,7 +106,6 @@ class SaleController implements Controller {
                         $quantity = 0;
                         foreach ($stocks as $stock)
                             $quantity += $stock->getQuantity();
-
 
                         if ($quantity < (int) $products[$name.'_QNT']) {
                             $available = false;
