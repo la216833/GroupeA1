@@ -57,6 +57,7 @@ $router->map('POST', '/category', 'category#post');
 $router->map('GET', '/stocks', 'stock#get');
 $router->map('GET', '/stock', 'stock#add');
 $router->map('POST', '/stock', 'stock#post');
+$router->map('GET', '/stock', 'stock#get_form');
 
 $router->map('GET', '/login', 'login#get');
 $router->map('POST', '/login', 'login#post');
