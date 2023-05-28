@@ -4,6 +4,7 @@ namespace CashRegister\controllers;
 
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\exception\DBException;
+use CashRegister\core\Session;
 use CashRegister\core\View;
 use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOClient;
@@ -46,11 +47,20 @@ class SaleController implements Controller {
             exit();
         }
         $params = [];
-        $params['categories'] = $this->DAOCategory->selectAll();
-        $params['products'] = $this->DAOProduct->selectAll();
-        $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
+        try {
+            $params['categories'] = $this->DAOCategory->selectWhere(["categoriesActive" => true]);
+            $params['products'] = [];
+            foreach ($params['categories'] as $cat) {
+                $params['products'] = array_merge($params['products'], $this->DAOProduct->selectWhere(["categoriesID"
+                => $cat->getID()]));
+            }
+            $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
             ->fetchAll();
-        $params['number'] = isset($current[0][0]) ? $current[0][0] + 1 : 1;
+            $params['number'] = isset($current[0][0]) ? $current[0][0] + 1 : 1;
+        } catch (DBException) {
+
+            $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
+        }
         echo $this->view->render('sale.php', $params);
     }
 
@@ -90,6 +100,7 @@ class SaleController implements Controller {
                             break;
                         }
                     } catch (DBException) {
+                        $session['FLASH_KEY']['error'] = "Une erreur de connexion à la base de donnée est survenue";
                     }
                 }
             }
@@ -118,7 +129,9 @@ class SaleController implements Controller {
                     }
                     $sale->setAmount($price);
                     $this->DAOSale->update($sale);
-                } catch (DBException) {}
+                } catch (DBException) {
+                    $session['FLASH_KEY']['error'] = "Une erreur de connexion à la base de donnée est survenue";
+                }
             }
         }
     }

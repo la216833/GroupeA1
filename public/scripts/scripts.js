@@ -8,6 +8,21 @@ const sidebarBtn = document.getElementById('sidebarBtn');   // Sidebar button to
 const navBtns = document.getElementById('nav');             // Category navigation on sale products
 const catChoice = document.getElementById('catChoice');     // Select input to chose category
 const userChoice = document.getElementById('userChoice');   // Select input to chose role
+const clearCartBtn = document.getElementById('clearCart');
+const waitBtn = document.getElementById('waitBtn');
+
+/*
+* Remove all element from table
+*
+* Event Listener that clear the table
+*
+* */
+if (clearCartBtn !== null) {
+    clearCartBtn.addEventListener('click', e => {
+        e.preventDefault();
+        table.innerHTML = ''
+    })
+}
 
 /*
 * Show or hide content
@@ -16,9 +31,12 @@ const userChoice = document.getElementById('userChoice');   // Select input to c
 *
 * */
 if (btn != null) {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
         plusContent.classList.toggle('show');
         btn.innerHTML = btn.innerHTML === "+" ? "-": "+";
+        table.children.length === 0 ? waitBtn.innerHTML = 'Reprendre un ticket' : waitBtn.innerHTML = 'Mettre en' +
+            ' attente' ;
     })
 }
 
@@ -70,7 +88,6 @@ if (sidebarBtn != null) {
         sidebarBtn.classList.toggle('enable');
         sidebar.classList.toggle('show');
         sidebarBtn.innerHTML = sidebarBtn.classList.contains('enable') ? "<": ">";
-
     })
 }
 

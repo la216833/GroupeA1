@@ -23,7 +23,8 @@ global$session;
             <div class="sidebar-content">
                 <?php if ($session->get('ROLE') === 'administrator'): ?>
                 <a class="btn btn-md btn-light" href="/categories">Categories</a>
-                <a class="btn btn-md btn-light" href="/products">Articles</a>
+                <a class="btn btn-md btn-light" href="/products">Produits</a>
+                <a class="btn btn-md btn-light" href="/stocks">Stocks</a>
                 <a class="btn btn-md btn-light" href="/users">Utilisateurs</a>
                 <?php endif; ?>
                 <a class="btn btn-md btn-light" href="/history">Historique</a>
@@ -40,6 +41,12 @@ global$session;
             </div>
         </div>
     </div>
+<?php endif; ?>
+
+<?php if ($session->getFlash('error')) : ?>
+<div class="alert alert-danger">
+    <?= $session->getFlash('error')?>
+</div>
 <?php endif; ?>
 
 {{content}}

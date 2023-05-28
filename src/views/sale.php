@@ -41,10 +41,12 @@
                     </div>
                 </div>
                 <div class="table-plus" id="plusContent">
-                    <button class="btn btn-md btn-dark btn-space">Mettre en attente</button>
-                    <button class="btn btn-md btn-dark btn-space">Retour article</button>
-                    <button class="btn btn-md btn-dark btn-space">Avancer les articles</button>
-                    <button class="btn btn-md btn-dark btn-space">Annuler</button>
+                    <button id="waitBtn" class="btn btn-md btn-dark btn-space">Mettre en attente</button>
+                    <button onclick="location.href='/product/back'" class="btn btn-md btn-dark btn-space">Retour
+                        article</button>
+                    <button onclick="location.href='/product/sold'" class="btn btn-md btn-dark btn-space">Avancer les
+                        articles</button>
+                    <button id="clearCart" class="btn btn-md btn-dark btn-space">Annuler</button>
                 </div>
             </div>
         </div>

@@ -104,6 +104,7 @@ a {
     width: 66%;
     height: calc(100% - 70px);
     margin-top: 20px;
+    overflow-x: hidden;
     overflow-y: scroll;
 }
 
