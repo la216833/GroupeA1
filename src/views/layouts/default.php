@@ -44,8 +44,9 @@ global$session;
 <?php endif; ?>
 
 <?php if ($session->getFlash('error')) : ?>
-<div class="alert alert-danger">
-    <?= $session->getFlash('error')?>
+<div class="alert-error">
+    <h1>Erreur</h1>
+    <p><?= $session->getFlash('error')?></p>
 </div>
 <?php endif; ?>
 
