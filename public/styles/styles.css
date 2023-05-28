@@ -90,6 +90,7 @@ a {
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
+    scrollbar-width: none;
 }
 
 .nav::-webkit-scrollbar {
@@ -106,6 +107,7 @@ a {
     margin-top: 20px;
     overflow-x: hidden;
     overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .grid::-webkit-scrollbar {
@@ -268,6 +270,7 @@ a {
     height: calc(100% - 245px);
     overflow-y: scroll;
     overscroll-behavior-inline: contain;
+    scrollbar-width: none;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -554,6 +557,7 @@ a {
     margin-top: 20px;
     border-radius: 15px;
     background: var(--white);
+    scrollbar-width: none;
 }
 
 .list::-webkit-scrollbar {
