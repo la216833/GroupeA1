@@ -82,7 +82,6 @@ if (backBtn !== null) {
         modal.children[0].children[1].children[1].style.display = 'none'
         modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
         modal.children[0].children[1].children[0].children[1].value = ''
-        console.log(modal.children[0].children[1].children[1].children[1])
         modal.children[0].children[1].children[1].children[1].children[0].value = JSON.stringify(cartContent());
         modal.style.display = 'block';
     })
@@ -91,7 +90,25 @@ if (backBtn !== null) {
 if (soldBtn !== null) {
     soldBtn.addEventListener('click', e => {
         e.preventDefault();
-        location.href = "/sale/advance"
+        if (soldBtn.innerHTML === 'Avancer les articles') {
+            modal.children[0].children[0].innerHTML = 'Confirmer l\'avance';
+            modal.children[0].children[1].children[1].style.display = 'none'
+            modal.children[0].children[1].children[0].style.display = 'none'
+            modal.children[0].children[1].children[0].children[1].value = ''
+            modal.children[0].children[1].children[1].children[1].children[0].value = JSON.stringify(cartContent());
+            modal.style.display = 'block';
+            document.modalForm.action = '/sale/advance';
+        } else {
+            modal.children[0].children[0].innerHTML = 'Payer un retard';
+            modal.children[0].children[1].children[0].style.display = 'inline-block'
+            modal.children[0].children[1].children[1].style.display = 'none'
+            modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
+            modal.children[0].children[1].children[0].children[1].value = ''
+            modal.children[0].children[1].children[2].style.marginTop = '50px';
+            modal.children[0].children[1].children[1].children[1].children[0].value = ''
+            modal.style.display = 'block';
+            document.modalForm.action = '/sale/advance/1';
+        }
     })
 }
 
@@ -122,6 +139,9 @@ if (btn != null) {
         btn.innerHTML = btn.innerHTML === "+" ? "-": "+";
         table.children.length === 0 ? waitBtn.innerHTML = 'Reprendre un ticket' : waitBtn.innerHTML = 'Mettre en' +
             ' attente' ;
+
+        table.children.length === 0 ?  soldBtn.innerHTML = 'Payer un retard' : soldBtn.innerHTML = 'Avancer les' +
+            ' articles' ;
     })
 }
 

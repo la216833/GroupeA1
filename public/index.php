@@ -19,6 +19,9 @@ if (!file_exists($path)) {
     $config->install();
 }
 
+date_default_timezone_set('Europe/Brussels');
+
+
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
@@ -32,6 +35,7 @@ $router->map('POST', '/sale/save/[i:id]', 'sale#get_one');
 $router->map('POST', '/sale/resume/[i:id]', 'sale#post_one');
 $router->map('POST', '/sale/return/[i:id]', 'sale#update');
 $router->map('POST', '/sale/advance', 'sale#add');
+$router->map('POST', '/sale/advance/[i:id]', 'sale#delete');
 
 $router->map('GET', '/products', 'product#get');
 $router->map('GET', '/product', 'product#add');

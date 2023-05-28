@@ -71,13 +71,48 @@ class SaleController implements Controller {
     }
 
     public function get_one(int $id): void {
+        global $session;
         $data = $_POST['value'];
         setcookie('SALE_'.$id, $data, time() + (60 * 60 * 24), "/");
         header('Location: /');
     }
 
     public function add(): void {
-        // TODO: Implement add() method.
+        global $session;
+        if (!$session->get('USER')) {
+            header('Location: /login');
+            exit();
+        }
+
+        $products = json_decode($_POST['save'])->products;
+        try {
+            $user = $this->DAOUser->selectOne((int) $session->get('USER'));
+            $date = date("Y-m-d H-m-s");
+            $client = $this->DAOClient->selectOne(1);
+            $sale = new Sale(0, $date, 0, '', $user, $client);
+            $this->DAOSale->insert($sale);
+            $sale = $this->DAOSale->selectWhere(['salesDate' => $date])[0];
+            $price = 0;
+            foreach ($products as $p) {
+                $quantity = $p->quantity;
+                $product = $this->DAOProduct->selectOne($p->id);
+                $stocks = $this->DAOStock->selectWhere(['productsID' => $product->getID()]);
+                $stock = $stocks[0];
+                $stock->setQuantity($stock->getQuantity() - $quantity);
+                $this->DAOStock->update($stock);
+
+                $saleContent = new SaleContent($product, $sale, $quantity);
+                $this->DAOSaleContent->insert($saleContent);
+                $price += $quantity * $product->getPrice();
+            }
+            $sale->setDescription("La somme est de [$price]");
+            $this->DAOSale->update($sale);
+        } catch (DBException) {
+            $session->setFlash('error', 'Une erreur est survenue');
+        } finally {
+            header('Location: /');
+        }
+
     }
 
     public function post_one(int $id): void {
@@ -113,7 +148,7 @@ class SaleController implements Controller {
                             break;
                         }
                     } catch (DBException) {
-                        $session['FLASH_KEY']['error'] = "Une erreur de connexion à la base de donnée est survenue";
+                        $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
                     }
                 }
             }
@@ -143,7 +178,7 @@ class SaleController implements Controller {
                     $sale->setAmount($price);
                     $this->DAOSale->update($sale);
                 } catch (DBException) {
-                    $session['FLASH_KEY']['error'] = "Une erreur de connexion à la base de donnée est survenue";
+                    $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
                 } finally {
                     header('Location: /');
                 }
@@ -153,6 +188,8 @@ class SaleController implements Controller {
 
     public function update(int $id): void {
         global $session;
+        $session->setFlash('error', '');
+        $session->setFlash('success', '');
         if ($session->get('ROLE') !== 'administrator' && $session->get('ROLE') !== 'manager') {
             header('Location: /');
             exit();
@@ -196,6 +233,24 @@ class SaleController implements Controller {
     }
 
     public function delete(int $id): void {
-        // TODO: Implement delete() method.
+        global $session;
+        if (!$session->get('USER')) {
+            header('Location: /login');
+            exit();
+        }
+        $saleID = $_POST['value'];
+        try {
+            $sale = $this->DAOSale->selectOne((int) $saleID);
+            $amount = $sale->getDescription();
+            $amount = explode("[", $amount)[1];
+            $amount = (float) explode("]", $amount)[0];
+            $sale->setAmount($amount);
+            $sale->setDescription('Le paiement a été effectué le '. date("d-m-Y à H:m:s"));
+            $this->DAOSale->update($sale);
+        } catch (DBException) {
+            $session->setFlash('error', 'Une erreur est survenue');
+        } finally {
+            header('Location: /');
+        }
     }
 }

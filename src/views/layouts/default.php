@@ -50,6 +50,13 @@ global$session;
 </div>
 <?php endif; ?>
 
+<?php if ($session->getFlash('success')) : ?>
+    <div class="alert-success">
+        <h1>Réussi</h1>
+        <p><?= $session->getFlash('error')?></p>
+    </div>
+<?php endif; ?>
+
 {{content}}
 
 </body>
