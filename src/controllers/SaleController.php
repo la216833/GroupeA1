@@ -95,6 +95,7 @@ class SaleController implements Controller {
             header('Location: /login');
             exit();
         }
+
         if (!empty($_POST)) {
             $products = $_POST;
             $available = true;
@@ -120,9 +121,9 @@ class SaleController implements Controller {
             if ($available) {
                 $price = 0;
                 try {
-                    $user = $this->DAOUser->selectOne(1);
-                    $client = $this->DAOClient->selectOne(1);
+                    $user = $this->DAOUser->selectOne((int) $session->get('USER'));
                     $date = date("Y-m-d H-m-s");
+                    $client = $this->DAOClient->selectOne(1);
                     $sale = new Sale(0, $date, 0, '', $user, $client);
                     $this->DAOSale->insert($sale);
                     $sale = $this->DAOSale->selectWhere(['salesDate' => $date])[0];
@@ -143,13 +144,55 @@ class SaleController implements Controller {
                     $this->DAOSale->update($sale);
                 } catch (DBException) {
                     $session['FLASH_KEY']['error'] = "Une erreur de connexion à la base de donnée est survenue";
+                } finally {
+                    header('Location: /');
                 }
             }
         }
     }
 
     public function update(int $id): void {
-        // TODO: Implement update() method.
+        global $session;
+        if ($session->get('ROLE') !== 'administrator' && $session->get('ROLE') !== 'manager') {
+            header('Location: /');
+            exit();
+        }
+        $saleID = (int) $_POST['value'];
+        $products = $_POST['save'];
+        if (!empty($products)) {
+            try {
+                $user = $this->DAOUser->selectOne((int) $session->get('USER'));
+                $date = date("Y-m-d H-m-s");
+                $client = $this->DAOClient->selectOne(1);
+                $sale = new Sale(0, $date, 0, 'Retour de la vente '.$saleID, $user, $client);
+                $this->DAOSale->insert($sale);
+                $sale = $this->DAOSale->selectWhere(['salesDate' => $date])[0];
+                $products = json_decode($products)->products;
+                $total = 0;
+                foreach ($products as $product) {
+                    $p = $this->DAOProduct->selectOne($product->id);
+                    $stocks = $this->DAOStock->selectWhere(['productsID' => $p->getID()]);
+                    foreach ($stocks as $stock) {
+                        if ($stock->getQuantity() >=0) {
+                            $stock->setQuantity($stock->getQuantity() + $product->quantity);
+                            $this->DAOStock->update($stock);
+                            break;
+                        }
+                    }
+                    $saleContent = new SaleContent($p, $sale, $product->quantity);
+                    $this->DAOSaleContent->insert($saleContent);
+                    $total += $product->price;
+                }
+                $sale->setAmount(0 - $total);
+                $this->DAOSale->update($sale);
+            } catch (DBException) {
+                $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
+            }
+        } else {
+            $session->setFlash('error', "Sélectionner les produits à retourner");
+        }
+
+        header('Location: /');
     }
 
     public function delete(int $id): void {

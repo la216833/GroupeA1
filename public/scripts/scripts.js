@@ -22,6 +22,29 @@ if (closeBtn !== null) {
     });
 }
 
+function cartContent() {
+    let id = new Date().getTime().toString()
+
+    let json = {
+        id: id,
+        products: [],
+        total: 0,
+    }
+
+    for (let i = 0; i < table.children.length; i++) {
+        let product = {
+            id: parseInt(table.children[i].children[0].innerHTML),
+            name: table.children[i].children[1].innerHTML,
+            quantity: parseInt(table.children[i].children[2].innerHTML),
+            price: parseFloat(table.children[i].children[3].innerHTML) / parseInt(table.children[i].children[2].innerHTML)
+        }
+        json.products.push(product)
+        json.total += parseFloat(table.children[i].children[3].innerHTML)
+    }
+
+    return json;
+}
+
 
 if (waitBtn !== null) {
     waitBtn.addEventListener('click', e => {
@@ -29,38 +52,23 @@ if (waitBtn !== null) {
 
         if (waitBtn.innerHTML === 'Reprendre un ticket') {
             modal.children[0].children[0].innerHTML = 'Reprendre un ticket en attente';
-            modal.children[0].children[1].children[0].style.display = 'inline-block'
+            modal.children[0].children[1].children[1].style.display = 'inline-block'
             modal.children[0].children[1].children[0].style.display = 'none'
             modal.children[0].children[1].children[1].children[0].innerHTML = 'Sélectionner un ticket';
             modal.style.display = 'block';
             document.modalForm.action = '/sale/resume/1';
         } else {
             modal.children[0].children[0].innerHTML = 'Confirmez la mise en attente';
+            modal.children[0].children[1].children[1].style.display = 'none'
             modal.children[0].children[1].children[0].style.display = 'none'
             modal.children[0].children[1].children[2].style.marginTop = '50px';
             modal.style.display = 'block';
 
-            let id = new Date().getTime().toString()
+            const json = cartContent();
 
-            let json = {
-                id: id,
-                products: [],
-                total: 0,
-            }
-
-            for (let i = 0; i < table.children.length; i++) {
-                let product = {
-                    id: parseInt(table.children[i].children[0].innerHTML),
-                    name: table.children[i].children[1].innerHTML,
-                    quantity: parseInt(table.children[i].children[2].innerHTML),
-                    price: parseFloat(table.children[i].children[3].innerHTML) / parseInt(table.children[i].children[2].innerHTML)
-                }
-                json.products.push(product)
-                json.total += parseFloat(table.children[i].children[3].innerHTML)
-            }
             modal.children[0].children[1].children[0].children[1].value = JSON.stringify(json);
 
-            document.modalForm.action = '/sale/save/' + id;
+            document.modalForm.action = '/sale/save/' + json.id;
         }
     })
 }
@@ -68,10 +76,14 @@ if (waitBtn !== null) {
 if (backBtn !== null) {
     backBtn.addEventListener('click', e => {
         e.preventDefault();
-        document.modalForm.action = '/sale/return';
+        document.modalForm.action = '/sale/return/1';
         modal.children[0].children[0].innerHTML = 'Retour article(s)';
         modal.children[0].children[1].children[0].style.display = 'inline-block'
+        modal.children[0].children[1].children[1].style.display = 'none'
         modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
+        modal.children[0].children[1].children[0].children[1].value = ''
+        console.log(modal.children[0].children[1].children[1].children[1])
+        modal.children[0].children[1].children[1].children[1].children[0].value = JSON.stringify(cartContent());
         modal.style.display = 'block';
     })
 }
@@ -93,6 +105,7 @@ if (clearCartBtn !== null) {
     clearCartBtn.addEventListener('click', e => {
         e.preventDefault();
         table.innerHTML = ''
+        totalText.innerHTML = '0.00 €'
     })
 }
 
@@ -134,15 +147,15 @@ if (table != null) {
     table.addEventListener('click', event => {
         if(event.target.classList.value === 'table-delete') {
             const row = event.target.closest('tr')
-            let quantity = parseInt(row.childNodes[2].innerHTML)
-            let price = parseFloat(row.childNodes[3].innerHTML)
+            let quantity = parseInt(row.children[2].innerHTML)
+            let price = parseFloat(row.children[3].innerHTML)
             if (quantity === 1) {
                 table.removeChild(row)
             }
 
-            row.childNodes[2].innerHTML = (quantity - 1)
-            row.childNodes[6].childNodes[0].value -= 1;
-            row.childNodes[3].innerHTML = (price - price/quantity).toFixed(2)
+            row.children[2].innerHTML = (quantity - 1)
+            row.children[6].children[0].value -= 1;
+            row.children[3].innerHTML = (price - price/quantity).toFixed(2)
             total();
         }
 
@@ -295,22 +308,16 @@ if (productChoice != null) {
 function addToCart(card) {
     let exist = false;
     let quantity = 1;
-    let price = parseFloat(card.childNodes[5].innerHTML.slice(0, -1));
-
-    for (let i = 0; i < table.childNodes.length; i++) {
-        if (table.childNodes[i].nodeName === 'TR') {
-            for (let j = 0; j < table.childNodes[i].childNodes.length; j++) {
-                if (table.childNodes[i].childNodes[j].nodeName === 'TD') {
-                    if (table.childNodes[i].childNodes[j].classList[0] === 'hide')
-                        if(table.childNodes[i].childNodes[j].innerHTML === card.id) {
-                            quantity = parseInt(table.childNodes[i].childNodes[2].innerHTML) + 1;
-                            table.childNodes[i].childNodes[2].innerHTML = quantity;
-                            table.childNodes[i].childNodes[6].childNodes[0].value = quantity;
-                            table.childNodes[i].childNodes[3].innerHTML = (quantity * price).toFixed(2);
-                            exist = true;
-                            break;
-                        }
-                }
+    let price = parseFloat(card.children[2].innerHTML.slice(0, -1));
+    for (let i = 0; i < table.children.length; i++) {
+        for (let j = 0; j < table.children[i].children.length; j++) {
+            if (table.children[i].children[0].innerHTML === card.id) {
+                quantity = parseInt(table.children[i].children[2].innerHTML) + 1;
+                table.children[i].children[2].innerHTML = quantity.toString();
+                table.children[i].children[6].children[0].value = quantity.toString();
+                table.children[i].children[3].innerHTML = (quantity * price).toFixed(2);
+                exist = true;
+                break;
             }
         }
     }

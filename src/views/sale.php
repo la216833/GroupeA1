@@ -67,14 +67,10 @@
                                 <td class="table-right"><?= $product->quantity * $product->price ?></td>
                                 <td class="table-delete"></td>
                                 <td class="hide">
-                                    <label>
-                                        <input type="number" name="<?= $product->name ?>" value="<?= $product->id ?>">
-                                    </label>
+                                    <input type="number" name="<?= $product->name ?>" value="<?= $product->id ?>">
                                 </td>
                                 <td class="hide">
-                                    <label>
-                                        <input type="number" name="<?= $product->name ?>_QNT" value="<?= $product->quantity ?>">
-                                    </label>
+                                    <input type="number" name="<?= $product->name ?>_QNT" value="<?= $product->quantity ?>">
                                 </td>
                             </tr>
                         <?php endforeach; ?>

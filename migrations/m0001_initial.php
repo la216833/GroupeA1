@@ -75,7 +75,7 @@ class m0001_initial {
         CREATE TABLE IF NOT EXISTS sales (
             salesID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
             salesDate DATETIME NOT NULL,
-            salesAmount DECIMAL(9,3) UNSIGNED NOT NULL,
+            salesAmount DECIMAL(9,3) NOT NULL,
             salesDescription TEXT,
             usersID INT UNSIGNED NOT NULL,
             clientsID INT UNSIGNED,
