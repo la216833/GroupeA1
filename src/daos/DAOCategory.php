@@ -11,6 +11,7 @@ class DAOCategory implements DAO
 
     private DBModel $DBModel;
     const TABLE = "categories";
+    private array $params = [];
 
 
     public function __construct()
@@ -57,8 +58,7 @@ class DAOCategory implements DAO
         try {
 
             $tab = $this->DBModel->selectOne(self::TABLE, $id);
-            $returnedCategory = new Category($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"],$tab["categoriesActive"]);
-            return $returnedCategory;
+            return new Category($tab["categoriesID"],$tab["categoriesName"],$tab["categoriesDescription"],$tab["categoriesActive"]);
 
         }catch (DBException $e){
 
@@ -139,11 +139,9 @@ class DAOCategory implements DAO
         ];
 
         try {
-
             return $this->DBModel->update(self::TABLE, $this->params);
-
-            throw new DBException($e);
         }catch (DBException $e){
+            throw new DBException($e);
         }
     }
 

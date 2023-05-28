@@ -21,8 +21,11 @@
         <div class="form-group">
             <label for="description">Description
                 <input type="text" name="description" value="<?=
+                empty($params['category']) ? '':
+                    $params['category']->getDescription()
+                ?><?=
                 empty($params['data']) ? '':
-                    $params['data']['description']?>">
+                    $params['data']['name']?>">
                 <?php if (isset($params['errors']['description'])): ?>
                     <span class="input-error">*<?= $params['errors']['description'] ?></span>
                 <?php endif;?>

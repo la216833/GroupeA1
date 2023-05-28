@@ -23,6 +23,8 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
 $session = new Session();
+$session->setFlash('error', '');
+$session->setFlash('errors', '');
 
 $router = new AltoRouter();
 

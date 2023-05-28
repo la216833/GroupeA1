@@ -8,7 +8,6 @@ use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOProduct;
 use CashRegister\daos\DAOStock;
 use CashRegister\models\Category;
-use CashRegister\models\Product;
 
 class CategoryController implements Controller
 {
@@ -16,10 +15,13 @@ class CategoryController implements Controller
     private View $view;
     private DAOCategory $DAOCategory;
     private DAOProduct $DAOProduct;
+    private DAOStock $DAOStock;
+
     public function __construct() {
         $this->view = new View();
         $this->DAOCategory = new DAOCategory();
         $this->DAOProduct = new DAOProduct();
+        $this->DAOStock = new DAOStock();
     }
 
     public function get(): void
@@ -182,11 +184,9 @@ class CategoryController implements Controller
                     $category->setActive(true);
                     $this->DAOCategory->update($category);
                 }
-
-
             }
         }catch (DBException){
-
+            $session->setFlash('error', 'Une erreur avec la base de donnée est survenue');
         }finally{
             header('location: /categories');
         }
