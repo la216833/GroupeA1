@@ -8,6 +8,7 @@ const sidebarBtn = document.getElementById('sidebarBtn');   // Sidebar button to
 const navBtns = document.getElementById('nav');             // Category navigation on sale products
 const catChoice = document.getElementById('catChoice');     // Select input to chose category
 const userChoice = document.getElementById('userChoice');   // Select input to chose role
+const productChoice = document.getElementById('artChoice');   // Select input to chose role
 const clearCartBtn = document.getElementById('clearCart');
 const waitBtn = document.getElementById('waitBtn');
 
@@ -181,6 +182,33 @@ if (userChoice != null) {
                 }
             } else {
                 users[i].style.display = 'table-row';
+            }
+        }
+    })
+}
+
+/*
+* Load users by role
+*
+* Event Listener that hides and shows users in list (table tag)
+* depending on the role selected
+*
+* */
+if (productChoice != null) {
+    productChoice.addEventListener('change', () => {
+        const type = productChoice.value
+        const table = document.getElementsByTagName('table')
+        const products = table[0].children[1].children;
+        for (let i = 0; i < products.length; i++) {
+            const productType =  products[i].children[0].innerHTML;
+            if (type !== '0') {
+                if (productType !== type) {
+                    products[i].style.display = 'none';
+                } else {
+                    products[i].style.display = 'table-row';
+                }
+            } else {
+                products[i].style.display = 'table-row';
             }
         }
     })

@@ -24,7 +24,6 @@
                 <option value="0">Tous les articles</option>
                 <?php foreach ($params['articles'] as $article): ?>
                     <option value="<?= $article->getID()?>"><?= $article->getName(); ?></option>
-
                 <?php endforeach; ?>
             </select>
         </label>
@@ -42,15 +41,16 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params['stocks'] as $stock):?>
-            <tr>
-                <td class="table-center"><?= $stock->getProduct()->getName() ?></td>
-                <td class="table-center"><?= $stock->getQuantity() ?></td>
-                <td class="table-center"><?= $stock->getDate() ?></td>
-                <td class="table-center"><?= $stock->getBuyPrice() ?></td>
-                <td class="table-center"><?= $stock->getActive() ?></td>
-            </tr>
-            <?php endforeach; ?>
+                <?php foreach ($params['stocks'] as $stock):?>
+                <tr>
+                    <td class="hide"><?= $stock->getProduct()->getID()?></td>
+                    <td class="table-center list-large"><?= $stock->getProduct()->getName() ?></td>
+                    <td class="table-center"><?= $stock->getQuantity() ?></td>
+                    <td class="table-center"><?= $stock->getDate() ?></td>
+                    <td class="table-center"><?= $stock->getBuyPrice() ?></td>
+                    <td class="table-center"><?= $stock->getActive() ?></td>
+                </tr>
+                <?php endforeach; ?>
 
             </tbody>
         </table>
