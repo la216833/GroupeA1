@@ -805,3 +805,32 @@ a {
 .stock-form select{
     margin-bottom: 5px;
 }
+
+/* ------------------------------ MODAL ------------------------------ */
+
+.modal {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    display: none;
+}
+
+.modal-content {
+    position: absolute;
+    background: var(--white);
+    display: block;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 200px;
+    border-radius: 20px;
+    text-align: center;
+    padding: 20px;
+}

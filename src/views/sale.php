@@ -1,3 +1,18 @@
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h1></h1>
+        <form id="modalForm" name="modalForm" action="" method="post">
+            <div class="form-group">
+                <label for="value"></label>
+                <input id="value" name="value" type="text"> <br>
+            </div>
+            <br>
+            <input class="btn btn-large btn-dark btn-space" type="submit" value="Valider">
+        </form>
+        <button id="closeModal" class="btn btn-large btn-red btn-space">Annuler</button>
+    </div>
+</div>
+
 <div class="container">
     <nav class="nav" id="nav">
         <button class="btn btn-lg btn-active" aria-details="all">Tous les produits</button>
@@ -36,17 +51,18 @@
                 <div class="table-total">
                     <p>Total <span id="total">0.00 €</span></p>
                     <div class="table-btn">
-                        <button id="" class="btn btn-md btn-red" type="submit" onclick="location.href='/products'">Total</button>
+                        <button id="" class="btn btn-md btn-red" type="submit">Total</button>
                         <button class="btn btn-sm btn-red" id="showMore">+</button>
                     </div>
                 </div>
                 <div class="table-plus" id="plusContent">
-                    <button id="waitBtn" class="btn btn-md btn-dark btn-space">Mettre en attente</button>
-                    <button onclick="location.href='/product/back'" class="btn btn-md btn-dark btn-space">Retour
+                    <button id="waitBtn" class="btn btn-md btn-dark btn-space">Mettre en
+                        attente</button>
+                    <button id="backBtn"  class="btn btn-md btn-dark btn-space">Retour
                         article</button>
-                    <button onclick="location.href='/product/sold'" class="btn btn-md btn-dark btn-space">Avancer les
+                    <button id="soldBtn" class="btn btn-md btn-dark btn-space">Avancer les
                         articles</button>
-                    <button id="clearCart" class="btn btn-md btn-dark btn-space">Annuler</button>
+                    <button id="clearCartBtn" class="btn btn-md btn-dark btn-space">Annuler</button>
                 </div>
             </div>
         </div>

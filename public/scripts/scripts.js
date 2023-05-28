@@ -1,16 +1,87 @@
-const btn = document.getElementById('showMore');            // Btn to show more options on ticket
-const plusContent = document.getElementById('plusContent'); // Additional command related to btn
-const products = document.getElementById('products');       // Products in the grid
-const table = document.getElementById('table');             // Ticket table
-const totalText = document.getElementById('total');         // Text to modify current amount
-const sidebar = document.getElementById('sidebar');         // Sidebar menu content
-const sidebarBtn = document.getElementById('sidebarBtn');   // Sidebar button to show menu
-const navBtns = document.getElementById('nav');             // Category navigation on sale products
-const catChoice = document.getElementById('catChoice');     // Select input to chose category
-const userChoice = document.getElementById('userChoice');   // Select input to chose role
-const productChoice = document.getElementById('artChoice');   // Select input to chose role
-const clearCartBtn = document.getElementById('clearCart');
-const waitBtn = document.getElementById('waitBtn');
+const btn = document.getElementById('showMore');                // Btn to show more options on ticket
+const plusContent = document.getElementById('plusContent');     // Additional command related to btn
+const products = document.getElementById('products');           // Products in the grid
+const table = document.getElementById('table');                 // Ticket table
+const totalText = document.getElementById('total');             // Text to modify current amount
+const sidebar = document.getElementById('sidebar');             // Sidebar menu content
+const sidebarBtn = document.getElementById('sidebarBtn');       // Sidebar button to show menu
+const navBtns = document.getElementById('nav');                 // Category navigation on sale products
+const catChoice = document.getElementById('catChoice');         // Select input to chose category
+const userChoice = document.getElementById('userChoice');       // Select input to chose role
+const productChoice = document.getElementById('artChoice');     // Select input to chose role
+const clearCartBtn = document.getElementById('clearCartBtn');   //
+const waitBtn = document.getElementById('waitBtn');             //
+const backBtn = document.getElementById('backBtn');             //
+const soldBtn = document.getElementById('soldBtn');             //
+const modal = document.getElementById('modal');                 //
+const closeBtn = document.getElementById('closeModal');
+
+if (closeBtn !== null) {
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+}
+
+
+if (waitBtn !== null) {
+    waitBtn.addEventListener('click', e => {
+        e.preventDefault();
+
+        if (waitBtn.innerHTML === 'Reprendre un ticket') {
+            document.modalForm.action = '/sale/resume';
+            modal.children[0].children[0].innerHTML = 'Sélectionnez un ticket';
+            modal.children[0].children[1].children[0].style.display = 'inline-block'
+            modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
+            modal.style.display = 'block';
+        } else {
+            modal.children[0].children[0].innerHTML = 'Confirmez la mise en attente';
+            modal.children[0].children[1].children[0].style.display = 'none'
+            modal.children[0].children[1].children[2].style.marginTop = '50px';
+            modal.style.display = 'block';
+
+
+            let json = {
+                id: 0,
+                products: [],
+                total: 0,
+            }
+
+            for (let i = 0; i < table.children.length; i++) {
+                let product = {
+                    id: parseInt(table.children[i].children[0].innerHTML),
+                    name: table.children[i].children[1].innerHTML,
+                    quantity: parseInt(table.children[i].children[2].innerHTML),
+                    price: parseFloat(table.children[i].children[3].innerHTML) / parseInt(table.children[i].children[2].innerHTML)
+                }
+                json.products.push(product)
+                json.total += parseFloat(table.children[i].children[3].innerHTML)
+            }
+            modal.children[0].children[1].children[0].children[1].value = JSON.stringify(json);
+
+            let id = new Date().getTime().toString()
+            json.id = id;
+            document.modalForm.action = '/sale/save/' + id;
+        }
+    })
+}
+
+if (backBtn !== null) {
+    backBtn.addEventListener('click', e => {
+        e.preventDefault();
+        document.modalForm.action = '/sale/return';
+        modal.children[0].children[0].innerHTML = 'Retour article(s)';
+        modal.children[0].children[1].children[0].style.display = 'inline-block'
+        modal.children[0].children[1].children[0].children[0].innerHTML = 'Entrez le numéro de ticket';
+        modal.style.display = 'block';
+    })
+}
+
+if (soldBtn !== null) {
+    soldBtn.addEventListener('click', e => {
+        e.preventDefault();
+        location.href = "/sale/advance"
+    })
+}
 
 /*
 * Remove all element from table
@@ -284,17 +355,8 @@ function addToCart(card) {
 * */
 function total() {
     let priceTot = 0;
-    for (let i = 0; i < table.childNodes.length; i++) {
-        if (table.childNodes[i].nodeName === 'TR') {
-            for (let j = 0; j < table.childNodes[i].childNodes.length; j++) {
-                if (table.childNodes[i].childNodes[j].nodeName === 'TD') {
-                    if (table.childNodes[i].childNodes[j].classList[0] === 'hide')
-                        if (!isNaN(table.childNodes[i].childNodes[3].innerHTML))
-                            priceTot += parseFloat(table.childNodes[i].childNodes[3].innerHTML);
-                }
-            }
-        }
-    }
+    for (let i = 0; i < table.children.length; i++)
+        priceTot += parseFloat(table.children[i].children[3].innerHTML)
 
     totalText.innerHTML = priceTot.toFixed(2) + " €"
 }

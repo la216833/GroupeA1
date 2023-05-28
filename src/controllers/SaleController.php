@@ -65,7 +65,10 @@ class SaleController implements Controller {
     }
 
     public function get_one(int $id): void {
-        // TODO: Implement get_id() method.
+        $data = $_POST['value'];
+        var_dump($data);
+        setcookie('SALE_'.$id, $data, time() + (60 * 60 * 24));
+        header('Location: /');
     }
 
     public function add(): void {
