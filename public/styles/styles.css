@@ -263,6 +263,7 @@ a {
 .table-img {
     display: block;
     margin: 50px auto;
+    max-height: 50px;
 }
 
 .table-title {

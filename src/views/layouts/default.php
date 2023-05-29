@@ -19,7 +19,7 @@ global$session;
 
     <div class="sidebar" id="sidebar">
         <div class="sidebar-container">
-            <img src="https://armetiss.be/img/logo-active.png" class="sidebar-img">
+            <img src="/images/logo.svg" class="sidebar-img">
             <div class="sidebar-content">
                 <?php if ($session->get('ROLE') === 'administrator'): ?>
                 <a class="btn btn-md btn-light" href="/categories">Categories</a>

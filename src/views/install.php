@@ -50,12 +50,14 @@
         <br> <br> <br>
         <div class="form-group">
             <label for="password">Administrator password
-                <input type="password" name="admin_password">
+                <input type="password" name="admin_password" minlength="6" maxlength="6" autocomplete="off"
+                       inputmode="numeric" pattern="^[0-9]{1,6}$" required>
             </label>
         </div>
         <div class="form-group">
             <label for="password">Confirm administrator password
-                <input type="password" name="admin_confirm">
+                <input type="password" name="admin_confirm" minlength="6" maxlength="6" autocomplete="off"
+                       inputmode="numeric" pattern="^[0-9]{1,6}$" required>
             </label>
         </div>
         <br> <br> <br>
