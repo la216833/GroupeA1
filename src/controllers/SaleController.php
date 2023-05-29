@@ -52,7 +52,7 @@ class SaleController implements Controller {
             $params['products'] = [];
             foreach ($params['categories'] as $cat) {
                 $params['products'] = array_merge($params['products'], $this->DAOProduct->selectWhere(["categoriesID"
-                => $cat->getID()]));
+                => $cat->getID(), "productsActive" => 1]));
             }
             $current = DBConnection::getInstance()->query("SELECT salesID FROM sales ORDER BY salesID DESC LIMIT 1")
             ->fetchAll();
