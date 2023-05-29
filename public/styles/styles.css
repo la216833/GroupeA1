@@ -852,3 +852,15 @@ a {
     text-align: center;
     padding: 20px;
 }
+
+.modal-border {
+    border: 2px solid var(--dark);
+    border-radius: 10px;
+    padding-bottom: 10px;
+    display: block;
+    margin-top: 5px;
+}
+
+.modal-border .form-group {
+    margin: 0;
+}

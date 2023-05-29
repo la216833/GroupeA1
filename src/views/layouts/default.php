@@ -12,6 +12,7 @@ global$session;
     <link rel="stylesheet" href="/styles/reset.css">
     <link rel="stylesheet" href="/styles/styles.css">
     <script src="/scripts/scripts.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
 <body>
 <?php if (!empty($session) && $session->get('USER')): ?>

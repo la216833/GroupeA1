@@ -26,18 +26,74 @@
 
 <?php if ($session->get('amount')): ?>
 <div class="modal" id="amount" style="display: block">
-    <div class="modal-content" style="height: 400px">
-        <h1>Total: <b><?= $session->get('amount') ?></b>€</h1>
-        <div class="form-group">
-            <label for="givenAmount">Montant reçu:</label>
-            <input type="number" id="givenAmount">
+    <div class="modal-content" style="height: 520px; width: 800px">
+        <div class="modal-border">
+            <div class="form-group">
+                <label for="givenAmount">Montant reçu:</label>
+                <input type="number" id="givenAmount">
+            </div>
+            <button class="btn btn-dark-active btn-space">A rendre</button>
+            <h1>
+                TOTAL : <b><?= $session->get('amount') ?></b>€
+                <span style="margin-left: 10px">A RENDRE :
+                    <b>0.00</b>€</span>
+            </h1>
         </div>
-        <input type="submit" class="btn btn-red btn-space" value="À Rendre">
-        <h1 style="display: none; padding: 10px 0">Vous devez rendre <b></b>€</h1>
+        <div class="modal-border">
+            <form action="" method="post" name="clientFrom" id="clientFrom">
+                <div class="form-group">
+                    <label for="clientSelect">Choisir un client</label>
+                    <select name="client" id="clientSelect">
+                        <option value=""></option>
+                        <?php foreach($params['clients'] as $client): ?>
+                            <option value="<?= $client->getID() ?>"><?= $client->getName()
+                                .' | '. $client->getFirstname()
+                                .' | '. $client->getTvaNumber()
+                                .' | '. $client->getAddress()->getStreet()
+                                .' '. $client->getAddress()->getNumber()
+                                .' | '. $client->getAddress()->getCity()
+                                .' '. $client->getAddress()->getCountry()
+                                ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="clientName">Nom :</label>
+                    <input type="text" name="clientName" id="clientName">
+                </div>
+                <div class="form-group">
+                    <label for="clientFirstName">Prénom :</label>
+                    <input type="text" name="clientFirstName" id="clientFirstName">
+                </div>
+                <div class="form-group">
+                    <label for="clientTVA">TVA :</label>
+                    <input type="text" name="clientTVA" id="clientTVA">
+                </div>
+                <div class="form-group">
+                    <label for="clientEmail">Email :</label>
+                    <input type="text" name="clientEmail" id="clientEmail">
+                </div>
+                <div class="form-group">
+                    <label for="clientAddress">Adresse :</label>
+                    <input type="text" name="clientAddress" id="clientAddress">
+                </div>
+                <div class="form-group">
+                    <label for="clientCity">Ville :</label>
+                    <input type="text" name="clientCity" id="clientCity">
+                </div>
+                <input class="btn btn-dark btn-space" type="submit" id="clientBtn" value="Enregistrer">
+            </form>
+        </div>
+        <br>
         <button class="btn btn-red btn-lg">Fermer</button>
+        <button class="btn btn-red btn-lg" id="printTicket">Imprimer ticket</button>
+        <button class="btn btn-red btn-lg" id="printInvoice">Imprimer facture</button>
+        <input id="json" class="hide" type="text" value='<?= json_encode($session->get('products')) ?>'>
     </div>
 </div>
 <?php if (!empty($session)) $session->remove('amount');?>
+<?php if (!empty($session)) $session->remove('products');?>
 <?php endif; ?>
 
 <div class="container">

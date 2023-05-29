@@ -13,10 +13,12 @@ use CashRegister\models\Address;
 class DAOAddress implements DAO{
 
     private DBModel $DBModel;
+    private array $params;
     const TABLE = "address";
 
     public function __construct(){
         $this->DBModel = new DBModel();
+        $this->params = [];
     }
 
     /**

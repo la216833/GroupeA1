@@ -37,6 +37,7 @@ $router->map('POST', '/sale/resume/[i:id]', 'sale#post_one');
 $router->map('POST', '/sale/return/[i:id]', 'sale#update');
 $router->map('POST', '/sale/advance', 'sale#add');
 $router->map('POST', '/sale/advance/[i:id]', 'sale#delete');
+$router->map('POST', '/sale/client', 'sale#update_one');
 
 $router->map('GET', '/products', 'product#get');
 $router->map('GET', '/product', 'product#add');

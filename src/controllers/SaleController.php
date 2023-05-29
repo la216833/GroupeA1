@@ -5,6 +5,7 @@ namespace CashRegister\controllers;
 use CashRegister\core\database\DBConnection;
 use CashRegister\core\exception\DBException;
 use CashRegister\core\View;
+use CashRegister\daos\DAOAddress;
 use CashRegister\daos\DAOCategory;
 use CashRegister\daos\DAOClient;
 use CashRegister\daos\DAOProduct;
@@ -12,10 +13,10 @@ use CashRegister\daos\DAOSale;
 use CashRegister\daos\DAOSaleContent;
 use CashRegister\daos\DAOStock;
 use CashRegister\daos\DAOUser;
+use CashRegister\models\Address;
+use CashRegister\models\Client;
 use CashRegister\models\Sale;
 use CashRegister\models\SaleContent;
-use CashRegister\models\Client;
-use CashRegister\models\User;
 
 class SaleController implements Controller {
 
@@ -27,6 +28,7 @@ class SaleController implements Controller {
     private DAOSaleContent $DAOSaleContent;
     private DAOUser $DAOUser;
     private DAOClient $DAOClient;
+    private DAOAddress $DAOAddress;
 
     public function __construct() {
         $this->view = new View();
@@ -37,6 +39,7 @@ class SaleController implements Controller {
         $this->DAOSaleContent = new DAOSaleContent();
         $this->DAOUser = new DAOUser();
         $this->DAOClient = new DAOClient();
+        $this->DAOAddress = new DAOAddress();
     }
 
     public function get(): void {
@@ -64,6 +67,7 @@ class SaleController implements Controller {
                     $params['saved'] = array_merge($params['saved'], [$name => $value->total]);
                 }
             }
+            $params['clients'] = $this->DAOClient->selectAll();
         } catch (DBException) {
             $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
         }
@@ -162,6 +166,7 @@ class SaleController implements Controller {
                     $sale = new Sale(0, $date, 0, '', $user, $client);
                     $this->DAOSale->insert($sale);
                     $sale = $this->DAOSale->selectWhere(['salesDate' => $date])[0];
+                    $ticket = [];
                     foreach ($products as $name => $id) {
                         if (str_contains($name, 'QNT')) continue;
                         $quantity = (int) $products[$name.'_QNT'];
@@ -174,16 +179,32 @@ class SaleController implements Controller {
                         $saleContent = new SaleContent($product, $sale, $quantity);
                         $this->DAOSaleContent->insert($saleContent);
                         $price += $quantity * $product->getPrice();
+
+                        $ticket[] = [
+                            "name" => $product->getName(),
+                            "quantity" => $quantity,
+                            "price" => $product->getPrice()
+                        ];
                     }
+                    $ticket[] = [
+                        "total" => $price,
+                        "number" => $sale->getID(),
+                        "date" => date("H:m:s d-m-Y", strtotime($sale->getDate())),
+                        "served" => $user->getName()
+                    ];
                     $sale->setAmount($price);
                     $this->DAOSale->update($sale);
                     $session->set('amount', $price);
+                    $session->set('products', $ticket);
+                    $session->set('sale_id', $sale->getID());
                 } catch (DBException) {
                     $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
                 } finally {
                     header('Location: /');
                 }
             }
+        } else {
+            header('Location: /');
         }
     }
 
@@ -231,6 +252,40 @@ class SaleController implements Controller {
         }
 
         header('Location: /');
+    }
+
+    public function update_one(): void {
+        global $session;
+        $data = $_POST;
+        $lastname = $data['clientName'];
+        $firstname = $data['clientFirstName'];
+        $tva = $data['clientTVA'];
+        $email = $data['clientEmail'];
+        $address = $data['clientAddress'];
+        $city= $data['clientCity'];
+
+        $city = explode(' ', $city);
+        $address = explode(' ', $address);
+        $number = (int) $address[count($address) -1];
+        array_pop($address);
+        $road = implode(" ", $address);
+        $address = new Address(0, $road, $number, $city[0], $city[1]);
+        try {
+            $this->DAOAddress->insert($address);
+            $address = $this->DAOAddress->selectWhere(["addressStreet" => $road])[0];
+            $client = new Client(0, $lastname, $firstname, $tva, $email, true, $address);
+            $this->DAOClient->insert($client);
+            $client = $this->DAOClient->selectWhere(["clientsTvaNumber" => $tva])[0];
+            $sale = $this->DAOSale->selectOne($session->get('sale_id'));
+            $sale->setClient($client);
+            $this->DAOSale->update($sale);
+        } catch (DBException $e) {
+            $session->set('error', 'Une erreur de connexion à la base de donnée est survenue');
+            echo $e;
+        } finally {
+            header('Location: /');
+        }
+
     }
 
     public function delete(int $id): void {

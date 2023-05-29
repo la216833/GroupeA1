@@ -9,33 +9,152 @@ const navBtns = document.getElementById('nav');                 // Category navi
 const catChoice = document.getElementById('catChoice');         // Select input to chose category
 const userChoice = document.getElementById('userChoice');       // Select input to chose role
 const productChoice = document.getElementById('artChoice');     // Select input to chose role
-const clearCartBtn = document.getElementById('clearCartBtn');   //
-const waitBtn = document.getElementById('waitBtn');             //
-const backBtn = document.getElementById('backBtn');             //
-const soldBtn = document.getElementById('soldBtn');             //
-const modal = document.getElementById('modal');                 //
-const closeBtn = document.getElementById('closeModal');         //
-const amountModal = document.getElementById('amount');          //
+const clearCartBtn = document.getElementById('clearCartBtn');   // Clear Cart
+const waitBtn = document.getElementById('waitBtn');             // Wait
+const backBtn = document.getElementById('backBtn');             // Back
+const soldBtn = document.getElementById('soldBtn');             // Sold
+const modal = document.getElementById('modal');                 // Modal
+const closeBtn = document.getElementById('closeModal');         // Close modal
+const amountModal = document.getElementById('amount');          // Amount modal
+const clientBtn = document.getElementById('clientBtn');         // Client
+const printTicket = document.getElementById('printTicket');     // Button for ticket
+const printInvoice = document.getElementById('printInvoice');   // Button for invoice
+const jsonProduct = document.getElementById('json');            // JSON for data
+const clientSelect = document.getElementById('clientSelect');   // JSON for data
+const clientFrom = document.getElementById('clientFrom');       // JSON for data
+
+if (printTicket !== null) {
+    printTicket.addEventListener('click', () => {
+        const json = JSON.parse(jsonProduct.value);
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF();
+        doc.text("Armetiss", 10, 10);
+        doc.text("Rue Joseph Lambillotte 138B", 10, 16);
+        doc.text("6040 JUMET", 10, 22);
+        doc.text("0489/41.96.85", 10, 28);
+        doc.text("Ticket numéro : " + json[json.length-1].number.toString(), 85, 36);
+        // HEADER TICKET
+        doc.text("Nom du produit", 10, 55);
+        doc.text("Quantité", 120, 55);
+        doc.text("Prix unitaire", 145, 55);
+        doc.text("Montant", 185, 55);
+        doc.text('--------------------------------------------------------------------------------------------------------', 10, 60);
+
+        // ARTICLES
+        let y = 70;
+        for (let i = 0; i < json.length - 1; i++) {
+            doc.text(json[i].name.toString(), 10, y);
+            doc.text(json[i].quantity.toString(), 120, y);
+            doc.text(json[i].price.toString(), 145, y);
+            doc.text((json[i].quantity * json[i].price).toString(), 185, y);
+            y += 6;
+        }
+        doc.text('--------------------------------------------------------------------------------------------------------', 10, y + 15);
+        doc.text("TOTAL", 10, y + 20);
+        doc.text(json[json.length-1].total.toFixed(2).toString(), 185, y + 20);
+
+        doc.text("DATE : " + json[json.length-1].date.toString(), 10, y + 40);
+        doc.text("Vous avez été servi par : " + json[json.length-1].served.toString(), 10,  y + 50);
+
+        doc.save("ticket_"+ json[json.length-1].number.toString() +".pdf");
+    })
+}
+
+if (printInvoice !== null) {
+    printInvoice.addEventListener('click', () => {
+        const json = JSON.parse(jsonProduct.value);
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF();
+        doc.text("Armetiss", 10, 10);
+        doc.text("Rue Joseph Lambillotte 138B", 10, 16);
+        doc.text("6040 JUMET", 10, 22);
+        doc.text("0489/41.96.85", 10, 28);
+        doc.text("FACTURE (" + json[json.length-1].number.toString() + ")", 85, 45);
+
+        const id = parseInt(clientSelect.value);
+
+        let name;
+        let address;
+        let city
+        let TVA;
+
+        if (!isNaN(id)) {
+            for (let i = 1; i < clientSelect.children.length; i++) {
+                if (id === parseInt(clientSelect.children[i].value)) {
+                    let array = clientSelect.children[i].innerHTML
+                    array = array.split(' | ')
+                    name = array[0] + ' ' + array[1]
+                    TVA = array[2]
+                    address = array[3]
+                    city = array[4]
+                    break;
+                }
+            }
+        } else {
+            name = clientFrom.children[2].children[1].value + ' ' + clientFrom.children[3].children[1].value
+            TVA = clientFrom.children[4].children[1].value
+            address = clientFrom.children[6].children[1].value
+            city = clientFrom.children[7].children[1].value;
+        }
+
+        // INVOICE
+        doc.text(name, 110, 10);
+        doc.text(address, 110, 16);
+        doc.text(city, 110, 22);
+        doc.text(TVA, 110, 28);
+
+        // HEADER TICKET
+        doc.text("Nom du produit", 10, 55);
+        doc.text("Quantité", 120, 55);
+        doc.text("Prix unitaire", 145, 55);
+        doc.text("Montant", 185, 55);
+        doc.text('--------------------------------------------------------------------------------------------------------', 10, 60);
+        // ARTICLES
+        let y = 70;
+        for (let i = 0; i < json.length - 1; i++) {
+            doc.text(json[i].name.toString(), 10, y);
+            doc.text(json[i].quantity.toString(), 120, y);
+            doc.text(json[i].price.toString(), 145, y);
+            doc.text((json[i].quantity * json[i].price).toString(), 185, y);
+            y += 6;
+        }
+        doc.text('--------------------------------------------------------------------------------------------------------', 10, y + 15);
+        doc.text("TOTAL", 10, y + 20);
+        doc.text(json[json.length-1].total.toFixed(2).toString(), 185, y + 20);
+
+        doc.text("DATE : " + json[json.length-1].date.toString(), 10, y + 40);
+        doc.text("Vous avez été servi par : " + json[json.length-1].served.toString(), 10,  y + 50);
+
+        doc.save("facture_"+ json[json.length-1].number.toString() +".pdf");
+    })
+}
+
+if (clientBtn !== null) {
+    clientBtn.addEventListener('click', e => {
+        document.clientFrom.action = '/sale/client';
+    })
+}
+
 
 if (amountModal !== null) {
-    const amount = amountModal.children[0].children[0].children[0].innerHTML
-    const given = amountModal.children[0].children[1].children[1]
-    const back = amountModal.children[0].children[2]
-    const backInput = amountModal.children[0].children[3].children[0]
-    const close = amountModal.children[0].children[4];
-
-    close.addEventListener('click', () => {
-        amountModal.style.display = 'none';
-    })
-
+    const amount = amountModal.children[0].children[0].children[2].children[0].innerHTML
+    const given = amountModal.children[0].children[0].children[0].children[1]
+    const back = amountModal.children[0].children[0].children[1];
+    const backInput = amountModal.children[0].children[0].children[2].children[1].children[0]
+    const close = amountModal.children[0].children[3];
 
     back.addEventListener('click', () => {
         const givenAmount = parseFloat(given.value);
         const returnAmount = givenAmount - amount
-        backInput.innerHTML = returnAmount.toFixed(2);
-        amountModal.children[0].children[3].style.display = 'block';
+        if (isNaN(returnAmount)) backInput.innerHTML = '0.00'
+        else backInput.innerHTML = returnAmount.toFixed(2).toString();
     })
 
+    close.addEventListener('click', () => {
+        amountModal.style.display = 'none';
+    })
 }
 
 
