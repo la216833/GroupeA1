@@ -59,7 +59,7 @@
     </div>
     <form method="post" class="table">
         <div class="table-container">
-            <img class="table-img" src="https://armetiss.be/img/logo-active.png" alt="Nom de l'entreprise">
+            <img class="table-img" src="/images/logo.svg" alt="Nom de l'entreprise">
             <h2 class="table-title">Ticket n°<?= $params['number'] ?></h2>
             <div class="table-wrapper">
                 <table >
