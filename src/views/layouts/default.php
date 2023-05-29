@@ -14,7 +14,7 @@ global$session;
     <script src="/scripts/scripts.js" defer></script>
 </head>
 <body>
-<?php if ($session->get('USER')): ?>
+<?php if (!empty($session) && $session->get('USER')): ?>
     <button class="sidebar-btn" id="sidebarBtn"> > </button>
 
     <div class="sidebar" id="sidebar">
@@ -43,17 +43,17 @@ global$session;
     </div>
 <?php endif; ?>
 
-<?php if ($session->getFlash('error')) : ?>
+<?php if (!empty($session) && $session->getFlash('error')) : ?>
 <div class="alert-error">
     <h1>Erreur</h1>
     <p><?= $session->getFlash('error')?></p>
 </div>
 <?php endif; ?>
 
-<?php if ($session->getFlash('success')) : ?>
+<?php if (!empty($session) && $session->getFlash('success')) : ?>
     <div class="alert-success">
         <h1>Réussi</h1>
-        <p><?= $session->getFlash('error')?></p>
+        <p><?= $session->getFlash('success')?></p>
     </div>
 <?php endif; ?>
 
@@ -61,3 +61,6 @@ global$session;
 
 </body>
 </html>
+
+<?php if (!empty($session)) $session->setFlash('error', '');?>
+<?php if (!empty($session)) $session->setFlash('success', '');?>

@@ -8,16 +8,15 @@
                 <label for="value"></label>
                 <input id="value" name="value" type="text">
             </div>
-            <?php if (!empty($params['saved'])): ?>
             <div class="form-group">
                 <label for="save"></label>
                 <select name="save" id="save">
+                    <option value=""></option>
                     <?php foreach($params['saved'] as $name => $value): ?>
                     <option value="<?= $name ?>"><?= explode("_", $name)[1] . ' : '. $value . '€'?> </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <?php endif; ?>
             <br>
             <input class="btn btn-large btn-dark btn-space" type="submit" value="Valider">
         </form>
