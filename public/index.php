@@ -2,6 +2,7 @@
 
 use CashRegister\controllers\HistoryController;
 use CashRegister\controllers\LoginController;
+use CashRegister\controllers\personnalHistoryController;
 use CashRegister\controllers\ProductController;
 use CashRegister\controllers\SaleController;
 use CashRegister\controllers\StockController;
@@ -64,6 +65,8 @@ $router->map('GET', '/stock', 'stock#get_form');
 $router->map('GET', '/login', 'login#get');
 $router->map('POST', '/login', 'login#post');
 
+$router->map('GET', '/personnalHistory', 'personnalHistory#get');
+
 $router->map('GET', '/logout/[i:id]', 'login#delete');
 
 $router->map('GET', '/history', 'history#get');
@@ -82,6 +85,7 @@ if ($match) {
             case 'login' : $obj = new LoginController(); break;
             case 'history': $obj = new HistoryController(); break;
             case 'stock': $obj = new StockController(); break;
+            case 'personnalHistory': $obj = new personnalHistoryController(); break;
             default:
                 break;
         }

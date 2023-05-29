@@ -27,7 +27,7 @@ global$session;
                 <a class="btn btn-md btn-light" href="/stocks">Stocks</a>
                 <a class="btn btn-md btn-light" href="/users">Utilisateurs</a>
                 <?php endif; ?>
-                <a class="btn btn-md btn-light" href="/history">Historique</a>
+                <a class="btn btn-md btn-light" href="/personnalHistory">Historique personelle</a>
                 <a class="btn btn-md btn-light" href="/">Retour a la vente</a>
             </div>
             <div class="sidebar-footer">
