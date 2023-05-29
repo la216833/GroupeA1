@@ -34,10 +34,10 @@
             <thead>
             <tr>
                 <th class="table-center">Produit</th>
+                <th class="table-left">Disponibilité</th>
                 <th class="table-left">Quantité</th>
                 <th class="table-left">Date d'achat</th>
                 <th class="table-left">Prix d'achat</th>
-                <th class="table-left">En activite</th>
             </tr>
             </thead>
             <tbody>
@@ -45,10 +45,12 @@
                 <tr>
                     <td class="hide"><?= $stock->getProduct()->getID()?></td>
                     <td class="table-center list-large"><?= $stock->getProduct()->getName() ?></td>
-                    <td class="table-center"><?= $stock->getQuantity() ?></td>
-                    <td class="table-center"><?= $stock->getDate() ?></td>
-                    <td class="table-center"><?= $stock->getBuyPrice() ?></td>
-                    <td class="table-center"><?= $stock->getActive() ?></td>
+                    <td class="table-right status <?= $stock->getQuantity() > 0 ? 'status-success': 'status-danger'?>">
+                        <?= $stock->getQuantity() > 0  ? 'DISPONIBLE': 'INDISPONIBLE'?>
+                    </td>
+                    <td class="table-right"><?= $stock->getQuantity() ?></td>
+                    <td class="table-right"><?= $stock->getDate() ?></td>
+                    <td class="table-right" style="padding-right: 10px"><?= $stock->getBuyPrice() ?></td>
                 </tr>
                 <?php endforeach; ?>
 
