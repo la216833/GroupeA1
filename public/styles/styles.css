@@ -712,6 +712,9 @@ a {
     letter-spacing: 70px;
     padding-left: 85px;
     border-radius: 15px;
+    outline: none;
+    border: none;
+    margin-bottom: 30px;
 }
 
 .login-body img{
