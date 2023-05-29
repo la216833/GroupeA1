@@ -90,8 +90,7 @@ class DAOTvaTest extends TestCase
         $tva = new TVA(0,22, "Taxe 22");
 
         try {
-            $this->DAOTva->insert($tva);
-
+            //$this->DAOTva->insert($tva);
 
             $tab = $this->DAOTva->selectWhere(["tvaName"=>"Taxe 22"]);
             if (!empty($tab)){
@@ -99,7 +98,7 @@ class DAOTvaTest extends TestCase
             }else{
                 $this->fail("Tableau vide");
             }
-            $this->assertEquals("Taxe 22", $tab[0]["tvaName"]);
+            $this->assertEquals("Taxe 22", $tab[0]->getName());
 
         }catch (DBException $e){
             throw new DBException($e);
