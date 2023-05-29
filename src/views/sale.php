@@ -24,6 +24,22 @@
     </div>
 </div>
 
+<?php if ($session->get('amount')): ?>
+<div class="modal" id="amount" style="display: block">
+    <div class="modal-content" style="height: 400px">
+        <h1>Total: <b><?= $session->get('amount') ?></b>€</h1>
+        <div class="form-group">
+            <label for="givenAmount">Montant reçu:</label>
+            <input type="number" id="givenAmount">
+        </div>
+        <input type="submit" class="btn btn-red btn-space" value="À Rendre">
+        <h1 style="display: none; padding: 10px 0">Vous devez rendre <b></b>€</h1>
+        <button class="btn btn-red btn-lg">Fermer</button>
+    </div>
+</div>
+<?php if (!empty($session)) $session->remove('amount');?>
+<?php endif; ?>
+
 <div class="container">
     <nav class="nav" id="nav">
         <button class="btn btn-lg btn-active" aria-details="all">Tous les produits</button>

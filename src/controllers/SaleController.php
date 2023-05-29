@@ -177,6 +177,7 @@ class SaleController implements Controller {
                     }
                     $sale->setAmount($price);
                     $this->DAOSale->update($sale);
+                    $session->set('amount', $price);
                 } catch (DBException) {
                     $session->setFlash('error', "Une erreur de connexion à la base de donnée est survenue");
                 } finally {
@@ -244,6 +245,7 @@ class SaleController implements Controller {
             $amount = $sale->getDescription();
             $amount = explode("[", $amount)[1];
             $amount = (float) explode("]", $amount)[0];
+            $session->set('amount', $amount);
             $sale->setAmount($amount);
             $sale->setDescription('Le paiement a été effectué le '. date("d-m-Y à H:m:s"));
             $this->DAOSale->update($sale);

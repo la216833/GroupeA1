@@ -14,7 +14,30 @@ const waitBtn = document.getElementById('waitBtn');             //
 const backBtn = document.getElementById('backBtn');             //
 const soldBtn = document.getElementById('soldBtn');             //
 const modal = document.getElementById('modal');                 //
-const closeBtn = document.getElementById('closeModal');
+const closeBtn = document.getElementById('closeModal');         //
+const amountModal = document.getElementById('amount');          //
+
+if (amountModal !== null) {
+    const amount = amountModal.children[0].children[0].children[0].innerHTML
+    const given = amountModal.children[0].children[1].children[1]
+    const back = amountModal.children[0].children[2]
+    const backInput = amountModal.children[0].children[3].children[0]
+    const close = amountModal.children[0].children[4];
+
+    close.addEventListener('click', () => {
+        amountModal.style.display = 'none';
+    })
+
+
+    back.addEventListener('click', () => {
+        const givenAmount = parseFloat(given.value);
+        const returnAmount = givenAmount - amount
+        backInput.innerHTML = returnAmount.toFixed(2);
+        amountModal.children[0].children[3].style.display = 'block';
+    })
+
+}
+
 
 if (closeBtn !== null) {
     closeBtn.addEventListener('click', () => {
